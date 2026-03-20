@@ -1,0 +1,109 @@
+2026-03-11 09:53:01 [INFO] login_page — Navigating to login: http://34.123.158.27:8086/facto/login.xhtml
+2026-03-11 09:59:56 [INFO] login_page — Navigating to login: http://34.123.158.27:8086/facto/login.xhtml
+2026-03-11 10:03:02 [INFO] login_page — Navigating to login: http://34.123.158.27:8086/facto/login.xhtml
+2026-03-11 10:04:54 [INFO] login_page — Navigating to login: http://facto-qa.nexttechnologies.net:8083/facto/
+2026-03-11 10:05:24 [INFO] login_page — Login submitted for user 'ERICK-NT-QT'
+2026-03-11 10:05:24 [INFO] conftest — Session login complete
+2026-03-11 10:05:24 [INFO] conftest — Loading conceptos from: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\data/conceptos-escenario-ppd-1.xlsx
+2026-03-11 10:05:24 [INFO] factura_page — Navigating to factura form: http://34.123.158.27:8086/facto/pages/facturacion/manual/factura_manual_40.xhtml
+2026-03-11 10:05:31 [INFO] factura_page — Filling Emisor: rfc=NID200929V26 sucursal=PRUEBAS cc=Pruebas
+2026-03-11 10:05:54 [INFO] base_page — Screenshot saved: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\screenshots\error_factura_ppd_1773245154.png
+2026-03-11 10:05:54 [ERROR] test_ppd_complementos — TEST_01 FAIL: Message: 
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	0x7ff77dd7aa55
+	0x7ff77dad8630
+	0x7ff77d86d75d
+	0x7ff77d8c862e
+	0x7ff77d8c893c
+	0x7ff77d918d87
+	0x7ff77d91591c
+	0x7ff77d8b9098
+	0x7ff77d8b9f83
+	0x7ff77dda7810
+	0x7ff77dda1afd
+	0x7ff77ddc2c1a
+	0x7ff77daf3345
+	0x7ff77dafb81c
+	0x7ff77dae1924
+	0x7ff77dae1ad6
+	0x7ff77dac7e47
+	0x7fffc60b7374
+	0x7fffc7f5cc91
+
+2026-03-11 10:05:55 [INFO] conftest — Results saved to: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\reports\resultados_20260311_100524.xlsx
+2026-03-11 10:09:38 [INFO] login_page — Navigating to login: http://facto-qa.nexttechnologies.net:8083/facto/
+2026-03-11 10:10:07 [INFO] login_page — Login submitted for user 'ERICK-NT-QT'
+2026-03-11 10:10:07 [INFO] conftest — Session login complete
+2026-03-11 10:10:07 [INFO] conftest — Loading conceptos from: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\data/conceptos-escenario-ppd-1.xlsx
+2026-03-11 10:10:07 [INFO] factura_page — Navigating to factura form: http://facto-qa.nexttechnologies.net:8083/facto/pages/facturacion/manual/factura_manual_40.xhtml
+2026-03-11 10:10:15 [INFO] factura_page — Filling Emisor: rfc=NID200929V26 sucursal=PRUEBAS cc=Pruebas
+2026-03-11 10:10:37 [DEBUG] factura_page — Emisor RFC selected: NID200929V26
+2026-03-11 10:10:59 [INFO] base_page — Screenshot saved: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\screenshots\error_factura_ppd_1773245459.png
+2026-03-11 10:10:59 [ERROR] test_ppd_complementos — TEST_01 FAIL: Message: 
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	0x7ff77dd7aa55
+	0x7ff77dad8630
+	0x7ff77d86d75d
+	0x7ff77d8c862e
+	0x7ff77d8c893c
+	0x7ff77d918d87
+	0x7ff77d91591c
+	0x7ff77d8b9098
+	0x7ff77d8b9f83
+	0x7ff77dda7810
+	0x7ff77dda1afd
+	0x7ff77ddc2c1a
+	0x7ff77daf3345
+	0x7ff77dafb81c
+	0x7ff77dae1924
+	0x7ff77dae1ad6
+	0x7ff77dac7e47
+	0x7fffc60b7374
+	0x7fffc7f5cc91
+
+2026-03-11 10:11:00 [INFO] conftest — Results saved to: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\reports\resultados_20260311_101007.xlsx
+2026-03-11 10:28:32 [INFO] login_page — Navigating to login: http://facto-qa.nexttechnologies.net:8083/facto/
+2026-03-11 10:28:45 [INFO] login_page — Login submitted for user 'ERICK-NT-QT'
+2026-03-11 10:28:45 [INFO] conftest — Session login complete
+2026-03-11 10:28:45 [INFO] conftest — Loading conceptos from: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\data/conceptos-escenario-ppd-1.xlsx
+2026-03-11 10:28:45 [INFO] factura_page — Navigating to factura form: http://facto-qa.nexttechnologies.net:8083/facto/pages/facturacion/manual/factura_manual_40.xhtml
+2026-03-11 10:28:52 [INFO] factura_page — Filling Emisor: rfc=NID200929V26 sucursal=PRUEBAS cc=Pruebas
+2026-03-11 10:29:11 [DEBUG] factura_page — Emisor RFC selected: NID200929V26
+2026-03-11 10:29:23 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosEmisor:selectOneSucursales' → contains 'PRUEBAS'
+2026-03-11 10:29:34 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosEmisor:selectOneCentroConsumo' → contains 'Pruebas'
+2026-03-11 10:29:34 [INFO] factura_page — Filling Receptor: rfc=XAXX010101000
+2026-03-11 10:29:41 [INFO] base_page — Screenshot saved: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\screenshots\error_factura_ppd_1773246581.png
+2026-03-11 10:29:41 [ERROR] test_ppd_complementos — TEST_01 FAIL: Message: stale element reference: stale element not found in the current frame
+  (Session info: chrome=145.0.7632.160); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#stale-element-reference-exception
+Stacktrace:
+Symbols not available. Dumping unresolved backtrace:
+	0x7ff77dd7aa55
+	0x7ff77dad8630
+	0x7ff77d86d75d
+	0x7ff77d8756c1
+	0x7ff77d8787e4
+	0x7ff77d8788af
+	0x7ff77d8d088a
+	0x7ff77d8ce27a
+	0x7ff77d8cb115
+	0x7ff77d8c9fc7
+	0x7ff77d8bb426
+	0x7ff77d8f19da
+	0x7ff77d8baca6
+	0x7ff77d91591c
+	0x7ff77d8b9098
+	0x7ff77d8b9f83
+	0x7ff77dda7810
+	0x7ff77dda1afd
+	0x7ff77ddc2c1a
+	0x7ff77daf3345
+	0x7ff77dafb81c
+	0x7ff77dae1924
+	0x7ff77dae1ad6
+	0x7ff77dac7e47
+	0x7fffc60b7374
+	0x7fffc7f5cc91
+
+2026-03-11 10:29:41 [INFO] conftest — Results saved to: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\reports\resultados_20260311_102845.xlsx

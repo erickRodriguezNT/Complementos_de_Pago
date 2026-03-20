@@ -1,0 +1,805 @@
+2026-03-18 10:07:22 [INFO] login_page — Navigating to login: http://facto-qa.nexttechnologies.net:8083/facto/
+2026-03-18 10:07:30 [INFO] login_page — Login submitted for user 'ERICK-NT-QT'
+2026-03-18 10:07:30 [INFO] conftest — Session login complete
+2026-03-18 10:07:30 [INFO] conftest — Loading conceptos from: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\data/conceptos-escenario-ppd-1.xlsx
+2026-03-18 10:07:30 [INFO] factura_page — Navigating to factura form: http://facto-qa.nexttechnologies.net:8083/facto/pages/facturacion/manual/factura_manual_40.xhtml
+2026-03-18 10:07:34 [INFO] factura_page — Filling Emisor: rfc=NID200929V26 sucursal=PRUEBAS cc=Pruebas
+2026-03-18 10:07:48 [DEBUG] factura_page — Emisor RFC selected: NID200929V26
+2026-03-18 10:07:55 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosEmisor:selectOneSucursales' → contains 'PRUEBAS'
+2026-03-18 10:08:01 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosEmisor:selectOneCentroConsumo' → contains 'Pruebas'
+2026-03-18 10:08:01 [INFO] factura_page — Filling Receptor: rfc=XAXX010101000
+2026-03-18 10:08:02 [INFO] factura_page — TAB pressed — waiting for receptor fields autofill via AJAX
+2026-03-18 10:08:05 [INFO] factura_page — Receptor fields auto-filled by AJAX
+2026-03-18 10:08:05 [DEBUG] factura_page — nombre/uso_cfdi/regimen/domicilio auto-filled — skipping manual override
+2026-03-18 10:08:05 [WARNING] factura_page — Email field not found, skipping
+2026-03-18 10:08:05 [INFO] factura_page — Filling Comprobante: tipo=FACTURA serie=FP forma=99
+2026-03-18 10:08:29 [INFO] base_page — Screenshot saved: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\screenshots\error_factura_ppd_1773850109.png
+2026-03-18 10:08:29 [ERROR] test_ppd_complementos — TEST_01 FAIL: Message: 
+
+2026-03-18 10:08:30 [INFO] conftest — Results saved to: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\reports\resultados_20260318_100730.xlsx
+2026-03-18 10:15:59 [INFO] login_page — Navigating to login: http://facto-qa.nexttechnologies.net:8083/facto/
+2026-03-18 10:16:07 [INFO] login_page — Login submitted for user 'ERICK-NT-QT'
+2026-03-18 10:16:07 [INFO] conftest — Session login complete
+2026-03-18 10:16:07 [INFO] conftest — Loading conceptos from: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\data/conceptos-escenario-ppd-1.xlsx
+2026-03-18 10:16:07 [INFO] factura_page — Navigating to factura form: http://facto-qa.nexttechnologies.net:8083/facto/pages/facturacion/manual/factura_manual_40.xhtml
+2026-03-18 10:16:11 [INFO] factura_page — Filling Emisor: rfc=NID200929V26 sucursal=PRUEBAS cc=Pruebas
+2026-03-18 10:16:27 [DEBUG] factura_page — Emisor RFC selected: NID200929V26
+2026-03-18 10:16:34 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosEmisor:selectOneSucursales' → contains 'PRUEBAS'
+2026-03-18 10:16:40 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosEmisor:selectOneCentroConsumo' → contains 'Pruebas'
+2026-03-18 10:16:40 [INFO] factura_page — Filling Receptor: rfc=XAXX010101000
+2026-03-18 10:16:41 [INFO] factura_page — TAB pressed — waiting for receptor fields autofill via AJAX
+2026-03-18 10:16:44 [INFO] factura_page — Receptor fields auto-filled by AJAX
+2026-03-18 10:16:44 [DEBUG] factura_page — nombre/uso_cfdi/regimen/domicilio auto-filled — skipping manual override
+2026-03-18 10:16:44 [WARNING] factura_page — Email field not found, skipping
+2026-03-18 10:16:44 [INFO] factura_page — Filling Comprobante: tipo=FACTURA serie=FP forma=99
+2026-03-18 10:17:08 [INFO] base_page — Screenshot saved: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\screenshots\error_factura_ppd_1773850628.png
+2026-03-18 10:17:08 [ERROR] test_ppd_complementos — TEST_01 FAIL: Message: 
+
+2026-03-18 10:17:09 [INFO] conftest — Results saved to: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\reports\resultados_20260318_101607.xlsx
+2026-03-18 11:23:35 [INFO] login_page — Navigating to login: http://facto-qa.nexttechnologies.net:8083/facto/
+2026-03-18 11:23:43 [INFO] login_page — Login submitted for user 'ERICK-NT-QT'
+2026-03-18 11:23:43 [INFO] conftest — Session login complete
+2026-03-18 11:23:43 [INFO] conftest — Loading conceptos from: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\data/conceptos-escenario-ppd-1.xlsx
+2026-03-18 11:23:43 [INFO] factura_page — Navigating to factura form: http://facto-qa.nexttechnologies.net:8083/facto/pages/facturacion/manual/factura_manual_40.xhtml
+2026-03-18 11:23:47 [INFO] factura_page — Filling Emisor: rfc=NID200929V26 sucursal=PRUEBAS cc=Pruebas
+2026-03-18 11:24:00 [DEBUG] factura_page — Emisor RFC selected: NID200929V26
+2026-03-18 11:24:07 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosEmisor:selectOneSucursales' → contains 'PRUEBAS'
+2026-03-18 11:24:14 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosEmisor:selectOneCentroConsumo' → contains 'Pruebas'
+2026-03-18 11:24:14 [INFO] factura_page — Filling Receptor: rfc=XAXX010101000
+2026-03-18 11:24:14 [INFO] factura_page — TAB pressed — waiting for receptor fields autofill via AJAX
+2026-03-18 11:24:17 [INFO] factura_page — Receptor fields auto-filled by AJAX
+2026-03-18 11:24:17 [DEBUG] factura_page — nombre/uso_cfdi/regimen/domicilio auto-filled — skipping manual override
+2026-03-18 11:24:17 [WARNING] factura_page — Email field not found, skipping
+2026-03-18 11:24:17 [INFO] factura_page — Filling Comprobante: tipo=FACTURA serie=FP forma=99
+2026-03-18 11:24:31 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneTipoComprobante' → contains 'FACTURA'
+2026-03-18 11:24:38 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneSerie' → contains 'FP'
+2026-03-18 11:24:45 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneFormaPago' → contains '99'
+2026-03-18 11:24:52 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneMetodoPago' → contains 'PPD'
+2026-03-18 11:25:10 [INFO] base_page — Screenshot saved: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\screenshots\error_factura_ppd_1773854710.png
+2026-03-18 11:25:10 [ERROR] test_ppd_complementos — TEST_01 FAIL: Message: 
+Stacktrace:
+	chromedriver!GetHandleVerifier [0x7ff735d310a5+14cc5]
+	chromedriver!GetHandleVerifier [0x7ff735d31110+14d30]
+	chromedriver!(No symbol) [0x7ff735a9db6d]
+	chromedriver!(No symbol) [0x7ff735af7082]
+	chromedriver!(No symbol) [0x7ff735af738c]
+	chromedriver!(No symbol) [0x7ff735b473f7]
+	chromedriver!(No symbol) [0x7ff735b43f7b]
+	chromedriver!(No symbol) [0x7ff735ae96e8]
+	chromedriver!(No symbol) [0x7ff735aea5d3]
+	chromedriver!GetHandleVerifier [0x7ff736035ddd+3199fd]
+	chromedriver!GetHandleVerifier [0x7ff7360304bd+3140dd]
+	chromedriver!GetHandleVerifier [0x7ff7360529ba+3365da]
+	chromedriver!GetHandleVerifier [0x7ff735d4ca45+30665]
+	chromedriver!GetHandleVerifier [0x7ff735d55b9c+397bc]
+	chromedriver!GetHandleVerifier [0x7ff735d3a4c4+1e0e4]
+	chromedriver!GetHandleVerifier [0x7ff735d3a676+1e296]
+	chromedriver!GetHandleVerifier [0x7ff735d1ef87+2ba7]
+	KERNEL32!BaseThreadInitThunk [0x7fffc60b7374+14]
+	ntdll!RtlUserThreadStart [0x7fffc7f5cc91+21]
+
+2026-03-18 11:25:11 [INFO] conftest — Results saved to: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\reports\resultados_20260318_112343.xlsx
+2026-03-18 12:24:55 [INFO] login_page — Navigating to login: http://facto-qa.nexttechnologies.net:8083/facto/
+2026-03-18 12:25:03 [INFO] login_page — Login submitted for user 'ERICK-NT-QT'
+2026-03-18 12:25:03 [INFO] conftest — Session login complete
+2026-03-18 12:25:03 [INFO] conftest — Loading conceptos from: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\data/conceptos-escenario-ppd-1.xlsx
+2026-03-18 12:25:03 [INFO] factura_page — Navigating to factura form: http://facto-qa.nexttechnologies.net:8083/facto/pages/facturacion/manual/factura_manual_40.xhtml
+2026-03-18 12:25:07 [INFO] factura_page — Filling Emisor: rfc=NID200929V26 sucursal=PRUEBAS cc=Pruebas
+2026-03-18 12:25:21 [DEBUG] factura_page — Emisor RFC selected: NID200929V26
+2026-03-18 12:25:28 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosEmisor:selectOneSucursales' → contains 'PRUEBAS'
+2026-03-18 12:25:35 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosEmisor:selectOneCentroConsumo' → contains 'Pruebas'
+2026-03-18 12:25:35 [INFO] factura_page — Filling Receptor: rfc=XAXX010101000
+2026-03-18 12:25:35 [INFO] factura_page — TAB pressed — waiting for receptor fields autofill via AJAX
+2026-03-18 12:25:38 [INFO] factura_page — Receptor fields auto-filled by AJAX
+2026-03-18 12:25:38 [DEBUG] factura_page — nombre/uso_cfdi/regimen/domicilio auto-filled — skipping manual override
+2026-03-18 12:25:38 [WARNING] factura_page — Email field not found, skipping
+2026-03-18 12:25:38 [INFO] factura_page — Filling Comprobante: tipo=FACTURA serie=FP forma=99
+2026-03-18 12:26:01 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneTipoComprobante' → contains 'FACTURA'
+2026-03-18 12:26:07 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneSerie' → contains 'FP'
+2026-03-18 12:26:14 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneFormaPago' → contains '99'
+2026-03-18 12:26:21 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneMetodoPago' → contains 'PPD'
+2026-03-18 12:26:21 [INFO] factura_page — Filling Moneda: MXN
+2026-03-18 12:26:27 [INFO] factura_page — Moneda final capturada en input: 'MXN'
+2026-03-18 12:26:27 [INFO] factura_page — Adding concepto: id=1 desc=Hospedaje
+2026-03-18 12:26:46 [INFO] base_page — Screenshot saved: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\screenshots\error_factura_ppd_1773858406.png
+2026-03-18 12:26:46 [ERROR] test_ppd_complementos — TEST_01 FAIL: Message: 
+Stacktrace:
+	chromedriver!GetHandleVerifier [0x7ff616163045+14585]
+	chromedriver!GetHandleVerifier [0x7ff6161630b0+145f0]
+	chromedriver!(No symbol) [0x7ff615ecdb7d]
+	chromedriver!(No symbol) [0x7ff615f273ae]
+	chromedriver!(No symbol) [0x7ff615f276bc]
+	chromedriver!(No symbol) [0x7ff615f77a57]
+	chromedriver!(No symbol) [0x7ff615f745af]
+	chromedriver!(No symbol) [0x7ff615f19a18]
+	chromedriver!(No symbol) [0x7ff615f1a8f3]
+	chromedriver!GetHandleVerifier [0x7ff61646ac5d+31c19d]
+	chromedriver!GetHandleVerifier [0x7ff61646536d+3168ad]
+	chromedriver!GetHandleVerifier [0x7ff616487d8a+3392ca]
+	chromedriver!GetHandleVerifier [0x7ff61617f445+30985]
+	chromedriver!GetHandleVerifier [0x7ff6161884dc+39a1c]
+	chromedriver!GetHandleVerifier [0x7ff61616c634+1db74]
+	chromedriver!GetHandleVerifier [0x7ff61616c7e6+1dd26]
+	chromedriver!GetHandleVerifier [0x7ff616151387+28c7]
+	KERNEL32!BaseThreadInitThunk [0x7fffc60b7374+14]
+	ntdll!RtlUserThreadStart [0x7fffc7f5cc91+21]
+
+2026-03-18 12:26:47 [INFO] conftest — Results saved to: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\reports\resultados_20260318_122503.xlsx
+2026-03-18 12:40:28 [INFO] login_page — Navigating to login: http://facto-qa.nexttechnologies.net:8083/facto/
+2026-03-18 12:40:36 [INFO] login_page — Login submitted for user 'ERICK-NT-QT'
+2026-03-18 12:40:36 [INFO] conftest — Session login complete
+2026-03-18 12:40:36 [INFO] conftest — Loading conceptos from: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\data/conceptos-escenario-ppd-1.xlsx
+2026-03-18 12:40:36 [INFO] factura_page — Navigating to factura form: http://facto-qa.nexttechnologies.net:8083/facto/pages/facturacion/manual/factura_manual_40.xhtml
+2026-03-18 12:40:40 [INFO] factura_page — Filling Emisor: rfc=NID200929V26 sucursal=PRUEBAS cc=Pruebas
+2026-03-18 12:40:54 [DEBUG] factura_page — Emisor RFC selected: NID200929V26
+2026-03-18 12:41:01 [WARNING] base_page — StaleElement in SelectOneMenu 'formNuevaFactura:accordionDatosEmisor:selectOneSucursales' (attempt 1/3) — retrying…
+2026-03-18 12:41:11 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosEmisor:selectOneSucursales' → ''
+2026-03-18 12:41:18 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosEmisor:selectOneCentroConsumo' → ''
+2026-03-18 12:41:18 [INFO] factura_page — Filling Receptor: rfc=XAXX010101000
+2026-03-18 12:41:18 [INFO] factura_page — TAB pressed — waiting for receptor fields autofill via AJAX
+2026-03-18 12:41:21 [INFO] factura_page — Receptor fields auto-filled by AJAX
+2026-03-18 12:41:21 [DEBUG] factura_page — nombre/uso_cfdi/regimen/domicilio auto-filled — skipping manual override
+2026-03-18 12:41:21 [WARNING] factura_page — Email field not found, skipping
+2026-03-18 12:41:21 [INFO] factura_page — Filling Comprobante: tipo=FACTURA serie=FP forma=99
+2026-03-18 12:41:45 [INFO] base_page — Screenshot saved: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\screenshots\error_factura_ppd_1773859305.png
+2026-03-18 12:41:45 [ERROR] test_ppd_complementos — TEST_01 FAIL: Message: 
+
+2026-03-18 12:41:46 [INFO] conftest — Results saved to: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\reports\resultados_20260318_124036.xlsx
+2026-03-18 12:43:40 [INFO] login_page — Navigating to login: http://facto-qa.nexttechnologies.net:8083/facto/
+2026-03-18 12:43:49 [INFO] login_page — Login submitted for user 'ERICK-NT-QT'
+2026-03-18 12:43:49 [INFO] conftest — Session login complete
+2026-03-18 12:43:49 [INFO] conftest — Loading conceptos from: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\data/conceptos-escenario-ppd-1.xlsx
+2026-03-18 12:43:49 [INFO] factura_page — Navigating to factura form: http://facto-qa.nexttechnologies.net:8083/facto/pages/facturacion/manual/factura_manual_40.xhtml
+2026-03-18 12:43:52 [INFO] factura_page — Filling Emisor: rfc=NID200929V26 sucursal=PRUEBAS cc=Pruebas
+2026-03-18 12:44:06 [DEBUG] factura_page — Emisor RFC selected: NID200929V26
+2026-03-18 12:44:13 [WARNING] base_page — StaleElement in SelectOneMenu 'formNuevaFactura:accordionDatosEmisor:selectOneSucursales' (attempt 1/3) — retrying…
+2026-03-18 12:44:22 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosEmisor:selectOneSucursales' → ''
+2026-03-18 12:44:29 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosEmisor:selectOneCentroConsumo' → ''
+2026-03-18 12:44:29 [INFO] factura_page — Filling Receptor: rfc=XAXX010101000
+2026-03-18 12:44:29 [INFO] factura_page — TAB pressed — waiting for receptor fields autofill via AJAX
+2026-03-18 12:44:32 [INFO] factura_page — Receptor fields auto-filled by AJAX
+2026-03-18 12:44:32 [DEBUG] factura_page — nombre/uso_cfdi/regimen/domicilio auto-filled — skipping manual override
+2026-03-18 12:44:32 [WARNING] factura_page — Email field not found, skipping
+2026-03-18 12:44:32 [INFO] factura_page — Filling Comprobante: tipo=FACTURA serie=FP forma=99
+2026-03-18 12:44:56 [WARNING] base_page — StaleElement in SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneTipoComprobante' (attempt 1/3) — retrying…
+2026-03-18 12:45:06 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneTipoComprobante' → ''
+2026-03-18 12:45:12 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneSerie' → ''
+2026-03-18 12:45:20 [WARNING] base_page — StaleElement in SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneFormaPago' (attempt 1/3) — retrying…
+2026-03-18 12:45:29 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneFormaPago' → ''
+2026-03-18 12:45:36 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneMetodoPago' → ''
+2026-03-18 12:45:36 [INFO] factura_page — Filling Moneda: MXN
+2026-03-18 12:45:42 [INFO] factura_page — Moneda final capturada en input: 'MXN'
+2026-03-18 12:45:42 [INFO] factura_page — Adding concepto: id=1 desc=Hospedaje
+2026-03-18 12:45:51 [DEBUG] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteClaveUnidad_input' confirmed via keyboard → 'H87'
+2026-03-18 12:46:02 [INFO] base_page — Screenshot saved: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\screenshots\error_factura_ppd_1773859562.png
+2026-03-18 12:46:02 [ERROR] test_ppd_complementos — TEST_01 FAIL: Message: stale element reference: stale element not found in the current frame
+  (Session info: chrome=146.0.7680.80); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#stale-element-reference-exception
+Stacktrace:
+	chromedriver!GetHandleVerifier [0x7ff616163045+14585]
+	chromedriver!GetHandleVerifier [0x7ff6161630b0+145f0]
+	chromedriver!(No symbol) [0x7ff615ecdb7d]
+	chromedriver!(No symbol) [0x7ff615ed5af1]
+	chromedriver!(No symbol) [0x7ff615ed8faf]
+	chromedriver!(No symbol) [0x7ff615f759b1]
+	chromedriver!(No symbol) [0x7ff615f5069a]
+	chromedriver!(No symbol) [0x7ff615f745af]
+	chromedriver!(No symbol) [0x7ff615f19a18]
+	chromedriver!(No symbol) [0x7ff615f1a8f3]
+	chromedriver!GetHandleVerifier [0x7ff61646ac5d+31c19d]
+	chromedriver!GetHandleVerifier [0x7ff61646536d+3168ad]
+	chromedriver!GetHandleVerifier [0x7ff616487d8a+3392ca]
+	chromedriver!GetHandleVerifier [0x7ff61617f445+30985]
+	chromedriver!GetHandleVerifier [0x7ff6161884dc+39a1c]
+	chromedriver!GetHandleVerifier [0x7ff61616c634+1db74]
+	chromedriver!GetHandleVerifier [0x7ff61616c7e6+1dd26]
+	chromedriver!GetHandleVerifier [0x7ff616151387+28c7]
+	KERNEL32!BaseThreadInitThunk [0x7fffc60b7374+14]
+	ntdll!RtlUserThreadStart [0x7fffc7f5cc91+21]
+
+2026-03-18 12:46:03 [INFO] conftest — Results saved to: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\reports\resultados_20260318_124349.xlsx
+2026-03-18 12:47:06 [INFO] login_page — Navigating to login: http://facto-qa.nexttechnologies.net:8083/facto/
+2026-03-18 12:47:17 [INFO] login_page — Login submitted for user 'ERICK-NT-QT'
+2026-03-18 12:47:17 [INFO] conftest — Session login complete
+2026-03-18 12:47:17 [INFO] conftest — Loading conceptos from: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\data/conceptos-escenario-ppd-1.xlsx
+2026-03-18 12:47:17 [INFO] factura_page — Navigating to factura form: http://facto-qa.nexttechnologies.net:8083/facto/pages/facturacion/manual/factura_manual_40.xhtml
+2026-03-18 12:47:21 [INFO] factura_page — Filling Emisor: rfc=NID200929V26 sucursal=PRUEBAS cc=Pruebas
+2026-03-18 12:47:35 [DEBUG] factura_page — Emisor RFC selected: NID200929V26
+2026-03-18 12:47:42 [WARNING] base_page — StaleElement in SelectOneMenu 'formNuevaFactura:accordionDatosEmisor:selectOneSucursales' (attempt 1/3) — retrying…
+2026-03-18 12:47:51 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosEmisor:selectOneSucursales' → ''
+2026-03-18 12:47:58 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosEmisor:selectOneCentroConsumo' → ''
+2026-03-18 12:47:58 [INFO] factura_page — Filling Receptor: rfc=XAXX010101000
+2026-03-18 12:47:58 [INFO] factura_page — TAB pressed — waiting for receptor fields autofill via AJAX
+2026-03-18 12:48:01 [INFO] factura_page — Receptor fields auto-filled by AJAX
+2026-03-18 12:48:01 [DEBUG] factura_page — nombre/uso_cfdi/regimen/domicilio auto-filled — skipping manual override
+2026-03-18 12:48:01 [WARNING] factura_page — Email field not found, skipping
+2026-03-18 12:48:01 [INFO] factura_page — Filling Comprobante: tipo=FACTURA serie=FP forma=99
+2026-03-18 12:48:12 [WARNING] base_page — StaleElement in SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneTipoComprobante' (attempt 1/3) — retrying…
+2026-03-18 12:48:22 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneTipoComprobante' → ''
+2026-03-18 12:48:28 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneSerie' → ''
+2026-03-18 12:48:36 [WARNING] base_page — StaleElement in SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneFormaPago' (attempt 1/3) — retrying…
+2026-03-18 12:48:46 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneFormaPago' → ''
+2026-03-18 12:48:52 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneMetodoPago' → ''
+2026-03-18 12:48:52 [INFO] factura_page — Filling Moneda: MXN
+2026-03-18 12:48:58 [INFO] factura_page — Moneda final capturada en input: 'MXN'
+2026-03-18 12:48:58 [INFO] factura_page — Adding concepto: id=1 desc=Hospedaje
+2026-03-18 12:49:07 [DEBUG] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteClaveUnidad_input' confirmed via keyboard → 'H87'
+2026-03-18 12:49:18 [INFO] base_page — Screenshot saved: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\screenshots\error_factura_ppd_1773859758.png
+2026-03-18 12:49:18 [ERROR] test_ppd_complementos — TEST_01 FAIL: Message: stale element reference: stale element not found in the current frame
+  (Session info: chrome=146.0.7680.80); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#stale-element-reference-exception
+Stacktrace:
+	chromedriver!GetHandleVerifier [0x7ff616163045+14585]
+	chromedriver!GetHandleVerifier [0x7ff6161630b0+145f0]
+	chromedriver!(No symbol) [0x7ff615ecdb7d]
+	chromedriver!(No symbol) [0x7ff615ed5af1]
+	chromedriver!(No symbol) [0x7ff615ed8faf]
+	chromedriver!(No symbol) [0x7ff615f759b1]
+	chromedriver!(No symbol) [0x7ff615f5069a]
+	chromedriver!(No symbol) [0x7ff615f745af]
+	chromedriver!(No symbol) [0x7ff615f19a18]
+	chromedriver!(No symbol) [0x7ff615f1a8f3]
+	chromedriver!GetHandleVerifier [0x7ff61646ac5d+31c19d]
+	chromedriver!GetHandleVerifier [0x7ff61646536d+3168ad]
+	chromedriver!GetHandleVerifier [0x7ff616487d8a+3392ca]
+	chromedriver!GetHandleVerifier [0x7ff61617f445+30985]
+	chromedriver!GetHandleVerifier [0x7ff6161884dc+39a1c]
+	chromedriver!GetHandleVerifier [0x7ff61616c634+1db74]
+	chromedriver!GetHandleVerifier [0x7ff61616c7e6+1dd26]
+	chromedriver!GetHandleVerifier [0x7ff616151387+28c7]
+	KERNEL32!BaseThreadInitThunk [0x7fffc60b7374+14]
+	ntdll!RtlUserThreadStart [0x7fffc7f5cc91+21]
+
+2026-03-18 12:49:19 [INFO] conftest — Results saved to: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\reports\resultados_20260318_124717.xlsx
+2026-03-18 12:51:40 [INFO] login_page — Navigating to login: http://facto-qa.nexttechnologies.net:8083/facto/
+2026-03-18 12:51:47 [INFO] login_page — Login submitted for user 'ERICK-NT-QT'
+2026-03-18 12:51:47 [INFO] conftest — Session login complete
+2026-03-18 12:51:47 [INFO] conftest — Loading conceptos from: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\data/conceptos-escenario-ppd-1.xlsx
+2026-03-18 12:51:47 [INFO] factura_page — Navigating to factura form: http://facto-qa.nexttechnologies.net:8083/facto/pages/facturacion/manual/factura_manual_40.xhtml
+2026-03-18 12:51:51 [INFO] factura_page — Filling Emisor: rfc=NID200929V26 sucursal=PRUEBAS cc=Pruebas
+2026-03-18 12:52:05 [DEBUG] factura_page — Emisor RFC selected: NID200929V26
+2026-03-18 12:52:12 [WARNING] base_page — StaleElement in SelectOneMenu 'formNuevaFactura:accordionDatosEmisor:selectOneSucursales' (attempt 1/3) — retrying…
+2026-03-18 12:52:22 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosEmisor:selectOneSucursales' → ''
+2026-03-18 12:52:28 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosEmisor:selectOneCentroConsumo' → ''
+2026-03-18 12:52:28 [INFO] factura_page — Filling Receptor: rfc=XAXX010101000
+2026-03-18 12:52:29 [INFO] factura_page — TAB pressed — waiting for receptor fields autofill via AJAX
+2026-03-18 12:52:32 [INFO] factura_page — Receptor fields auto-filled by AJAX
+2026-03-18 12:52:32 [DEBUG] factura_page — nombre/uso_cfdi/regimen/domicilio auto-filled — skipping manual override
+2026-03-18 12:52:32 [WARNING] factura_page — Email field not found, skipping
+2026-03-18 12:52:32 [INFO] factura_page — Filling Comprobante: tipo=FACTURA serie=FP forma=99
+2026-03-18 12:52:56 [INFO] base_page — Screenshot saved: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\screenshots\error_factura_ppd_1773859976.png
+2026-03-18 12:52:56 [ERROR] test_ppd_complementos — TEST_01 FAIL: Message: 
+
+2026-03-18 12:52:57 [INFO] conftest — Results saved to: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\reports\resultados_20260318_125147.xlsx
+2026-03-18 12:58:14 [INFO] login_page — Navigating to login: http://facto-qa.nexttechnologies.net:8083/facto/
+2026-03-18 12:58:25 [INFO] login_page — Login submitted for user 'ERICK-NT-QT'
+2026-03-18 12:58:25 [INFO] conftest — Session login complete
+2026-03-18 12:58:25 [INFO] conftest — Loading conceptos from: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\data/conceptos-escenario-ppd-1.xlsx
+2026-03-18 12:58:25 [INFO] factura_page — Navigating to factura form: http://facto-qa.nexttechnologies.net:8083/facto/pages/facturacion/manual/factura_manual_40.xhtml
+2026-03-18 12:58:29 [INFO] factura_page — Filling Emisor: rfc=NID200929V26 sucursal=PRUEBAS cc=Pruebas
+2026-03-18 12:58:41 [DEBUG] factura_page — Emisor RFC selected: NID200929V26
+2026-03-18 12:58:48 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosEmisor:selectOneSucursales' → 'PRUEBAS'
+2026-03-18 12:58:55 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosEmisor:selectOneCentroConsumo' → 'Pruebas Maqueta 56'
+2026-03-18 12:58:55 [INFO] factura_page — Filling Receptor: rfc=XAXX010101000
+2026-03-18 12:58:55 [INFO] factura_page — TAB pressed — waiting for receptor fields autofill via AJAX
+2026-03-18 12:58:58 [INFO] factura_page — Receptor fields auto-filled by AJAX
+2026-03-18 12:58:58 [DEBUG] factura_page — nombre/uso_cfdi/regimen/domicilio auto-filled — skipping manual override
+2026-03-18 12:58:58 [WARNING] factura_page — Email field not found, skipping
+2026-03-18 12:58:58 [INFO] factura_page — Filling Comprobante: tipo=FACTURA serie=FP forma=99
+2026-03-18 12:59:23 [INFO] base_page — Screenshot saved: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\screenshots\error_factura_ppd_1773860362.png
+2026-03-18 12:59:23 [ERROR] test_ppd_complementos — TEST_01 FAIL: Message: 
+
+2026-03-18 12:59:23 [INFO] conftest — Results saved to: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\reports\resultados_20260318_125825.xlsx
+2026-03-18 13:07:56 [INFO] login_page — Navigating to login: http://facto-qa.nexttechnologies.net:8083/facto/
+2026-03-18 13:08:03 [INFO] login_page — Login submitted for user 'ERICK-NT-QT'
+2026-03-18 13:08:03 [INFO] conftest — Session login complete
+2026-03-18 13:08:03 [INFO] conftest — Loading conceptos from: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\data/conceptos-escenario-ppd-1.xlsx
+2026-03-18 13:08:03 [INFO] factura_page — Navigating to factura form: http://facto-qa.nexttechnologies.net:8083/facto/pages/facturacion/manual/factura_manual_40.xhtml
+2026-03-18 13:08:07 [INFO] factura_page — Filling Emisor: rfc=NID200929V26 sucursal=PRUEBAS cc=Pruebas
+2026-03-18 13:08:20 [DEBUG] factura_page — Emisor RFC selected: NID200929V26
+2026-03-18 13:08:27 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosEmisor:selectOneSucursales' → 'PRUEBAS'
+2026-03-18 13:08:33 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosEmisor:selectOneCentroConsumo' → 'Pruebas Maqueta 56'
+2026-03-18 13:08:33 [INFO] factura_page — Filling Receptor: rfc=XAXX010101000
+2026-03-18 13:08:34 [INFO] factura_page — TAB pressed — waiting for receptor fields autofill via AJAX
+2026-03-18 13:08:37 [INFO] factura_page — Receptor fields auto-filled by AJAX
+2026-03-18 13:08:37 [DEBUG] factura_page — nombre/uso_cfdi/regimen/domicilio auto-filled — skipping manual override
+2026-03-18 13:08:37 [WARNING] factura_page — Email field not found, skipping
+2026-03-18 13:08:37 [INFO] factura_page — Filling Comprobante: tipo=FACTURA serie=FP forma=99
+2026-03-18 13:08:50 [INFO] base_page — Screenshot saved: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\screenshots\error_factura_ppd_1773860930.png
+2026-03-18 13:08:50 [ERROR] test_ppd_complementos — TEST_01 FAIL: Message: 
+
+2026-03-18 13:08:51 [INFO] conftest — Results saved to: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\reports\resultados_20260318_130803.xlsx
+2026-03-18 13:11:44 [INFO] login_page — Navigating to login: http://facto-qa.nexttechnologies.net:8083/facto/
+2026-03-18 13:12:11 [INFO] login_page — Navigating to login: http://facto-qa.nexttechnologies.net:8083/facto/
+2026-03-18 13:12:19 [INFO] login_page — Login submitted for user 'ERICK-NT-QT'
+2026-03-18 13:12:19 [INFO] conftest — Session login complete
+2026-03-18 13:12:19 [INFO] conftest — Loading conceptos from: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\data/conceptos-escenario-ppd-1.xlsx
+2026-03-18 13:12:19 [INFO] factura_page — Navigating to factura form: http://facto-qa.nexttechnologies.net:8083/facto/pages/facturacion/manual/factura_manual_40.xhtml
+2026-03-18 13:12:24 [INFO] factura_page — Filling Emisor: rfc=NID200929V26 sucursal=PRUEBAS cc=Pruebas
+2026-03-18 13:12:36 [DEBUG] factura_page — Emisor RFC selected: NID200929V26
+2026-03-18 13:12:43 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosEmisor:selectOneSucursales' → 'PRUEBAS'
+2026-03-18 13:12:49 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosEmisor:selectOneCentroConsumo' → 'Pruebas Maqueta 56'
+2026-03-18 13:12:49 [INFO] factura_page — Filling Receptor: rfc=XAXX010101000
+2026-03-18 13:12:50 [INFO] factura_page — TAB pressed — waiting for receptor fields autofill via AJAX
+2026-03-18 13:12:53 [INFO] factura_page — Receptor fields auto-filled by AJAX
+2026-03-18 13:12:53 [DEBUG] factura_page — nombre/uso_cfdi/regimen/domicilio auto-filled — skipping manual override
+2026-03-18 13:12:53 [WARNING] factura_page — Email field not found, skipping
+2026-03-18 13:12:53 [INFO] factura_page — Filling Comprobante: tipo=FACTURA serie=FP forma=99
+2026-03-18 13:13:07 [INFO] base_page — Screenshot saved: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\screenshots\error_factura_ppd_1773861186.png
+2026-03-18 13:13:07 [ERROR] test_ppd_complementos — TEST_01 FAIL: Message: 
+
+2026-03-18 13:13:07 [INFO] conftest — Results saved to: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\reports\resultados_20260318_131219.xlsx
+2026-03-18 13:28:56 [INFO] login_page — Navigating to login: http://facto-qa.nexttechnologies.net:8083/facto/
+2026-03-18 13:29:03 [INFO] login_page — Login submitted for user 'ERICK-NT-QT'
+2026-03-18 13:29:03 [INFO] conftest — Session login complete
+2026-03-18 13:29:03 [INFO] conftest — Loading conceptos from: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\data/conceptos-escenario-ppd-1.xlsx
+2026-03-18 13:29:03 [INFO] factura_page — Navigating to factura form: http://facto-qa.nexttechnologies.net:8083/facto/pages/facturacion/manual/factura_manual_40.xhtml
+2026-03-18 13:29:06 [INFO] factura_page — Filling Emisor: rfc=NID200929V26 sucursal=PRUEBAS cc=Pruebas
+2026-03-18 13:29:19 [DEBUG] factura_page — Emisor RFC selected: NID200929V26
+2026-03-18 13:29:25 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosEmisor:selectOneSucursales' → 'PRUEBAS'
+2026-03-18 13:29:25 [INFO] base_page — Screenshot saved: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\screenshots\error_factura_ppd_1773862165.png
+2026-03-18 13:29:25 [ERROR] test_ppd_complementos — TEST_01 FAIL: 'FacturaPage' object has no attribute 'select_one_menu_exact'
+2026-03-18 13:29:26 [INFO] conftest — Results saved to: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\reports\resultados_20260318_132903.xlsx
+2026-03-18 13:55:28 [INFO] login_page — Navigating to login: http://facto-qa.nexttechnologies.net:8083/facto/
+2026-03-18 13:55:35 [INFO] login_page — Login submitted for user 'ERICK-NT-QT'
+2026-03-18 13:55:35 [INFO] conftest — Session login complete
+2026-03-18 13:55:35 [INFO] conftest — Loading conceptos from: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\data/conceptos-escenario-ppd-1.xlsx
+2026-03-18 13:55:35 [INFO] factura_page — Navigating to factura form: http://facto-qa.nexttechnologies.net:8083/facto/pages/facturacion/manual/factura_manual_40.xhtml
+2026-03-18 13:55:39 [INFO] factura_page — Filling Emisor: rfc=NID200929V26 sucursal=PRUEBAS cc=Pruebas
+2026-03-18 13:55:48 [DEBUG] factura_page — Emisor RFC selected: NID200929V26
+2026-03-18 13:55:55 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosEmisor:selectOneSucursales' → 'PRUEBAS'
+2026-03-18 13:56:01 [DEBUG] base_page — SelectOneMenu EXACT 'formNuevaFactura:accordionDatosEmisor:selectOneCentroConsumo' → 'Pruebas'
+2026-03-18 13:56:01 [INFO] factura_page — Filling Receptor: rfc=XAXX010101000
+2026-03-18 13:56:01 [INFO] factura_page — TAB pressed — waiting for receptor fields autofill via AJAX
+2026-03-18 13:56:04 [INFO] factura_page — Receptor fields auto-filled by AJAX
+2026-03-18 13:56:04 [DEBUG] factura_page — nombre/uso_cfdi/regimen/domicilio auto-filled — skipping manual override
+2026-03-18 13:56:04 [WARNING] factura_page — Email field not found, skipping
+2026-03-18 13:56:04 [INFO] factura_page — Filling Comprobante: tipo=FACTURA serie=FP forma=99
+2026-03-18 13:56:13 [WARNING] factura_page — Panel clásico no apareció, buscando overlay alternativo...
+2026-03-18 13:56:13 [INFO] base_page — Screenshot saved: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\screenshots\error_factura_ppd_1773863773.png
+2026-03-18 13:56:13 [ERROR] test_ppd_complementos — TEST_01 FAIL: No se encontró ningún panel visible para Tipo de Comprobante
+2026-03-18 13:56:13 [INFO] conftest — Results saved to: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\reports\resultados_20260318_135535.xlsx
+2026-03-18 14:01:30 [INFO] login_page — Navigating to login: http://facto-qa.nexttechnologies.net:8083/facto/
+2026-03-18 14:01:36 [INFO] login_page — Login submitted for user 'ERICK-NT-QT'
+2026-03-18 14:01:36 [INFO] conftest — Session login complete
+2026-03-18 14:01:36 [INFO] conftest — Loading conceptos from: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\data/conceptos-escenario-ppd-1.xlsx
+2026-03-18 14:01:36 [INFO] factura_page — Navigating to factura form: http://facto-qa.nexttechnologies.net:8083/facto/pages/facturacion/manual/factura_manual_40.xhtml
+2026-03-18 14:01:40 [INFO] factura_page — Filling Emisor: rfc=NID200929V26 sucursal=PRUEBAS cc=Pruebas
+2026-03-18 14:01:50 [DEBUG] factura_page — Emisor RFC selected: NID200929V26
+2026-03-18 14:01:56 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosEmisor:selectOneSucursales' → 'PRUEBAS'
+2026-03-18 14:02:02 [DEBUG] base_page — SelectOneMenu EXACT 'formNuevaFactura:accordionDatosEmisor:selectOneCentroConsumo' → 'Pruebas'
+2026-03-18 14:02:02 [INFO] factura_page — Filling Receptor: rfc=XAXX010101000
+2026-03-18 14:02:02 [INFO] factura_page — TAB pressed — waiting for receptor fields autofill via AJAX
+2026-03-18 14:02:05 [INFO] factura_page — Receptor fields auto-filled by AJAX
+2026-03-18 14:02:05 [DEBUG] factura_page — nombre/uso_cfdi/regimen/domicilio auto-filled — skipping manual override
+2026-03-18 14:02:05 [WARNING] factura_page — Email field not found, skipping
+2026-03-18 14:02:05 [INFO] factura_page — Filling Comprobante: tipo=FACTURA serie=FP forma=99
+2026-03-18 14:02:12 [INFO] factura_page — Tipo comprobante seleccionado: 'FACTURA'
+2026-03-18 14:02:18 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneSerie' → 'FP'
+2026-03-18 14:02:25 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneFormaPago' → '99 Por definir'
+2026-03-18 14:02:31 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneMetodoPago' → 'PPD Pago en parcialidades o diferido'
+2026-03-18 14:02:31 [INFO] factura_page — Filling Moneda: MXN
+2026-03-18 14:02:36 [INFO] factura_page — Moneda final capturada en input: 'MXN'
+2026-03-18 14:02:36 [INFO] factura_page — Adding concepto: id=1 desc=Hospedaje
+2026-03-18 14:02:44 [DEBUG] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteClaveUnidad_input' confirmed via keyboard → 'H87'
+2026-03-18 14:02:55 [DEBUG] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteConceptoDescripcion_input' confirmed via keyboard → 'Hospedaje'
+2026-03-18 14:03:06 [DEBUG] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteClaveProducto_input' confirmed via keyboard → '70131600'
+2026-03-18 14:03:15 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionConceptos:selectOneObjetoImp' → '02 Sí objeto de impuesto'
+2026-03-18 14:03:15 [DEBUG] factura_page — Adding impuesto: clave=IVA factor=Tasa tasa=0.16
+2026-03-18 14:03:35 [INFO] base_page — Screenshot saved: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\screenshots\error_factura_ppd_1773864215.png
+2026-03-18 14:03:35 [ERROR] test_ppd_complementos — TEST_01 FAIL: Message: 
+
+2026-03-18 14:03:35 [INFO] conftest — Results saved to: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\reports\resultados_20260318_140136.xlsx
+2026-03-18 14:12:39 [INFO] login_page — Navigating to login: http://facto-qa.nexttechnologies.net:8083/facto/
+2026-03-18 14:12:50 [INFO] login_page — Login submitted for user 'ERICK-NT-QT'
+2026-03-18 14:12:50 [INFO] conftest — Session login complete
+2026-03-18 14:12:50 [INFO] conftest — Loading conceptos from: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\data/conceptos-escenario-ppd-1.xlsx
+2026-03-18 14:12:50 [INFO] factura_page — Navigating to factura form: http://facto-qa.nexttechnologies.net:8083/facto/pages/facturacion/manual/factura_manual_40.xhtml
+2026-03-18 14:12:55 [INFO] factura_page — Filling Emisor: rfc=NID200929V26 sucursal=PRUEBAS cc=Pruebas
+2026-03-18 14:13:08 [DEBUG] factura_page — Emisor RFC selected: NID200929V26
+2026-03-18 14:13:15 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosEmisor:selectOneSucursales' → 'PRUEBAS'
+2026-03-18 14:13:22 [DEBUG] base_page — SelectOneMenu EXACT 'formNuevaFactura:accordionDatosEmisor:selectOneCentroConsumo' → 'Pruebas'
+2026-03-18 14:13:22 [INFO] factura_page — Filling Receptor: rfc=XAXX010101000
+2026-03-18 14:13:22 [INFO] factura_page — TAB pressed — waiting for receptor fields autofill via AJAX
+2026-03-18 14:13:25 [INFO] factura_page — Receptor fields auto-filled by AJAX
+2026-03-18 14:13:25 [DEBUG] factura_page — nombre/uso_cfdi/regimen/domicilio auto-filled — skipping manual override
+2026-03-18 14:13:25 [WARNING] factura_page — Email field not found, skipping
+2026-03-18 14:13:25 [INFO] factura_page — Filling Comprobante: tipo=FACTURA serie=FP forma=99
+2026-03-18 14:13:32 [INFO] factura_page — Tipo comprobante seleccionado: 'FACTURA'
+2026-03-18 14:13:40 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneSerie' → 'FP'
+2026-03-18 14:13:48 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneFormaPago' → '99 Por definir'
+2026-03-18 14:13:55 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneMetodoPago' → 'PPD Pago en parcialidades o diferido'
+2026-03-18 14:13:55 [INFO] factura_page — Filling Moneda: MXN
+2026-03-18 14:14:00 [INFO] factura_page — Moneda final capturada en input: 'MXN'
+2026-03-18 14:14:00 [INFO] factura_page — Adding concepto: id=1 desc=Pruebas 
+2026-03-18 14:14:09 [DEBUG] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteClaveUnidad_input' confirmed via keyboard → 'E48'
+2026-03-18 14:14:20 [DEBUG] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteConceptoDescripcion_input' confirmed via keyboard → 'Pruebas'
+2026-03-18 14:14:31 [DEBUG] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteClaveProducto_input' confirmed via keyboard → '1010101'
+2026-03-18 14:14:41 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionConceptos:selectOneObjetoImp' → '02 Sí objeto de impuesto'
+2026-03-18 14:14:41 [DEBUG] factura_page — Adding impuesto: clave=IVA factor=Tasa tasa=0.16
+2026-03-18 14:15:05 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionConceptos:selectOneImpuestosLocalFederal' → 'Local o Federal'
+2026-03-18 14:15:20 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionConceptos:selectOneImpuestosTrasladoRetencion' → 'Retención o Traslado'
+2026-03-18 14:15:27 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionConceptos:selectOneImpuestos' → '002 IVA'
+2026-03-18 14:15:34 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionConceptos:selectOneImpuestosTipoFactor' → 'TASA'
+2026-03-18 14:15:41 [INFO] factura_page — Concepto 1 added
+2026-03-18 14:15:41 [INFO] base_page — Screenshot saved: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\screenshots\before_timbrar_factura_1773864941.png
+2026-03-18 14:15:41 [INFO] factura_page — Clicking Facturar button (timeout=60s)
+2026-03-18 14:15:54 [INFO] factura_page — Facturar clicked — waiting for timbrado response...
+2026-03-18 14:15:58 [ERROR] factura_page — Timbrado failed: 
+2026-03-18 14:15:59 [INFO] base_page — Screenshot saved: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\screenshots\error_factura_ppd_1773864958.png
+2026-03-18 14:15:59 [ERROR] test_ppd_complementos — TEST_01 FAIL: TIMBRADO_ERROR: 
+2026-03-18 14:16:00 [INFO] conftest — Results saved to: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\reports\resultados_20260318_141250.xlsx
+2026-03-18 15:59:41 [INFO] login_page — Navigating to login: http://facto-qa.nexttechnologies.net:8083/facto/
+2026-03-18 15:59:49 [INFO] login_page — Login submitted for user 'ERICK-NT-QT'
+2026-03-18 15:59:49 [INFO] conftest — Session login complete
+2026-03-18 15:59:49 [INFO] conftest — Loading conceptos from: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\data/conceptos-escenario-ppd-1.xlsx
+2026-03-18 15:59:49 [INFO] factura_page — Navigating to factura form: http://facto-qa.nexttechnologies.net:8083/facto/pages/facturacion/manual/factura_manual_40.xhtml
+2026-03-18 15:59:53 [INFO] factura_page — Filling Emisor: rfc=NID200929V26 sucursal=PRUEBAS cc=Pruebas
+2026-03-18 16:00:07 [DEBUG] factura_page — Emisor RFC selected: NID200929V26
+2026-03-18 16:00:14 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosEmisor:selectOneSucursales' → 'PRUEBAS'
+2026-03-18 16:00:20 [DEBUG] base_page — SelectOneMenu EXACT 'formNuevaFactura:accordionDatosEmisor:selectOneCentroConsumo' → 'Pruebas'
+2026-03-18 16:00:20 [INFO] factura_page — Filling Receptor: rfc=XAXX010101000
+2026-03-18 16:00:21 [INFO] factura_page — TAB pressed — waiting for receptor fields autofill via AJAX
+2026-03-18 16:00:24 [INFO] factura_page — Receptor fields auto-filled by AJAX
+2026-03-18 16:00:24 [DEBUG] factura_page — nombre/uso_cfdi/regimen/domicilio auto-filled — skipping manual override
+2026-03-18 16:00:24 [WARNING] factura_page — Email field not found, skipping
+2026-03-18 16:00:24 [INFO] factura_page — Filling Comprobante: tipo=FACTURA serie=FP forma=99
+2026-03-18 16:00:31 [INFO] factura_page — Tipo comprobante seleccionado: 'FACTURA'
+2026-03-18 16:00:38 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneSerie' → 'FP'
+2026-03-18 16:00:45 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneFormaPago' → '99 Por definir'
+2026-03-18 16:00:52 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneMetodoPago' → 'PPD Pago en parcialidades o diferido'
+2026-03-18 16:00:52 [INFO] factura_page — Filling Moneda: MXN
+2026-03-18 16:00:58 [INFO] factura_page — Moneda final capturada en input: 'MXN'
+2026-03-18 16:00:58 [INFO] factura_page — Adding concepto: id=1 desc=Pruebas 
+2026-03-18 16:01:06 [DEBUG] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteClaveUnidad_input' confirmed via keyboard → 'E48'
+2026-03-18 16:01:17 [DEBUG] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteConceptoDescripcion_input' confirmed via keyboard → 'Pruebas'
+2026-03-18 16:01:28 [DEBUG] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteClaveProducto_input' confirmed via keyboard → '1010101'
+2026-03-18 16:01:38 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionConceptos:selectOneObjetoImp' → '02 Sí objeto de impuesto'
+2026-03-18 16:01:38 [DEBUG] factura_page — Adding impuesto: clave=IVA factor=Tasa tasa=0.16
+2026-03-18 16:01:59 [INFO] base_page — Screenshot saved: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\screenshots\error_factura_ppd_1773871318.png
+2026-03-18 16:01:59 [ERROR] test_ppd_complementos — TEST_01 FAIL: Message: 
+
+2026-03-18 16:01:59 [INFO] conftest — Results saved to: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\reports\resultados_20260318_155949.xlsx
+2026-03-18 17:22:21 [INFO] login_page — Navigating to login: http://facto-qa.nexttechnologies.net:8083/facto/
+2026-03-18 17:22:28 [INFO] login_page — Login submitted for user 'ERICK-NT-QT'
+2026-03-18 17:22:28 [INFO] conftest — Session login complete
+2026-03-18 17:22:28 [INFO] conftest — Loading conceptos from: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\data/conceptos-escenario-ppd-1.xlsx
+2026-03-18 17:22:28 [INFO] factura_page — Navigating to factura form: http://facto-qa.nexttechnologies.net:8083/facto/pages/facturacion/manual/factura_manual_40.xhtml
+2026-03-18 17:22:32 [INFO] factura_page — Filling Emisor: rfc=NID200929V26 sucursal=PRUEBAS cc=Pruebas
+2026-03-18 17:22:44 [DEBUG] factura_page — Emisor RFC selected: NID200929V26
+2026-03-18 17:22:51 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosEmisor:selectOneSucursales' → 'PRUEBAS'
+2026-03-18 17:22:57 [DEBUG] base_page — SelectOneMenu EXACT 'formNuevaFactura:accordionDatosEmisor:selectOneCentroConsumo' → 'Pruebas'
+2026-03-18 17:22:57 [INFO] factura_page — Filling Receptor: rfc=XAXX010101000
+2026-03-18 17:22:58 [INFO] factura_page — TAB pressed — waiting for receptor fields autofill via AJAX
+2026-03-18 17:23:01 [INFO] factura_page — Receptor fields auto-filled by AJAX
+2026-03-18 17:23:01 [DEBUG] factura_page — nombre/uso_cfdi/regimen/domicilio auto-filled — skipping manual override
+2026-03-18 17:23:01 [WARNING] factura_page — Email field not found, skipping
+2026-03-18 17:23:01 [INFO] factura_page — Filling Comprobante: tipo=FACTURA serie=FP forma=99
+2026-03-18 17:23:08 [INFO] factura_page — Tipo comprobante seleccionado: 'FACTURA'
+2026-03-18 17:23:14 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneSerie' → 'FP'
+2026-03-18 17:23:21 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneFormaPago' → '99 Por definir'
+2026-03-18 17:23:28 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneMetodoPago' → 'PPD Pago en parcialidades o diferido'
+2026-03-18 17:23:28 [INFO] factura_page — Filling Moneda: MXN
+2026-03-18 17:23:34 [INFO] factura_page — Moneda final capturada en input: 'MXN'
+2026-03-18 17:23:34 [INFO] factura_page — Adding concepto: id=1 desc=Pruebas 
+2026-03-18 17:23:42 [DEBUG] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteClaveUnidad_input' confirmed via keyboard → 'E48'
+2026-03-18 17:23:53 [DEBUG] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteConceptoDescripcion_input' confirmed via keyboard → 'Pruebas'
+2026-03-18 17:24:04 [DEBUG] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteClaveProducto_input' confirmed via keyboard → '1010101'
+2026-03-18 17:24:14 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionConceptos:selectOneObjetoImp' → '02 Sí objeto de impuesto'
+2026-03-18 17:24:18 [DEBUG] factura_page — Adding impuesto: local_federal=Federal ret_tras= clave=IVA factor=Tasa tasa=0.16
+2026-03-18 17:24:39 [INFO] base_page — Screenshot saved: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\screenshots\error_factura_ppd_1773876278.png
+2026-03-18 17:24:39 [ERROR] test_ppd_complementos — TEST_01 FAIL: Message: 
+
+2026-03-18 17:24:39 [INFO] conftest — Results saved to: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\reports\resultados_20260318_172228.xlsx
+2026-03-18 17:29:01 [INFO] login_page — Navigating to login: http://facto-qa.nexttechnologies.net:8083/facto/
+2026-03-18 17:29:08 [INFO] login_page — Login submitted for user 'ERICK-NT-QT'
+2026-03-18 17:29:08 [INFO] conftest — Session login complete
+2026-03-18 17:29:08 [INFO] conftest — Loading conceptos from: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\data/conceptos-escenario-ppd-1.xlsx
+2026-03-18 17:29:08 [INFO] factura_page — Navigating to factura form: http://facto-qa.nexttechnologies.net:8083/facto/pages/facturacion/manual/factura_manual_40.xhtml
+2026-03-18 17:29:12 [INFO] factura_page — Filling Emisor: rfc=NID200929V26 sucursal=PRUEBAS cc=Pruebas
+2026-03-18 17:29:23 [DEBUG] factura_page — Emisor RFC selected: NID200929V26
+2026-03-18 17:29:30 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosEmisor:selectOneSucursales' → 'PRUEBAS'
+2026-03-18 17:29:36 [DEBUG] base_page — SelectOneMenu EXACT 'formNuevaFactura:accordionDatosEmisor:selectOneCentroConsumo' → 'Pruebas'
+2026-03-18 17:29:36 [INFO] factura_page — Filling Receptor: rfc=XAXX010101000
+2026-03-18 17:29:37 [INFO] factura_page — TAB pressed — waiting for receptor fields autofill via AJAX
+2026-03-18 17:29:40 [INFO] factura_page — Receptor fields auto-filled by AJAX
+2026-03-18 17:29:40 [DEBUG] factura_page — nombre/uso_cfdi/regimen/domicilio auto-filled — skipping manual override
+2026-03-18 17:29:40 [WARNING] factura_page — Email field not found, skipping
+2026-03-18 17:29:40 [INFO] factura_page — Filling Comprobante: tipo=FACTURA serie=FP forma=99
+2026-03-18 17:29:47 [INFO] factura_page — Tipo comprobante seleccionado: 'FACTURA'
+2026-03-18 17:29:53 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneSerie' → 'FP'
+2026-03-18 17:30:00 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneFormaPago' → '99 Por definir'
+2026-03-18 17:30:07 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneMetodoPago' → 'PPD Pago en parcialidades o diferido'
+2026-03-18 17:30:07 [INFO] factura_page — Filling Moneda: MXN
+2026-03-18 17:30:13 [INFO] factura_page — Moneda final capturada en input: 'MXN'
+2026-03-18 17:30:13 [INFO] factura_page — Adding concepto: id=1 desc=Pruebas 
+2026-03-18 17:30:21 [DEBUG] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteClaveUnidad_input' confirmed via keyboard → 'E48'
+2026-03-18 17:30:32 [DEBUG] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteConceptoDescripcion_input' confirmed via keyboard → 'Pruebas'
+2026-03-18 17:30:43 [DEBUG] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteClaveProducto_input' confirmed via keyboard → '1010101'
+2026-03-18 17:31:10 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionConceptos:selectOneObjetoImp' → '02 Sí objeto de impuesto'
+2026-03-18 17:31:14 [DEBUG] factura_page — Adding impuesto: local_federal=Federal ret_tras= clave=IVA factor=Tasa tasa=0.16
+2026-03-18 17:31:21 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionConceptos:selectOneImpuestosLocalFederal' → 'Local o Federal'
+2026-03-18 17:31:27 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionConceptos:selectOneImpuestosTrasladoRetencion' → 'Retención o Traslado'
+2026-03-18 17:31:34 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionConceptos:selectOneImpuestos' → '002 IVA'
+2026-03-18 17:31:40 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionConceptos:selectOneImpuestosTipoFactor' → 'TASA'
+2026-03-18 17:31:47 [INFO] factura_page — Concepto 1 added
+2026-03-18 17:31:47 [INFO] base_page — Screenshot saved: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\screenshots\before_timbrar_factura_1773876707.png
+2026-03-18 17:31:47 [INFO] factura_page — Clicking Facturar button (timeout=60s)
+2026-03-18 17:31:58 [INFO] factura_page — Facturar clicked — waiting for timbrado response...
+2026-03-18 17:32:02 [ERROR] factura_page — Timbrado failed: Generación CFDI Error [{"detail":"Ocurrio un error al tratar de certificar el XML, Error: PAC : Sapien | {\"message\":\"CFDI40171 - El nodo concepto, no contiene el nodo hijo Impuestos.\",\"messageDetail\":\"Concepto Pruebas tiene declarado el atributo ObjetoImp con 02 y nodo Concepto.Impuestos no esta declarado.\",\"data\":null,\"status\":\"error\"}, codigo: 400 None"}]
+2026-03-18 17:32:02 [INFO] base_page — Screenshot saved: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\screenshots\error_factura_ppd_1773876722.png
+2026-03-18 17:32:02 [ERROR] test_ppd_complementos — TEST_01 FAIL: TIMBRADO_ERROR: Generación CFDI Error [{"detail":"Ocurrio un error al tratar de certificar el XML, Error: PAC : Sapien | {\"message\":\"CFDI40171 - El nodo concepto, no contiene el nodo hijo Impuestos.\",\"messageDetail\":\"Concepto Pruebas tiene declarado el atributo ObjetoImp con 02 y nodo Concepto.Impuestos no esta declarado.\",\"data\":null,\"status\":\"error\"}, codigo: 400 None"}]
+2026-03-18 17:32:02 [INFO] conftest — Results saved to: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\reports\resultados_20260318_172908.xlsx
+2026-03-18 17:44:13 [INFO] login_page — Navigating to login: http://facto-qa.nexttechnologies.net:8083/facto/
+2026-03-18 17:44:21 [INFO] login_page — Login submitted for user 'ERICK-NT-QT'
+2026-03-18 17:44:21 [INFO] conftest — Session login complete
+2026-03-18 17:44:21 [INFO] conftest — Loading conceptos from: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\data/conceptos-escenario-ppd-1.xlsx
+2026-03-18 17:44:21 [INFO] factura_page — Navigating to factura form: http://facto-qa.nexttechnologies.net:8083/facto/pages/facturacion/manual/factura_manual_40.xhtml
+2026-03-18 17:44:26 [INFO] factura_page — Filling Emisor: rfc=NID200929V26 sucursal=PRUEBAS cc=Pruebas
+2026-03-18 17:44:38 [DEBUG] factura_page — Emisor RFC selected: NID200929V26
+2026-03-18 17:44:44 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosEmisor:selectOneSucursales' → 'PRUEBAS'
+2026-03-18 17:44:51 [DEBUG] base_page — SelectOneMenu EXACT 'formNuevaFactura:accordionDatosEmisor:selectOneCentroConsumo' → 'Pruebas'
+2026-03-18 17:44:51 [INFO] factura_page — Filling Receptor: rfc=XAXX010101000
+2026-03-18 17:44:51 [INFO] factura_page — TAB pressed — waiting for receptor fields autofill via AJAX
+2026-03-18 17:44:54 [INFO] factura_page — Receptor fields auto-filled by AJAX
+2026-03-18 17:44:54 [DEBUG] factura_page — nombre/uso_cfdi/regimen/domicilio auto-filled — skipping manual override
+2026-03-18 17:44:54 [WARNING] factura_page — Email field not found, skipping
+2026-03-18 17:44:54 [INFO] factura_page — Filling Comprobante: tipo=FACTURA serie=FP forma=99
+2026-03-18 17:45:01 [INFO] factura_page — Tipo comprobante seleccionado: 'FACTURA'
+2026-03-18 17:45:08 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneSerie' → 'FP'
+2026-03-18 17:45:15 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneFormaPago' → '99 Por definir'
+2026-03-18 17:45:22 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneMetodoPago' → 'PPD Pago en parcialidades o diferido'
+2026-03-18 17:45:22 [INFO] factura_page — Filling Moneda: MXN
+2026-03-18 17:45:28 [INFO] factura_page — Moneda final capturada en input: 'MXN'
+2026-03-18 17:45:28 [INFO] factura_page — Adding concepto: id=1 desc=Pruebas
+2026-03-18 17:45:36 [DEBUG] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteClaveUnidad_input' confirmed via keyboard → 'E48'
+2026-03-18 17:45:47 [DEBUG] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteConceptoDescripcion_input' confirmed via keyboard → 'Pruebas'
+2026-03-18 17:45:58 [DEBUG] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteClaveProducto_input' confirmed via keyboard → '01010101'
+2026-03-18 17:46:08 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionConceptos:selectOneObjetoImp' → '02 Sí objeto de impuesto'
+2026-03-18 17:46:12 [DEBUG] factura_page — Adding impuesto: local_federal=Federal ret_tras= clave=IVA factor=Tasa tasa=0.16
+2026-03-18 17:46:19 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionConceptos:selectOneImpuestosLocalFederal' → 'Local o Federal'
+2026-03-18 17:46:25 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionConceptos:selectOneImpuestosTrasladoRetencion' → 'Retención o Traslado'
+2026-03-18 17:46:32 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionConceptos:selectOneImpuestos' → '002 IVA'
+2026-03-18 17:46:39 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionConceptos:selectOneImpuestosTipoFactor' → 'TASA'
+2026-03-18 17:46:45 [INFO] factura_page — Concepto 1 added
+2026-03-18 17:46:46 [INFO] base_page — Screenshot saved: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\screenshots\before_timbrar_factura_1773877605.png
+2026-03-18 17:46:46 [INFO] factura_page — Clicking Facturar button (timeout=60s)
+2026-03-18 17:46:56 [INFO] factura_page — Facturar clicked — waiting for timbrado response...
+2026-03-18 17:47:00 [ERROR] factura_page — Timbrado failed: Generación CFDI Error [{"detail":"Ocurrio un error al tratar de certificar el XML, Error: PAC : Sapien | {\"message\":\"CFDI40171 - El nodo concepto, no contiene el nodo hijo Impuestos.\",\"messageDetail\":\"Concepto Pruebas tiene declarado el atributo ObjetoImp con 02 y nodo Concepto.Impuestos no esta declarado.\",\"data\":null,\"status\":\"error\"}, codigo: 400 None"}]
+2026-03-18 17:47:01 [INFO] base_page — Screenshot saved: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\screenshots\error_factura_ppd_1773877620.png
+2026-03-18 17:47:01 [ERROR] test_ppd_complementos — TEST_01 FAIL: TIMBRADO_ERROR: Generación CFDI Error [{"detail":"Ocurrio un error al tratar de certificar el XML, Error: PAC : Sapien | {\"message\":\"CFDI40171 - El nodo concepto, no contiene el nodo hijo Impuestos.\",\"messageDetail\":\"Concepto Pruebas tiene declarado el atributo ObjetoImp con 02 y nodo Concepto.Impuestos no esta declarado.\",\"data\":null,\"status\":\"error\"}, codigo: 400 None"}]
+2026-03-18 17:47:01 [INFO] conftest — Results saved to: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\reports\resultados_20260318_174421.xlsx
+2026-03-18 18:00:35 [INFO] login_page — Navigating to login: http://facto-qa.nexttechnologies.net:8083/facto/
+2026-03-18 18:00:42 [INFO] login_page — Login submitted for user 'ERICK-NT-QT'
+2026-03-18 18:00:42 [INFO] conftest — Session login complete
+2026-03-18 18:00:42 [INFO] conftest — Loading conceptos from: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\data/conceptos-escenario-ppd-1.xlsx
+2026-03-18 18:00:42 [INFO] factura_page — Navigating to factura form: http://facto-qa.nexttechnologies.net:8083/facto/pages/facturacion/manual/factura_manual_40.xhtml
+2026-03-18 18:00:46 [INFO] factura_page — Filling Emisor: rfc=NID200929V26 sucursal=PRUEBAS cc=Pruebas
+2026-03-18 18:00:57 [DEBUG] factura_page — Emisor RFC selected: NID200929V26
+2026-03-18 18:01:04 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosEmisor:selectOneSucursales' → 'PRUEBAS'
+2026-03-18 18:01:10 [DEBUG] base_page — SelectOneMenu EXACT 'formNuevaFactura:accordionDatosEmisor:selectOneCentroConsumo' → 'Pruebas'
+2026-03-18 18:01:10 [INFO] factura_page — Filling Receptor: rfc=XAXX010101000
+2026-03-18 18:01:11 [INFO] factura_page — TAB pressed — waiting for receptor fields autofill via AJAX
+2026-03-18 18:01:13 [INFO] factura_page — Receptor fields auto-filled by AJAX
+2026-03-18 18:01:13 [DEBUG] factura_page — nombre/uso_cfdi/regimen/domicilio auto-filled — skipping manual override
+2026-03-18 18:01:13 [WARNING] factura_page — Email field not found, skipping
+2026-03-18 18:01:13 [INFO] factura_page — Filling Comprobante: tipo=FACTURA serie=FP forma=99
+2026-03-18 18:01:21 [INFO] factura_page — Tipo comprobante seleccionado: 'FACTURA'
+2026-03-18 18:01:27 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneSerie' → 'FP'
+2026-03-18 18:01:34 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneFormaPago' → '99 Por definir'
+2026-03-18 18:01:41 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneMetodoPago' → 'PPD Pago en parcialidades o diferido'
+2026-03-18 18:01:41 [INFO] factura_page — Filling Moneda: MXN
+2026-03-18 18:01:47 [INFO] factura_page — Moneda final capturada en input: 'MXN'
+2026-03-18 18:01:47 [INFO] factura_page — Adding concepto: id=1 desc=Pruebas
+2026-03-18 18:01:55 [DEBUG] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteClaveUnidad_input' confirmed via keyboard → 'E48'
+2026-03-18 18:02:06 [DEBUG] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteConceptoDescripcion_input' confirmed via keyboard → 'Pruebas'
+2026-03-18 18:02:17 [DEBUG] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteClaveProducto_input' confirmed via keyboard → '1010101'
+2026-03-18 18:02:27 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionConceptos:selectOneObjetoImp' → '02 Sí objeto de impuesto'
+2026-03-18 18:02:31 [DEBUG] factura_page — Adding impuesto: local_federal=Federal ret_tras= clave=IVA factor=Tasa tasa=0.16
+2026-03-18 18:02:52 [INFO] base_page — Screenshot saved: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\screenshots\error_factura_ppd_1773878571.png
+2026-03-18 18:02:52 [ERROR] test_ppd_complementos — TEST_01 FAIL: Message: 
+
+2026-03-18 18:02:52 [INFO] conftest — Results saved to: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\reports\resultados_20260318_180042.xlsx
+2026-03-18 18:03:11 [INFO] login_page — Navigating to login: http://facto-qa.nexttechnologies.net:8083/facto/
+2026-03-18 18:03:18 [INFO] login_page — Login submitted for user 'ERICK-NT-QT'
+2026-03-18 18:03:18 [INFO] conftest — Session login complete
+2026-03-18 18:03:18 [INFO] conftest — Loading conceptos from: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\data/conceptos-escenario-ppd-1.xlsx
+2026-03-18 18:03:18 [INFO] factura_page — Navigating to factura form: http://facto-qa.nexttechnologies.net:8083/facto/pages/facturacion/manual/factura_manual_40.xhtml
+2026-03-18 18:03:21 [INFO] factura_page — Filling Emisor: rfc=NID200929V26 sucursal=PRUEBAS cc=Pruebas
+2026-03-18 18:03:34 [DEBUG] factura_page — Emisor RFC selected: NID200929V26
+2026-03-18 18:03:40 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosEmisor:selectOneSucursales' → 'PRUEBAS'
+2026-03-18 18:03:47 [DEBUG] base_page — SelectOneMenu EXACT 'formNuevaFactura:accordionDatosEmisor:selectOneCentroConsumo' → 'Pruebas'
+2026-03-18 18:03:47 [INFO] factura_page — Filling Receptor: rfc=XAXX010101000
+2026-03-18 18:03:47 [INFO] factura_page — TAB pressed — waiting for receptor fields autofill via AJAX
+2026-03-18 18:03:50 [INFO] factura_page — Receptor fields auto-filled by AJAX
+2026-03-18 18:03:50 [DEBUG] factura_page — nombre/uso_cfdi/regimen/domicilio auto-filled — skipping manual override
+2026-03-18 18:03:50 [WARNING] factura_page — Email field not found, skipping
+2026-03-18 18:03:50 [INFO] factura_page — Filling Comprobante: tipo=FACTURA serie=FP forma=99
+2026-03-18 18:03:57 [INFO] factura_page — Tipo comprobante seleccionado: 'FACTURA'
+2026-03-18 18:04:04 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneSerie' → 'FP'
+2026-03-18 18:04:11 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneFormaPago' → '99 Por definir'
+2026-03-18 18:04:17 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneMetodoPago' → 'PPD Pago en parcialidades o diferido'
+2026-03-18 18:04:17 [INFO] factura_page — Filling Moneda: MXN
+2026-03-18 18:04:23 [INFO] factura_page — Moneda final capturada en input: 'MXN'
+2026-03-18 18:04:23 [INFO] factura_page — Adding concepto: id=1 desc=Pruebas
+2026-03-18 18:04:32 [DEBUG] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteClaveUnidad_input' confirmed via keyboard → 'E48'
+2026-03-18 18:04:43 [DEBUG] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteConceptoDescripcion_input' confirmed via keyboard → 'Pruebas'
+2026-03-18 18:04:54 [DEBUG] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteClaveProducto_input' confirmed via keyboard → '1010101'
+2026-03-18 18:05:04 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionConceptos:selectOneObjetoImp' → '02 Sí objeto de impuesto'
+2026-03-18 18:05:08 [DEBUG] factura_page — Adding impuesto: local_federal=Federal ret_tras= clave=IVA factor=Tasa tasa=0.16
+2026-03-18 18:05:28 [INFO] base_page — Screenshot saved: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\screenshots\error_factura_ppd_1773878728.png
+2026-03-18 18:05:28 [ERROR] test_ppd_complementos — TEST_01 FAIL: Message: 
+
+2026-03-18 18:05:29 [INFO] conftest — Results saved to: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\reports\resultados_20260318_180318.xlsx
+2026-03-18 18:06:33 [INFO] login_page — Navigating to login: http://facto-qa.nexttechnologies.net:8083/facto/
+2026-03-18 18:06:40 [INFO] login_page — Login submitted for user 'ERICK-NT-QT'
+2026-03-18 18:06:40 [INFO] conftest — Session login complete
+2026-03-18 18:06:40 [INFO] conftest — Loading conceptos from: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\data/conceptos-escenario-ppd-1.xlsx
+2026-03-18 18:06:40 [INFO] factura_page — Navigating to factura form: http://facto-qa.nexttechnologies.net:8083/facto/pages/facturacion/manual/factura_manual_40.xhtml
+2026-03-18 18:06:44 [INFO] factura_page — Filling Emisor: rfc=NID200929V26 sucursal=PRUEBAS cc=Pruebas
+2026-03-18 18:06:56 [DEBUG] factura_page — Emisor RFC selected: NID200929V26
+2026-03-18 18:07:03 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosEmisor:selectOneSucursales' → 'PRUEBAS'
+2026-03-18 18:07:09 [DEBUG] base_page — SelectOneMenu EXACT 'formNuevaFactura:accordionDatosEmisor:selectOneCentroConsumo' → 'Pruebas'
+2026-03-18 18:07:09 [INFO] factura_page — Filling Receptor: rfc=XAXX010101000
+2026-03-18 18:07:10 [INFO] factura_page — TAB pressed — waiting for receptor fields autofill via AJAX
+2026-03-18 18:07:13 [INFO] factura_page — Receptor fields auto-filled by AJAX
+2026-03-18 18:07:13 [DEBUG] factura_page — nombre/uso_cfdi/regimen/domicilio auto-filled — skipping manual override
+2026-03-18 18:07:13 [WARNING] factura_page — Email field not found, skipping
+2026-03-18 18:07:13 [INFO] factura_page — Filling Comprobante: tipo=FACTURA serie=FP forma=99
+2026-03-18 18:07:20 [INFO] factura_page — Tipo comprobante seleccionado: 'FACTURA'
+2026-03-18 18:07:26 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneSerie' → 'FP'
+2026-03-18 18:07:33 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneFormaPago' → '99 Por definir'
+2026-03-18 18:07:40 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneMetodoPago' → 'PPD Pago en parcialidades o diferido'
+2026-03-18 18:07:40 [INFO] factura_page — Filling Moneda: MXN
+2026-03-18 18:07:46 [INFO] factura_page — Moneda final capturada en input: 'MXN'
+2026-03-18 18:07:46 [INFO] factura_page — Adding concepto: id=1 desc=Pruebas
+2026-03-18 18:07:54 [DEBUG] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteClaveUnidad_input' confirmed via keyboard → 'E48'
+2026-03-18 18:08:05 [DEBUG] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteConceptoDescripcion_input' confirmed via keyboard → 'Pruebas'
+2026-03-18 18:08:16 [DEBUG] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteClaveProducto_input': keyboard got '', trying panel…
+2026-03-18 18:08:31 [WARNING] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteClaveProducto_input' panel approach failed: Message: 
+Stacktrace:
+	chromedriver!GetHandleVerifier [0x7ff6f6903045+14585]
+	chromedriver!GetHandleVerifier [0x7ff6f69030b0+145f0]
+	chromedriver!(No symbol) [0x7ff6f666db7d]
+	chromedriver!(No symbol) [0x7ff6f66c73ae]
+	chromedriver!(No symbol) [0x7ff6f66c76bc]
+	chromedriver!(No symbol) [0x7ff6f6717a57]
+	chromedriver!(No symbol) [0x7ff6f67145af]
+	chromedriver!(No symbol) [0x7ff6f66b9a18]
+	chromedriver!(No symbol) [0x7ff6f66ba8f3]
+	chromedriver!GetHandleVerifier [0x7ff6f6c0ac5d+31c19d]
+	chromedriver!GetHandleVerifier [0x7ff6f6c0536d+3168ad]
+	chromedriver!GetHandleVerifier [0x7ff6f6c27d8a+3392ca]
+	chromedriver!GetHandleVerifier [0x7ff6f691f445+30985]
+	chromedriver!GetHandleVerifier [0x7ff6f69284dc+39a1c]
+	chromedriver!GetHandleVerifier [0x7ff6f690c634+1db74]
+	chromedriver!GetHandleVerifier [0x7ff6f690c7e6+1dd26]
+	chromedriver!GetHandleVerifier [0x7ff6f68f1387+28c7]
+	KERNEL32!BaseThreadInitThunk [0x7fffc60b7374+14]
+	ntdll!RtlUserThreadStart [0x7fffc7f5cc91+21]
+
+2026-03-18 18:08:31 [WARNING] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteClaveProducto_input': could not confirm 'No existe en el catalogo' (current='') — TAB out
+2026-03-18 18:08:42 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionConceptos:selectOneObjetoImp' → '02 Sí objeto de impuesto'
+2026-03-18 18:08:46 [DEBUG] factura_page — Adding impuesto: local_federal=Federal ret_tras= clave=IVA factor=Tasa tasa=0.16
+2026-03-18 18:08:53 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionConceptos:selectOneImpuestos' → '002 IVA'
+2026-03-18 18:08:59 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionConceptos:selectOneImpuestosLocalFederal' → 'Local o Federal'
+2026-03-18 18:09:06 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionConceptos:selectOneImpuestosTrasladoRetencion' → 'Retención o Traslado'
+2026-03-18 18:09:13 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionConceptos:selectOneImpuestosTipoFactor' → 'TASA'
+2026-03-18 18:09:19 [INFO] factura_page — Concepto 1 added
+2026-03-18 18:09:19 [INFO] factura_page — Adding concepto: id=0 desc=
+2026-03-18 18:09:28 [DEBUG] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteClaveUnidad_input' confirmed via keyboard → ''
+2026-03-18 18:09:39 [DEBUG] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteConceptoDescripcion_input' confirmed via keyboard → 'iuoiho'
+2026-03-18 18:09:50 [DEBUG] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteClaveProducto_input' confirmed via keyboard → ''
+2026-03-18 18:09:57 [INFO] base_page — Screenshot saved: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\screenshots\error_factura_ppd_1773878997.png
+2026-03-18 18:09:57 [ERROR] test_ppd_complementos — TEST_01 FAIL: No option containing '..' in SelectOneMenu 'formNuevaFactura:accordionConceptos:selectOneObjetoImp'. Available: ['Objeto Impuestos *', '01 No objeto de impuesto', '02 Sí objeto de impuesto', '03 Sí objeto del impuesto y no obligado al desglose', '04 Si objeto del impuesto y no causa impuesto', '05 Si objeto del impuesto, IVA crédito PODEBI', '06 Sí objeto del IVA, No traslado IVA', '07 No traslado del IVA, Sí desglose IEPS.', '08 No traslado del IVA, No desglose IEPS.']
+2026-03-18 18:09:57 [INFO] conftest — Results saved to: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\reports\resultados_20260318_180640.xlsx
+2026-03-18 18:15:37 [INFO] login_page — Navigating to login: http://facto-qa.nexttechnologies.net:8083/facto/
+2026-03-18 18:15:44 [INFO] login_page — Login submitted for user 'ERICK-NT-QT'
+2026-03-18 18:15:44 [INFO] conftest — Session login complete
+2026-03-18 18:15:44 [INFO] conftest — Loading conceptos from: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\data/conceptos-escenario-ppd-1.xlsx
+2026-03-18 18:15:44 [INFO] factura_page — Navigating to factura form: http://facto-qa.nexttechnologies.net:8083/facto/pages/facturacion/manual/factura_manual_40.xhtml
+2026-03-18 18:15:48 [INFO] factura_page — Filling Emisor: rfc=NID200929V26 sucursal=PRUEBAS cc=Pruebas
+2026-03-18 18:16:00 [DEBUG] factura_page — Emisor RFC selected: NID200929V26
+2026-03-18 18:16:07 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosEmisor:selectOneSucursales' → 'PRUEBAS'
+2026-03-18 18:16:14 [DEBUG] base_page — SelectOneMenu EXACT 'formNuevaFactura:accordionDatosEmisor:selectOneCentroConsumo' → 'Pruebas'
+2026-03-18 18:16:14 [INFO] factura_page — Filling Receptor: rfc=XAXX010101000
+2026-03-18 18:16:14 [INFO] factura_page — TAB pressed — waiting for receptor fields autofill via AJAX
+2026-03-18 18:16:17 [INFO] factura_page — Receptor fields auto-filled by AJAX
+2026-03-18 18:16:17 [DEBUG] factura_page — nombre/uso_cfdi/regimen/domicilio auto-filled — skipping manual override
+2026-03-18 18:16:17 [WARNING] factura_page — Email field not found, skipping
+2026-03-18 18:16:17 [INFO] factura_page — Filling Comprobante: tipo=FACTURA serie=FP forma=99
+2026-03-18 18:16:24 [INFO] factura_page — Tipo comprobante seleccionado: 'FACTURA'
+2026-03-18 18:16:31 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneSerie' → 'FP'
+2026-03-18 18:16:37 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneFormaPago' → '99 Por definir'
+2026-03-18 18:16:44 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneMetodoPago' → 'PPD Pago en parcialidades o diferido'
+2026-03-18 18:16:44 [INFO] factura_page — Filling Moneda: MXN
+2026-03-18 18:16:50 [INFO] factura_page — Moneda final capturada en input: 'MXN'
+2026-03-18 18:16:50 [INFO] factura_page — Adding concepto: id=1 desc=Pruebas
+2026-03-18 18:16:58 [DEBUG] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteClaveUnidad_input' confirmed via keyboard → 'E48'
+2026-03-18 18:17:09 [DEBUG] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteConceptoDescripcion_input' confirmed via keyboard → 'Pruebas'
+2026-03-18 18:17:20 [DEBUG] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteClaveProducto_input' confirmed via keyboard → '01010101'
+2026-03-18 18:17:30 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionConceptos:selectOneObjetoImp' → '02 Sí objeto de impuesto'
+2026-03-18 18:17:35 [DEBUG] factura_page — Adding impuesto: local_federal=Federal ret_tras= clave=IVA factor=Tasa tasa=0.16
+2026-03-18 18:17:56 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionConceptos:selectOneImpuestos' → '002 IVA'
+2026-03-18 18:18:03 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionConceptos:selectOneImpuestosLocalFederal' → 'Local o Federal'
+2026-03-18 18:18:09 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionConceptos:selectOneImpuestosTrasladoRetencion' → 'Retención o Traslado'
+2026-03-18 18:18:16 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionConceptos:selectOneImpuestosTipoFactor' → 'TASA'
+2026-03-18 18:18:22 [INFO] factura_page — Concepto 1 added
+2026-03-18 18:18:22 [INFO] factura_page — Adding concepto: id=0 desc=
+2026-03-18 18:18:31 [DEBUG] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteClaveUnidad_input' confirmed via keyboard → ''
+2026-03-18 18:18:42 [DEBUG] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteConceptoDescripcion_input' confirmed via keyboard → ''
+2026-03-18 18:18:53 [DEBUG] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteClaveProducto_input' confirmed via keyboard → ''
+2026-03-18 18:19:00 [INFO] base_page — Screenshot saved: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\screenshots\error_factura_ppd_1773879540.png
+2026-03-18 18:19:00 [ERROR] test_ppd_complementos — TEST_01 FAIL: No option containing '..' in SelectOneMenu 'formNuevaFactura:accordionConceptos:selectOneObjetoImp'. Available: ['Objeto Impuestos *', '01 No objeto de impuesto', '02 Sí objeto de impuesto', '03 Sí objeto del impuesto y no obligado al desglose', '04 Si objeto del impuesto y no causa impuesto', '05 Si objeto del impuesto, IVA crédito PODEBI', '06 Sí objeto del IVA, No traslado IVA', '07 No traslado del IVA, Sí desglose IEPS.', '08 No traslado del IVA, No desglose IEPS.']
+2026-03-18 18:19:00 [INFO] conftest — Results saved to: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\reports\resultados_20260318_181544.xlsx
+2026-03-18 18:31:14 [INFO] login_page — Navigating to login: http://facto-qa.nexttechnologies.net:8083/facto/
+2026-03-18 18:31:21 [INFO] login_page — Login submitted for user 'ERICK-NT-QT'
+2026-03-18 18:31:21 [INFO] conftest — Session login complete
+2026-03-18 18:31:21 [INFO] conftest — Loading conceptos from: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\data/conceptos-escenario-ppd-1.xlsx
+2026-03-18 18:31:21 [INFO] factura_page — Navigating to factura form: http://facto-qa.nexttechnologies.net:8083/facto/pages/facturacion/manual/factura_manual_40.xhtml
+2026-03-18 18:31:24 [INFO] factura_page — Filling Emisor: rfc=NID200929V26 sucursal=PRUEBAS cc=Pruebas
+2026-03-18 18:31:37 [DEBUG] factura_page — Emisor RFC selected: NID200929V26
+2026-03-18 18:31:44 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosEmisor:selectOneSucursales' → 'PRUEBAS'
+2026-03-18 18:31:50 [DEBUG] base_page — SelectOneMenu EXACT 'formNuevaFactura:accordionDatosEmisor:selectOneCentroConsumo' → 'Pruebas'
+2026-03-18 18:31:50 [INFO] factura_page — Filling Receptor: rfc=XAXX010101000
+2026-03-18 18:31:51 [INFO] factura_page — TAB pressed — waiting for receptor fields autofill via AJAX
+2026-03-18 18:31:54 [INFO] factura_page — Receptor fields auto-filled by AJAX
+2026-03-18 18:31:54 [DEBUG] factura_page — nombre/uso_cfdi/regimen/domicilio auto-filled — skipping manual override
+2026-03-18 18:31:54 [WARNING] factura_page — Email field not found, skipping
+2026-03-18 18:31:54 [INFO] factura_page — Filling Comprobante: tipo=FACTURA serie=FP forma=99
+2026-03-18 18:32:01 [INFO] factura_page — Tipo comprobante seleccionado: 'FACTURA'
+2026-03-18 18:32:07 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneSerie' → 'FP'
+2026-03-18 18:32:14 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneFormaPago' → '99 Por definir'
+2026-03-18 18:32:21 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneMetodoPago' → 'PPD Pago en parcialidades o diferido'
+2026-03-18 18:32:21 [INFO] factura_page — Filling Moneda: MXN
+2026-03-18 18:32:27 [INFO] factura_page — Moneda final capturada en input: 'MXN'
+2026-03-18 18:32:27 [INFO] factura_page — Adding concepto: id=1 desc=Pruebas
+2026-03-18 18:32:35 [DEBUG] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteClaveUnidad_input' confirmed via keyboard → 'E48'
+2026-03-18 18:32:46 [DEBUG] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteConceptoDescripcion_input' confirmed via keyboard → 'Pruebas'
+2026-03-18 18:32:57 [DEBUG] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteClaveProducto_input' confirmed via keyboard → '01010101'
+2026-03-18 18:33:07 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionConceptos:selectOneObjetoImp' → '02 Sí objeto de impuesto'
+2026-03-18 18:33:11 [DEBUG] factura_page — Adding impuesto: local_federal=Federal ret_tras= clave=IVA factor=Tasa tasa=0.16
+2026-03-18 18:33:18 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionConceptos:selectOneImpuestos' → '002 IVA'
+2026-03-18 18:33:25 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionConceptos:selectOneImpuestosLocalFederal' → 'Local o Federal'
+2026-03-18 18:33:48 [INFO] base_page — Screenshot saved: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\screenshots\error_factura_ppd_1773880428.png
+2026-03-18 18:33:48 [ERROR] test_ppd_complementos — TEST_01 FAIL: Message: 
+
+2026-03-18 18:33:48 [INFO] conftest — Results saved to: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\reports\resultados_20260318_183121.xlsx
+2026-03-18 18:47:46 [INFO] login_page — Navigating to login: http://facto-qa.nexttechnologies.net:8083/facto/
+2026-03-18 18:47:53 [INFO] login_page — Login submitted for user 'ERICK-NT-QT'
+2026-03-18 18:47:53 [INFO] conftest — Session login complete
+2026-03-18 18:47:53 [INFO] conftest — Loading conceptos from: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\data/conceptos-escenario-ppd-1.xlsx
+2026-03-18 18:47:53 [INFO] factura_page — Navigating to factura form: http://facto-qa.nexttechnologies.net:8083/facto/pages/facturacion/manual/factura_manual_40.xhtml
+2026-03-18 18:47:56 [INFO] factura_page — Filling Emisor: rfc=NID200929V26 sucursal=PRUEBAS cc=Pruebas
+2026-03-18 18:48:06 [DEBUG] factura_page — Emisor RFC selected: NID200929V26
+2026-03-18 18:48:12 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosEmisor:selectOneSucursales' → 'PRUEBAS'
+2026-03-18 18:48:19 [DEBUG] base_page — SelectOneMenu EXACT 'formNuevaFactura:accordionDatosEmisor:selectOneCentroConsumo' → 'Pruebas'
+2026-03-18 18:48:19 [INFO] factura_page — Filling Receptor: rfc=XAXX010101000
+2026-03-18 18:48:19 [INFO] factura_page — TAB pressed — waiting for receptor fields autofill via AJAX
+2026-03-18 18:48:22 [INFO] factura_page — Receptor fields auto-filled by AJAX
+2026-03-18 18:48:22 [DEBUG] factura_page — nombre/uso_cfdi/regimen/domicilio auto-filled — skipping manual override
+2026-03-18 18:48:22 [WARNING] factura_page — Email field not found, skipping
+2026-03-18 18:48:22 [INFO] factura_page — Filling Comprobante: tipo=FACTURA serie=FP forma=99
+2026-03-18 18:48:28 [INFO] factura_page — Tipo comprobante seleccionado: 'FACTURA'
+2026-03-18 18:48:35 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneSerie' → 'FP'
+2026-03-18 18:48:41 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneFormaPago' → '99 Por definir'
+2026-03-18 18:48:47 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionDatosComprobante:selectOneMetodoPago' → 'PPD Pago en parcialidades o diferido'
+2026-03-18 18:48:47 [INFO] factura_page — Filling Moneda: MXN
+2026-03-18 18:48:53 [INFO] factura_page — Moneda final capturada en input: 'MXN'
+2026-03-18 18:48:53 [INFO] factura_page — Adding concepto: id=1 desc=Pruebas
+2026-03-18 18:49:01 [DEBUG] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteClaveUnidad_input' confirmed via keyboard → 'E48'
+2026-03-18 18:49:12 [DEBUG] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteConceptoDescripcion_input' confirmed via keyboard → 'Pruebas'
+2026-03-18 18:49:22 [DEBUG] base_page — AutoComplete 'formNuevaFactura:accordionConceptos:autoCompleteClaveProducto_input' confirmed via keyboard → '01010101'
+2026-03-18 18:49:32 [DEBUG] base_page — SelectOneMenu 'formNuevaFactura:accordionConceptos:selectOneObjetoImp' → '02 Sí objeto de impuesto'
+2026-03-18 18:49:36 [DEBUG] factura_page — Adding impuesto (ordered): impuesto=IVA local_federal=FEDERAL ret_tras= factor=TASA tasa=0.16
+2026-03-18 18:49:36 [INFO] base_page — Screenshot saved: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\screenshots\error_factura_ppd_1773881376.png
+2026-03-18 18:49:36 [ERROR] test_ppd_complementos — TEST_01 FAIL: retencion_traslado vacío — revisar Excel
+2026-03-18 18:49:36 [INFO] conftest — Results saved to: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\reports\resultados_20260318_184753.xlsx
+2026-03-18 19:05:03 [INFO] login_page — Navigating to login: http://facto-qa.nexttechnologies.net:8083/facto/
+2026-03-18 19:05:09 [INFO] login_page — Login submitted for user 'ERICK-NT-QT'
+2026-03-18 19:05:09 [INFO] conftest — Session login complete
+2026-03-18 19:05:09 [INFO] conftest — Loading conceptos from: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\data/conceptos-escenario-ppd-1.xlsx
+2026-03-18 19:05:10 [INFO] conftest — Results saved to: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\reports\resultados_20260318_190510.xlsx
+2026-03-18 19:05:29 [INFO] login_page — Navigating to login: http://facto-qa.nexttechnologies.net:8083/facto/
+2026-03-18 19:05:36 [INFO] login_page — Login submitted for user 'ERICK-NT-QT'
+2026-03-18 19:05:36 [INFO] conftest — Session login complete
+2026-03-18 19:05:36 [INFO] conftest — Loading conceptos from: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\data/conceptos-escenario-ppd-1.xlsx
+2026-03-18 19:05:36 [INFO] conftest — Results saved to: C:\Users\ErickAlejandroRodríg\Desktop\Entorno\FACTO\cfdi-automation\reports\resultados_20260318_190536.xlsx
