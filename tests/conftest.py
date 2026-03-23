@@ -4,7 +4,7 @@ import os
 import pytest
 
 from utils.driver_manager import create_driver
-from utils.excel_manager import ResultsWriter, read_conceptos
+from utils.excel_manager import ResultsWriter, read_conceptos, read_pagos
 from utils.logger import get_logger
 
 log = get_logger("conftest")
@@ -84,14 +84,17 @@ def shared_state():
         "saldo_insoluto_comp1": 0.0,
     }
 
+
+# ── Pagos data (from Excel 'pagos' sheet) ─────────────────────────────────────
+
 @pytest.fixture(scope="session")
-def shared_state():
-    return {
-        "uuid_factura": "855fe4f0-ee8a-45c9-97eb-b2d772af9c4a",
-        "total_factura": 116.00,
-        "uuid_comp1": None,
-        "saldo_insoluto_comp1": 0.0,
-    }
+def pagos_data(config):
+    excel_path = config["data"]["conceptos_excel"]
+    if not os.path.isabs(excel_path):
+        excel_path = os.path.join(_BASE, excel_path)
+    log.info("Loading pagos from: %s", excel_path)
+    return read_pagos(excel_path)
+
 
 # ── Utility paths ─────────────────────────────────────────────────────────────
 

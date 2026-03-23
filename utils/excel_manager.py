@@ -73,6 +73,16 @@ class ImpuestoRow:
     tasa_cuota: float
 
 
+@dataclass
+class PagoRow:
+    """Datos del Complemento de Pago leídos desde la hoja 'pagos' del Excel."""
+    fecha_pago: str = ""       # "2026-03-20" / "20/03/2026" / "20-03-2026"
+    forma_pago: str = "01"     # código SAT, ej. "01", "03", "04"
+    moneda_pago: str = "MXN"   # clave de moneda SAT
+    cp1: float = 0.0           # importe del primer complemento de pago
+    cp2: float = 0.0           # importe del segundo complemento de pago
+
+
 # ── Normalizers ───────────────────────────────────────────────────────────────
 
 def _clean_str(value, default: str = "") -> str:
@@ -241,6 +251,44 @@ def read_conceptos(path: str):
 
     wb.close()
     return conceptos, impuestos
+
+
+def read_pagos(path: str) -> "PagoRow":
+    """Lee la primera fila de datos de la hoja 'pagos' del Excel.
+
+    Columnas esperadas (row 1 = headers):
+        FECHA DE PAGO | FORMA DE PAGO | MONEDA DE PAGO | CP1 | CP2
+
+    Si la hoja no existe o está vacía, devuelve un PagoRow con valores por defecto.
+    """
+    wb = openpyxl.load_workbook(path, data_only=True)
+    if "pagos" not in wb.sheetnames:
+        wb.close()
+        return PagoRow()
+
+    ws_p = wb["pagos"]
+    header_row = next(ws_p.iter_rows(min_row=1, max_row=1), None)
+    if header_row is None:
+        wb.close()
+        return PagoRow()
+
+    headers_p = [str(c.value).strip() if c.value is not None else "" for c in header_row]
+
+    for row in ws_p.iter_rows(min_row=2, values_only=True):
+        if not any(row):
+            continue
+        r = dict(zip(headers_p, row))
+        wb.close()
+        return PagoRow(
+            fecha_pago=_clean_str(r.get("FECHA DE PAGO", "") or r.get("Fecha de Pago", "")),
+            forma_pago=_clean_str(r.get("FORMA DE PAGO", "01") or r.get("Forma de Pago", "01")),
+            moneda_pago=_clean_str(r.get("MONEDA DE PAGO", "MXN") or r.get("Moneda de Pago", "MXN")),
+            cp1=float(r.get("CP1", 0) or 0),
+            cp2=float(r.get("CP2", 0) or 0),
+        )
+
+    wb.close()
+    return PagoRow()
 
 
 # ── Writer ────────────────────────────────────────────────────────────────────

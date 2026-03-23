@@ -128,9 +128,9 @@ def test_01_factura_ppd(logged_in_driver, config, conceptos_data, results_writer
 # TEST 02 — Complemento de Pago 1 (parcial)
 # ═══════════════════════════════════════════════════════════════════════════════
 
-def test_02_complemento_pago_1(logged_in_driver, config, results_writer,
+def test_02_complemento_pago_1(logged_in_driver, config, pagos_data, results_writer,
                                 shared_state, screenshots_dir, downloads_dir):
-    """Generate first Complemento de Pago (partial payment)."""
+    """Generate first Complemento de Pago (partial payment) using Excel pagos data."""
     driver = logged_in_driver
     uuid_factura = shared_state.get("uuid_factura")
     total_factura = shared_state.get("total_factura", 0.0)
@@ -138,8 +138,8 @@ def test_02_complemento_pago_1(logged_in_driver, config, results_writer,
     if not uuid_factura:
         pytest.skip("UUID Factura not available — test_01 may have failed")
 
-    monto_pago1 = float(config["pagos"]["monto_pago1"])
-    saldo_insoluto = round(total_factura - monto_pago1, 2)
+    monto_pago1 = pagos_data.cp1
+    saldo_insoluto = max(0.0, round(total_factura - monto_pago1, 2))
     shared_state["saldo_insoluto_comp1"] = saldo_insoluto
 
     page = ComplementoPagoPage(driver)
@@ -156,12 +156,14 @@ def test_02_complemento_pago_1(logged_in_driver, config, results_writer,
     )
 
     try:
-        # 1. Emisor + Receptor
+        # 1. Emisor
         page.fill_emisor(
             rfc=config["emisor"]["rfc"],
             sucursal=config["emisor"]["sucursal"],
             cc=config["emisor"]["cc"],
         )
+
+        # 2. Receptor
         page.fill_receptor(
             rfc=config["receptor"]["rfc"],
             nombre="PUBLICO EN GENERAL",
@@ -171,47 +173,53 @@ def test_02_complemento_pago_1(logged_in_driver, config, results_writer,
             email=config["receptor"]["email"],
         )
 
-        # 2. Tipo = PAGO
-        page.set_tipo_pago()
+        # 3. Tipo = PAGO, Serie = CP
+        page.fill_comprobante_cp_basico(tipo="PAGO", serie="CP")
 
-        # 3. Pago header (Forma pago, Moneda)
-        page.fill_pago_header(
-            forma_pago=config["pagos"]["forma_pago_complemento"],
-            moneda=config["pagos"]["moneda_complemento"],
-        )
+        # 4. Fecha de Pago
+        page.fill_fecha_pago(pagos_data.fecha_pago)
 
-        # 4. DR — Documento Relacionado
-        page.add_documento_relacionado(
+        # 5. Forma de Pago
+        page.fill_forma_pago_complemento(pagos_data.forma_pago)
+
+        # 6. Moneda de Pago
+        page.fill_moneda_pago_complemento(pagos_data.moneda_pago)
+
+        # 7–12. DR flow: abrir panel → buscar CFDI → importe → agregar → cerrar → agregar pago
+        page.flujo_dr_completo(
             uuid_factura=uuid_factura,
-            num_parcialidad=1,
-            monto_pago=monto_pago1,
-            saldo_anterior=total_factura,
-            saldo_insoluto=saldo_insoluto,
-            moneda_dr=config["pagos"]["moneda_complemento"],
+            importe_pago=f"{monto_pago1:.2f}",
+            emisor_rfc=config["emisor"]["rfc"],
+            sucursal=config["emisor"]["sucursal"],
+            cc=config["emisor"]["cc"],
         )
 
-        # 5. Screenshot before timbrar
+        # 13. Screenshot before timbrar
         page.take_screenshot("before_timbrar_comp1", screenshots_dir)
 
-        # 6. Timbrar
+        # 14. Timbrar
         timbrado_timeout = int(config["timeouts"]["timbrado"])
         uuid_comp1 = page.timbrar_complemento(timeout=timbrado_timeout)
 
-        # 7. Download
+        # 15. Download ZIP
         zip_path, uuid_zip = page.click_descarga(downloads_dir)
         zip_filename = os.path.basename(zip_path)
 
         shared_state["uuid_comp1"] = uuid_comp1
         resultado.datos_generales = (
             f"Parcialidad: 1 | Monto: ${monto_pago1:.2f} | "
-            f"Forma Pago: {config['pagos']['forma_pago_complemento']} | "
+            f"Forma Pago: {pagos_data.forma_pago} | Moneda: {pagos_data.moneda_pago} | "
+            f"Fecha: {pagos_data.fecha_pago} | "
             f"Saldo Anterior: ${total_factura:.2f} | Saldo Insoluto: ${saldo_insoluto:.2f}"
         )
         resultado.uuid_timbrado = uuid_comp1
         resultado.url_descarga_pdf = zip_filename
         resultado.resultado_obtenido = f"PASS — UUID: {uuid_comp1}"
 
-        log.info("TEST_02 PASS — UUID_COMP1=%s Saldo Insoluto=$%.2f", uuid_comp1, saldo_insoluto)
+        log.info(
+            "TEST_02 PASS — UUID_COMP1=%s  Saldo Insoluto=$%.2f",
+            uuid_comp1, saldo_insoluto,
+        )
 
     except Exception as exc:
         page.take_screenshot("error_complemento_pago_1", screenshots_dir)

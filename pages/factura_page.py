@@ -641,7 +641,9 @@ class FacturaPage(BasePage):
         from selenium.common.exceptions import TimeoutException
 
         descarga_locator = (By.CSS_SELECTOR, _BTN_DESCARGA_CSS)
-        toast_locator    = (By.CSS_SELECTOR, "div.ui-growl-message, div.ui-messages-error, .ui-message-error")
+        toast_locator    = (By.CSS_SELECTOR,
+            ".ui-growl-message-error, .ui-growl-message-fatal, .ui-growl-message-warn,"
+            " div.ui-messages-error, .ui-message-error")
 
         def _result_appeared(driver):
             return (is_element_present(driver, *descarga_locator) or
@@ -686,8 +688,8 @@ class FacturaPage(BasePage):
 
     # ── Download ─────────────────────────────────────────────────────────────
 
-    def click_descarga(self, downloads_dir: str, timeout: int = 30) -> str:
-        """Click 'Descarga CFDI' and return path to downloaded ZIP."""
+    def click_descarga(self, downloads_dir: str, timeout: int = 30) -> tuple:
+        """Click 'Descarga CFDI', wait for ZIP, and return (zip_path, uuid_from_filename)."""
         log.info("Clicking Descarga CFDI")
         try:
             btn = wait_for_element_clickable(self.driver, By.ID, _BTN_DESCARGA, timeout=10)
@@ -698,14 +700,19 @@ class FacturaPage(BasePage):
         btn.click()
 
         # Wait for file to appear in downloads dir
-        import glob, time as _time
+        import glob, time as _time, re as _re
         deadline = _time.time() + timeout
         while _time.time() < deadline:
             zips = glob.glob(os.path.join(downloads_dir, "*.zip"))
             if zips:
                 newest = max(zips, key=os.path.getmtime)
                 log.info("Downloaded ZIP: %s", newest)
-                return newest
+                # Extract UUID from filename (pattern: 8-4-4-4-12 hex)
+                uuid_pattern = r"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"
+                basename = os.path.basename(newest)
+                match = _re.search(uuid_pattern, basename)
+                uuid_from_zip = match.group().lower() if match else ""
+                return newest, uuid_from_zip
             _time.sleep(1)
 
         raise TimeoutError(f"Download ZIP not found in {downloads_dir} after {timeout}s")

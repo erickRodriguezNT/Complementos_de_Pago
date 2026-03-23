@@ -137,57 +137,38 @@ class BasePage:
                 )
                 wait_for_ajax(self.driver)
 
-    def select_one_menu_exact(self, widget_id: str, label: str):
-        panel_id = widget_id + "_panel"
+    def select_one_menu_exact(self, widget_id: str, value: str):
+        """Select option EXACT match (no contains)."""
         label_id = widget_id + "_label"
-        target = label.strip().lower()
+        panel_id = widget_id + "_panel"
+        target = value.strip().lower()
 
-        trigger_id = label_id if is_element_present(self.driver, By.ID, label_id) else widget_id
-
-        trigger = wait_for_element_clickable(self.driver, By.ID, trigger_id)
+        # Abrir dropdown
+        trigger = wait_for_element_clickable(self.driver, By.ID, label_id)
         self.scroll_to(trigger)
-
-        try:
-            trigger.click()
-        except Exception:
-            self.driver.execute_script("arguments[0].click();", trigger)
-
+        trigger.click()
         wait_for_ajax(self.driver)
 
+        # Esperar panel
         panel = wait_for_element_visible(self.driver, By.ID, panel_id)
-        items = panel.find_elements(By.CSS_SELECTOR, "li.ui-selectonemenu-item")
 
-        if not items:
-            raise ValueError(f"No items found in panel '{panel_id}'")
+        items = panel.find_elements(By.CSS_SELECTOR, "li.ui-selectonemenu-item")
 
         for item in items:
             texto = item.text.strip()
-            if texto.strip().lower() == target:
-                self.scroll_to(item)
-                try:
-                    item.click()
-                except Exception:
-                    self.driver.execute_script("arguments[0].click();", item)
 
+            # seleccion de CP 
+            if texto.lower() == target:
+                self.scroll_to(item)
+                item.click()
                 wait_for_ajax(self.driver)
 
-                try:
-                    valor_final = self.driver.find_element(By.ID, label_id).text.strip()
-                except Exception:
-                    valor_final = texto
-
-                if valor_final.strip().lower() != target:
-                    raise ValueError(
-                        f"SelectOneMenu EXACT '{widget_id}' no quedó seleccionado correctamente. "
-                        f"Esperado='{label}' | Final='{valor_final}'"
-                    )
-
-                log.debug("SelectOneMenu EXACT '%s' → '%s'", widget_id, valor_final)
+                log.debug("SelectOneMenu EXACT '%s' → '%s'", widget_id, texto)
                 return
 
         opciones = [i.text.strip() for i in items if i.text.strip()]
         raise ValueError(
-            f"Exact option '{label}' not found in '{widget_id}'. Available: {opciones}"
+            f"select_one_menu_exact: '{value}' not found. Available: {opciones}"
         )
 
     def select_one_menu_by_id_input(self, input_id: str, partial_label: str):
