@@ -4,7 +4,7 @@ import os
 import pytest
 
 from utils.driver_manager import create_driver
-from utils.excel_manager import ResultsWriter, read_conceptos, read_pagos
+from utils.excel_manager import ResultsWriter, read_conceptos, read_pagos, read_escenarios
 from utils.logger import get_logger
 
 log = get_logger("conftest")
@@ -78,8 +78,8 @@ def results_writer():
 @pytest.fixture(scope="session")
 def shared_state():
     return {
-        "uuid_factura": "855fe4f0-ee8a-45c9-97eb-b2d772af9c4a",
-        "total_factura": 116.00,
+        "uuid_factura": None,       # Establecido por test_01 tras el timbrado
+        "total_factura": 0.0,
         "uuid_comp1": None,
         "saldo_insoluto_comp1": 0.0,
     }
@@ -110,3 +110,52 @@ def downloads_dir():
     return _DOWNLOADS_DIR
 
 # ── UUID RELACIONADO  ───────────────────────────────────────────────────
+
+
+# ── Escenarios de impuestos (parametrizados desde Excel) ─────────────────────
+
+@pytest.fixture(scope="session")
+def escenarios_data(config):
+    """Lista de EscenarioData leída del Excel.  Usada por pytest_generate_tests."""
+    excel_path = config["data"]["conceptos_excel"]
+    if not os.path.isabs(excel_path):
+        excel_path = os.path.join(_BASE, excel_path)
+    log.info("Loading escenarios from: %s", excel_path)
+    return read_escenarios(excel_path)
+
+
+def pytest_generate_tests(metafunc):
+    """Parametriza automáticamente 'escenario' con cada fila del Excel.
+
+    Cualquier función de test que declare el parámetro 'escenario' recibirá
+    una instancia de EscenarioData por cada escenario definido en el Excel,
+    generando un caso de prueba independiente por escenario.
+    """
+    if "escenario" not in metafunc.fixturenames:
+        return
+
+    cfg = configparser.ConfigParser()
+    cfg.read(_CONFIG_PATH, encoding="utf-8")
+    excel_path = cfg["data"]["conceptos_excel"]
+    if not os.path.isabs(excel_path):
+        excel_path = os.path.join(_BASE, excel_path)
+
+    try:
+        escenarios = read_escenarios(excel_path)
+    except Exception as exc:
+        log.error("pytest_generate_tests: no se pudo leer escenarios del Excel: %s", exc)
+        escenarios = []
+
+    if not escenarios:
+        # Sin escenarios: genera un test que será skipeado agraciosamente
+        metafunc.parametrize("escenario", [None], ids=["sin_escenarios"])
+        return
+
+    metafunc.parametrize(
+        "escenario",
+        escenarios,
+        ids=[
+            f"esc{e.id_escenario}_{e.nombre.replace(' ', '_').replace(',', '')}"
+            for e in escenarios
+        ],
+    )

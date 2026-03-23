@@ -268,9 +268,16 @@ class FacturaPage(BasePage):
                          metodo_pago: str, moneda: str):
         log.info("Filling Comprobante: tipo=%s serie=%s forma=%s", tipo, serie, forma_pago)
         self._select_tipo_comprobante(tipo)
-        self.select_one_menu_contains(_SERIE, serie)
-        self.select_one_menu_contains(_FORMA_PAGO, forma_pago)
-        self.select_one_menu_contains(_METODO_PAGO, metodo_pago)
+        # jQuery direct set — no panel-open/animation overhead; fallback to UI if needed
+        if not self._jquery_set_select_by_label(_SERIE + "_input", serie):
+            self.select_one_menu_contains(_SERIE, serie)
+        wait_for_ajax(self.driver)
+        if not self._jquery_set_select_by_label(_FORMA_PAGO + "_input", forma_pago):
+            self.select_one_menu_contains(_FORMA_PAGO, forma_pago)
+        wait_for_ajax(self.driver)
+        if not self._jquery_set_select_by_label(_METODO_PAGO + "_input", metodo_pago):
+            self.select_one_menu_contains(_METODO_PAGO, metodo_pago)
+        wait_for_ajax(self.driver)
         self.fill_moneda(moneda)
 
     def fill_moneda(self, moneda: str):
@@ -294,13 +301,13 @@ class FacturaPage(BasePage):
         campo.send_keys(Keys.BACKSPACE)
 
         campo.send_keys(moneda)
-        time.sleep(0.6)  # esperar sugerencias del autocomplete
+        time.sleep(0.2)  # esperar sugerencias del autocomplete
 
         # Confirmar por teclado en vez de depender siempre del panel visual
         campo.send_keys(Keys.ARROW_DOWN)
-        time.sleep(0.2)
+        time.sleep(0.1)
         campo.send_keys(Keys.ENTER)
-        time.sleep(0.3)
+        time.sleep(0.1)
         campo.send_keys(Keys.TAB)
 
         wait_for_ajax(self.driver)
@@ -328,10 +335,8 @@ class FacturaPage(BasePage):
             "arguments[0].scrollIntoView({block: 'center', behavior: 'instant'});",
             fieldset,
         )
-        time.sleep(0.2)
         # Empujar hacia abajo para que el legend '+' quede visible sobre el pliegue
         self.driver.execute_script("window.scrollBy(0, 150);")
-        time.sleep(0.2)
 
         # 3. Localizar el botón '+' (legend > span del fieldset)
         log.info("[expandir_impuestos] Esperando botón '+' de Impuestos...")
@@ -347,7 +352,6 @@ class FacturaPage(BasePage):
             "arguments[0].scrollIntoView({block: 'center', behavior: 'instant'});",
             btn,
         )
-        time.sleep(0.2)
         log.info("[expandir_impuestos] Dando clic en el botón '+' para expandir...")
         try:
             btn.click()
@@ -355,7 +359,6 @@ class FacturaPage(BasePage):
             self.driver.execute_script("arguments[0].click();", btn)
 
         wait_for_ajax(self.driver)
-        time.sleep(0.8)
 
         # 5. Confirmar que el sub-formulario de impuestos esté visible
         wait_for_element_present(self.driver, By.ID, _SEL_IMPUESTO, timeout=10)
@@ -423,7 +426,7 @@ class FacturaPage(BasePage):
         log.info("[Paso 6] Objeto Impuesto: %s", concepto.objeto_impuesto)
         self.select_one_menu_contains(_OBJETO_IMP, concepto.objeto_impuesto)
         wait_for_ajax(self.driver)
-        time.sleep(1.5)  # dar tiempo al DOM para mostrar/ocultar el fieldset de impuestos
+        time.sleep(0.5)  # dar tiempo al DOM para mostrar/ocultar el fieldset de impuestos
 
         # ── Paso 7: Impuestos — SIEMPRE se ejecuta ───────────────────────────
         objeto_imp_str = str(concepto.objeto_impuesto).strip()
@@ -470,7 +473,7 @@ class FacturaPage(BasePage):
                 )
                 self._add_impuesto(imp)
                 wait_for_ajax(self.driver)
-                time.sleep(0.4)
+                time.sleep(0.2)
 
             log.info(
                 "[Paso 7] Todos los impuestos del concepto id=%d capturados.",
@@ -490,7 +493,7 @@ class FacturaPage(BasePage):
         log.info("[Paso 8] Dando clic en 'Agregar Concepto' (id=%d)...", concepto.id_concepto)
         self.safe_click(_BTN_AGREGAR_CONC)
         wait_for_ajax(self.driver)
-        time.sleep(1.5)
+        time.sleep(0.5)
         log.info("[Paso 8] Concepto id=%d agregado exitosamente.", concepto.id_concepto)
 
         # ── Paso 9: Scroll al panel de botones de facturación ────────────────
@@ -505,7 +508,7 @@ class FacturaPage(BasePage):
             self.scroll_to(panel_botones)
         except Exception:
             self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-        time.sleep(0.8)
+        time.sleep(0.3)
 
         log.info("─── add_concepto FIN  id=%d", concepto.id_concepto)
 
@@ -552,32 +555,32 @@ class FacturaPage(BasePage):
 
         wait_for_ajax(self.driver)
 
-        # 1. Clave impuesto (ej. 002 IVA) — búsqueda parcial
+        # 1. Clave impuesto — jQuery direct set, fallback to UI
         log.info("[_add_impuesto] Paso 1 — Clave impuesto: %s", clave_impuesto)
-        self.select_one_menu_contains(_SEL_IMPUESTO, clave_impuesto)
+        if not self._jquery_set_select_by_label(_SEL_IMPUESTO + "_input", clave_impuesto):
+            self.select_one_menu_contains(_SEL_IMPUESTO, clave_impuesto)
         wait_for_ajax(self.driver)
-        time.sleep(0.3)
 
         # 2. Tipo Factor
         log.info("[_add_impuesto] Paso 2 — Tipo Factor: %s", tipo_factor)
-        self.select_one_menu_contains(_SEL_TIPO_FACTOR, tipo_factor)
+        if not self._jquery_set_select_by_label(_SEL_TIPO_FACTOR + "_input", tipo_factor):
+            self.select_one_menu_contains(_SEL_TIPO_FACTOR, tipo_factor)
         wait_for_ajax(self.driver)
-        time.sleep(0.3)
 
-        # 2️⃣ LOCAL / FEDERAL  ← AQUÍ VA TU LÍNEA
-        self.select_one_menu_exact(_SEL_LOCAL_FED, local_federal)
+        # 3. LOCAL / FEDERAL
+        if not self._jquery_set_select_by_label(_SEL_LOCAL_FED + "_input", local_federal):
+            self.select_one_menu_exact(_SEL_LOCAL_FED, local_federal)
         wait_for_ajax(self.driver)
-        time.sleep(1)
 
-        # 3️⃣ RETENCIÓN / TRASLADO  ← AQUÍ VA TU LÍNEA
-        self.select_one_menu_exact(_SEL_TRASLADO_RET, retencion_traslado)
+        # 4. RETENCIÓN / TRASLADO
+        if not self._jquery_set_select_by_label(_SEL_TRASLADO_RET + "_input", retencion_traslado):
+            self.select_one_menu_exact(_SEL_TRASLADO_RET, retencion_traslado)
         wait_for_ajax(self.driver)
-        time.sleep(1)
 
         # 5. Tasa o Cuota
         log.info("[_add_impuesto] Paso 5 — Tasa/Cuota: %s", imp.tasa_cuota)
         self._clear_and_type(_INPUT_TASA, str(imp.tasa_cuota))
-        time.sleep(0.2)
+        time.sleep(0.1)
 
         # 6. Clic en el botón azul 'Agregar' del sub-formulario de impuestos
         log.info("[_add_impuesto] Paso 6 — Clic en botón azul 'Agregar' impuesto...")
@@ -586,14 +589,14 @@ class FacturaPage(BasePage):
             "arguments[0].scrollIntoView({block: 'center', behavior: 'instant'});",
             btn_agregar,
         )
-        time.sleep(0.2)
+        time.sleep(0.1)
         try:
             btn_agregar.click()
         except Exception:
             self.driver.execute_script("arguments[0].click();", btn_agregar)
 
         wait_for_ajax(self.driver)
-        time.sleep(0.5)
+        time.sleep(0.2)
         log.info("[_add_impuesto] Impuesto agregado correctamente.")
 
     def add_all_conceptos(self, conceptos: List[ConceptoRow], impuestos: List[ImpuestoRow]):
@@ -688,8 +691,22 @@ class FacturaPage(BasePage):
 
     # ── Download ─────────────────────────────────────────────────────────────
 
-    def click_descarga(self, downloads_dir: str, timeout: int = 30) -> tuple:
-        """Click 'Descarga CFDI', wait for ZIP, and return (zip_path, uuid_from_filename)."""
+    def click_descarga(self, downloads_dir: str, timeout: int = 60) -> tuple:
+        """Click 'Descarga CFDI', wait for ZIP, and return (zip_path, uuid_from_filename).
+
+        Handles Chrome's 'Sin confirmar' partial-download files by ignoring
+        pre-existing .crdownload entries and waiting for new ones to complete.
+        """
+        import glob, time as _time, re as _re
+
+        # Snapshot state BEFORE clicking to detect newly created files
+        pre_zips = set(glob.glob(os.path.join(downloads_dir, "*.zip")))
+        pre_crdownloads = set(glob.glob(os.path.join(downloads_dir, "*.crdownload")))
+        log.info(
+            "Pre-click state — ZIPs: %d  .crdownload: %d",
+            len(pre_zips), len(pre_crdownloads),
+        )
+
         log.info("Clicking Descarga CFDI")
         try:
             btn = wait_for_element_clickable(self.driver, By.ID, _BTN_DESCARGA, timeout=10)
@@ -699,20 +716,33 @@ class FacturaPage(BasePage):
         self.scroll_to(btn)
         btn.click()
 
-        # Wait for file to appear in downloads dir
-        import glob, time as _time, re as _re
+        uuid_pattern = r"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"
         deadline = _time.time() + timeout
+
         while _time.time() < deadline:
-            zips = glob.glob(os.path.join(downloads_dir, "*.zip"))
-            if zips:
-                newest = max(zips, key=os.path.getmtime)
+            # New .crdownload files (download in progress — not yet complete)
+            new_crdownloads = [
+                c for c in glob.glob(os.path.join(downloads_dir, "*.crdownload"))
+                if c not in pre_crdownloads
+            ]
+            if new_crdownloads:
+                log.debug("Download in progress: %s", new_crdownloads)
+                _time.sleep(1)
+                continue
+
+            # New ZIP files (download complete)
+            new_zips = [
+                z for z in glob.glob(os.path.join(downloads_dir, "*.zip"))
+                if z not in pre_zips
+            ]
+            if new_zips:
+                newest = max(new_zips, key=os.path.getmtime)
                 log.info("Downloaded ZIP: %s", newest)
-                # Extract UUID from filename (pattern: 8-4-4-4-12 hex)
-                uuid_pattern = r"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"
                 basename = os.path.basename(newest)
                 match = _re.search(uuid_pattern, basename)
                 uuid_from_zip = match.group().lower() if match else ""
                 return newest, uuid_from_zip
+
             _time.sleep(1)
 
         raise TimeoutError(f"Download ZIP not found in {downloads_dir} after {timeout}s")

@@ -110,7 +110,9 @@ def test_01_factura_ppd(logged_in_driver, config, conceptos_data, results_writer
         )
         resultado.uuid_timbrado = uuid
         resultado.url_descarga_pdf = zip_filename
-        resultado.resultado_obtenido = f"PASS — UUID: {uuid}"
+        resultado.resultado_obtenido = (
+            f"PASS | UUID Timbrado: {uuid} | Archivo: {zip_filename}"
+        )
 
         log.info("TEST_01 PASS — UUID=%s Total=$%.2f", uuid, total)
 
@@ -214,7 +216,10 @@ def test_02_complemento_pago_1(logged_in_driver, config, pagos_data, results_wri
         )
         resultado.uuid_timbrado = uuid_comp1
         resultado.url_descarga_pdf = zip_filename
-        resultado.resultado_obtenido = f"PASS — UUID: {uuid_comp1}"
+        resultado.resultado_obtenido = (
+            f"PASS | UUID Comp.1: {uuid_comp1} | "
+            f"Factura Relacionada: {uuid_factura} | Archivo: {zip_filename}"
+        )
 
         log.info(
             "TEST_02 PASS — UUID_COMP1=%s  Saldo Insoluto=$%.2f",
@@ -235,20 +240,19 @@ def test_02_complemento_pago_1(logged_in_driver, config, pagos_data, results_wri
 # TEST 03 — Complemento de Pago 2 (liquida saldo)
 # ═══════════════════════════════════════════════════════════════════════════════
 
-def test_03_complemento_pago_2(logged_in_driver, config, results_writer,
+def test_03_complemento_pago_2(logged_in_driver, config, pagos_data, results_writer,
                                 shared_state, screenshots_dir, downloads_dir):
-    """Generate second Complemento de Pago that settles the remaining balance."""
+    """Generate second Complemento de Pago using CP2 value from Excel pagos sheet."""
     driver = logged_in_driver
     uuid_factura = shared_state.get("uuid_factura")
-    saldo_anterior = shared_state.get("saldo_insoluto_comp1", 0.0)
 
     if not uuid_factura:
         pytest.skip("UUID Factura not available — test_01 may have failed")
-    if saldo_anterior <= 0:
-        pytest.skip("Saldo insoluto from Comp1 is zero or unavailable")
 
-    monto_pago2 = saldo_anterior  # liquidates remaining balance
-    saldo_insoluto = 0.00
+    monto_pago2 = pagos_data.cp2
+    saldo_anterior = shared_state.get("saldo_insoluto_comp1", 0.0)
+    saldo_insoluto = max(0.0, round(saldo_anterior - monto_pago2, 2))
+    shared_state["saldo_insoluto_comp2"] = saldo_insoluto
 
     page = ComplementoPagoPage(driver)
     page.navigate(config["app"]["factura_url"])
@@ -264,12 +268,14 @@ def test_03_complemento_pago_2(logged_in_driver, config, results_writer,
     )
 
     try:
-        # 1. Emisor + Receptor
+        # 1. Emisor
         page.fill_emisor(
             rfc=config["emisor"]["rfc"],
             sucursal=config["emisor"]["sucursal"],
             cc=config["emisor"]["cc"],
         )
+
+        # 2. Receptor
         page.fill_receptor(
             rfc=config["receptor"]["rfc"],
             nombre="PUBLICO EN GENERAL",
@@ -279,46 +285,56 @@ def test_03_complemento_pago_2(logged_in_driver, config, results_writer,
             email=config["receptor"]["email"],
         )
 
-        # 2. Tipo = PAGO
-        page.set_tipo_pago()
+        # 3. Tipo = PAGO, Serie = CP
+        page.fill_comprobante_cp_basico(tipo="PAGO", serie="CP")
 
-        # 3. Pago header
-        page.fill_pago_header(
-            forma_pago=config["pagos"]["forma_pago_complemento"],
-            moneda=config["pagos"]["moneda_complemento"],
-        )
+        # 4. Fecha de Pago
+        page.fill_fecha_pago(pagos_data.fecha_pago)
 
-        # 4. DR — Documento Relacionado
-        page.add_documento_relacionado(
+        # 5. Forma de Pago
+        page.fill_forma_pago_complemento(pagos_data.forma_pago)
+
+        # 6. Moneda de Pago
+        page.fill_moneda_pago_complemento(pagos_data.moneda_pago)
+
+        # 7–12. DR flow: abrir panel → buscar CFDI → importe → agregar → cerrar → agregar pago
+        page.flujo_dr_completo(
             uuid_factura=uuid_factura,
-            num_parcialidad=2,
-            monto_pago=monto_pago2,
-            saldo_anterior=saldo_anterior,
-            saldo_insoluto=saldo_insoluto,
-            moneda_dr=config["pagos"]["moneda_complemento"],
+            importe_pago=f"{monto_pago2:.2f}",
+            emisor_rfc=config["emisor"]["rfc"],
+            sucursal=config["emisor"]["sucursal"],
+            cc=config["emisor"]["cc"],
         )
 
-        # 5. Screenshot before timbrar
+        # 13. Screenshot before timbrar
         page.take_screenshot("before_timbrar_comp2", screenshots_dir)
 
-        # 6. Timbrar
+        # 14. Timbrar
         timbrado_timeout = int(config["timeouts"]["timbrado"])
         uuid_comp2 = page.timbrar_complemento(timeout=timbrado_timeout)
 
-        # 7. Download
+        # 15. Download ZIP
         zip_path, uuid_zip = page.click_descarga(downloads_dir)
         zip_filename = os.path.basename(zip_path)
 
+        shared_state["uuid_comp2"] = uuid_comp2
         resultado.datos_generales = (
             f"Parcialidad: 2 | Monto: ${monto_pago2:.2f} | "
-            f"Forma Pago: {config['pagos']['forma_pago_complemento']} | "
-            f"Saldo Anterior: ${saldo_anterior:.2f} | Saldo Insoluto: $0.00"
+            f"Forma Pago: {pagos_data.forma_pago} | Moneda: {pagos_data.moneda_pago} | "
+            f"Fecha: {pagos_data.fecha_pago} | "
+            f"Saldo Anterior: ${saldo_anterior:.2f} | Saldo Insoluto: ${saldo_insoluto:.2f}"
         )
         resultado.uuid_timbrado = uuid_comp2
         resultado.url_descarga_pdf = zip_filename
-        resultado.resultado_obtenido = f"PASS — UUID: {uuid_comp2}"
+        resultado.resultado_obtenido = (
+            f"PASS | UUID Comp.2: {uuid_comp2} | "
+            f"Factura Relacionada: {uuid_factura} | Archivo: {zip_filename}"
+        )
 
-        log.info("TEST_03 PASS — UUID_COMP2=%s Saldo liquidado", uuid_comp2)
+        log.info(
+            "TEST_03 PASS — UUID_COMP2=%s  Saldo Insoluto=$%.2f",
+            uuid_comp2, saldo_insoluto,
+        )
 
     except Exception as exc:
         page.take_screenshot("error_complemento_pago_2", screenshots_dir)

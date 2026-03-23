@@ -107,7 +107,7 @@ class ComplementoPagoPage(FacturaPage):
 
         # Let any prior AJAX (e.g. receptor autofill accordion re-render) settle
         wait_for_ajax(self.driver)
-        _time.sleep(0.5)
+        _time.sleep(0.2)
 
         # Set value on hidden <select> and fire jQuery change → PrimeFaces AJAX
         input_id = _TIPO_COMPROBANTE + "_input"
@@ -142,10 +142,9 @@ class ComplementoPagoPage(FacturaPage):
         )
 
         # Serie — click the widget to open the dropdown, then click the matching
-        # li item via JavaScript (avoids waiting for panel visibility which is
-        # unreliable inside panelComplementoPago after PAGO AJAX re-render).
+        # li item via JavaScript
         wait_for_ajax(self.driver)
-        _time.sleep(0.3)
+        _time.sleep(0.1)
         log.info("Serie: opening dropdown to select '%s'", serie)
         try:
             trigger = wait_for_element_clickable(self.driver, By.ID, _SERIE, timeout=10)
@@ -154,7 +153,7 @@ class ComplementoPagoPage(FacturaPage):
                 trigger.click()
             except Exception:
                 self.driver.execute_script("arguments[0].click();", trigger)
-            _time.sleep(0.4)
+            _time.sleep(0.2)
 
             result = self.driver.execute_script(
                 "var panel = document.getElementById(arguments[0] + '_panel');"
@@ -224,7 +223,7 @@ class ComplementoPagoPage(FacturaPage):
 
         # Wait for any lingering spinner/overlay to disappear before acting
         wait_for_ajax(self.driver)
-        _time.sleep(0.5)
+        _time.sleep(0.2)
 
         # jQuery datepicker.setDate sets value + fires select events
         self.driver.execute_script(
@@ -253,7 +252,7 @@ class ComplementoPagoPage(FacturaPage):
         import time as _time
         log.info("fill_forma_pago_complemento: %s", forma_pago)
         wait_for_ajax(self.driver)
-        _time.sleep(0.3)
+        _time.sleep(0.1)
 
         input_id = _FORMA_PAGO_PAGOP + "_input"
         opts = self.driver.execute_script(
@@ -307,7 +306,7 @@ class ComplementoPagoPage(FacturaPage):
         except Exception:
             pass
         wait_for_ajax(self.driver)
-        _time.sleep(0.3)
+        _time.sleep(0.1)
         self.autocomplete(_MONEDA_PAGO_P_AC, moneda, moneda)
         wait_for_ajax(self.driver)
 
@@ -344,7 +343,7 @@ class ComplementoPagoPage(FacturaPage):
             self.driver, By.ID, _DIALOG_BUSQUEDA_ID, timeout=20
         )
         wait_for_ajax(self.driver)
-        _time.sleep(0.3)
+        _time.sleep(0.1)
 
         # — Filter by Emisor (triggers AJAX to load Sucursal/CC options) —
         if emisor_rfc:
@@ -352,7 +351,7 @@ class ComplementoPagoPage(FacturaPage):
             _sel = _EMISOR_DR_SEARCH + "_input"
             if self._jquery_select_by_text(_sel, emisor_rfc):
                 wait_for_ajax(self.driver)
-                _time.sleep(0.3)
+                _time.sleep(0.1)
 
         # — Filter by Sucursal (triggers AJAX to load CC options) —
         if sucursal:
@@ -360,7 +359,7 @@ class ComplementoPagoPage(FacturaPage):
             _sel = _SUCURS_DR_SEARCH + "_input"
             if self._jquery_select_by_text(_sel, sucursal):
                 wait_for_ajax(self.driver)
-                _time.sleep(0.3)
+                _time.sleep(0.1)
 
         # — Filter by Centro de Consumo —
         if cc:
@@ -368,7 +367,7 @@ class ComplementoPagoPage(FacturaPage):
             _sel = _CC_DR_SEARCH + "_input"
             if self._jquery_select_by_text(_sel, cc):
                 wait_for_ajax(self.driver)
-                _time.sleep(0.3)
+                _time.sleep(0.1)
 
         # Fill UUID and run search
         uuid_input = wait_for_element_clickable(
@@ -470,12 +469,25 @@ class ComplementoPagoPage(FacturaPage):
         if opts is None:
             log.warning("_jquery_select_by_text: element '%s' not found", input_id)
             return False
-        target_lower = text.lower()
+        target_lower = text.lower().strip()
         matched_value = None
+        # Priority 1: exact match
         for opt in opts:
-            if target_lower in opt.get("t", "").lower():
+            if opt.get("t", "").lower().strip() == target_lower:
                 matched_value = opt["v"]
                 break
+        # Priority 2: starts-with match
+        if matched_value is None:
+            for opt in opts:
+                if opt.get("t", "").lower().strip().startswith(target_lower):
+                    matched_value = opt["v"]
+                    break
+        # Priority 3: substring match (last resort)
+        if matched_value is None:
+            for opt in opts:
+                if target_lower in opt.get("t", "").lower():
+                    matched_value = opt["v"]
+                    break
         if matched_value is not None:
             self.driver.execute_script(
                 "var el = document.getElementById(arguments[0]);"

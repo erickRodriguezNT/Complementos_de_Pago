@@ -176,6 +176,50 @@ class BasePage:
         base_id = input_id.replace("_input", "")
         self.select_one_menu_contains(base_id, partial_label)
 
+    def _jquery_set_select_by_label(self, input_id: str, label: str) -> bool:
+        """Set a PrimeFaces hidden <select> by matching option text via jQuery trigger.
+
+        Tries exact → starts-with → contains match (case-insensitive).
+        Fires jQuery trigger('change') so PrimeFaces AJAX handlers run.
+        Returns True on success, False if no option matched (caller should fallback).
+        Much faster than UI panel-click: no scroll, no open/close animation.
+        """
+        target = label.strip().lower()
+        matched = self.driver.execute_script(
+            "var sel = document.getElementById(arguments[0]);"
+            "if (!sel) return null;"
+            "var opts = Array.from(sel.options);"
+            "var t = arguments[1];"
+            "var found = null;"
+            "for (var a = 0; a < opts.length; a++) {"
+            "  if (opts[a].text.trim().toLowerCase() === t) { found = opts[a]; break; }"
+            "}"
+            "if (!found) {"
+            "  for (var b = 0; b < opts.length; b++) {"
+            "    if (opts[b].text.trim().toLowerCase().indexOf(t) === 0) { found = opts[b]; break; }"
+            "  }"
+            "}"
+            "if (!found) {"
+            "  for (var c = 0; c < opts.length; c++) {"
+            "    if (opts[c].text.trim().toLowerCase().indexOf(t) >= 0) { found = opts[c]; break; }"
+            "  }"
+            "}"
+            "if (found) {"
+            "  sel.value = found.value;"
+            "  window.jQuery(sel).trigger('change');"
+            "  return found.text.trim();"
+            "}"
+            "return null;",
+            input_id, target,
+        )
+        if matched is not None:
+            log.debug("_jquery_set_select_by_label '%s' → '%s'", input_id, matched)
+            return True
+        log.warning(
+            "_jquery_set_select_by_label: '%s' not found in '%s'", label, input_id
+        )
+        return False
+
     # ── PrimeFaces AutoComplete ────────────────────────────────────────────
 
     def autocomplete(self, input_id: str, text: str, suggestion_text: str = None,
@@ -200,17 +244,16 @@ class BasePage:
         el.clear()
         el.send_keys(Keys.CONTROL, "a")
         el.send_keys(Keys.BACKSPACE)
-        time.sleep(0.2)
 
         el.send_keys(text)
-        time.sleep(0.8)                   # let autocomplete AJAX query fire
+        time.sleep(0.4)                   # let autocomplete AJAX query fire
         wait_for_ajax(self.driver, timeout=timeout)
 
-        # ── A: keyboard confirmation ──────────────────────────────────────
+        # ── A: keyboard confirmation ──────────────────────────────────────────────────
         el.send_keys(Keys.ARROW_DOWN)
-        time.sleep(0.3)
+        time.sleep(0.1)
         el.send_keys(Keys.ENTER)
-        time.sleep(0.4)
+        time.sleep(0.1)
         wait_for_ajax(self.driver)
 
         valor = (el.get_attribute("value") or "").strip()
@@ -271,7 +314,6 @@ class BasePage:
 
     def scroll_to(self, element):
         self.driver.execute_script("arguments[0].scrollIntoView({block:'center'});", element)
-        time.sleep(0.2)
 
     def safe_click(self, element_id: str):
         el = wait_for_element_clickable(self.driver, By.ID, element_id)

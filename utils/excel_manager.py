@@ -83,6 +83,28 @@ class PagoRow:
     cp2: float = 0.0           # importe del segundo complemento de pago
 
 
+@dataclass
+class EscenarioData:
+    """Agrupación de un escenario de prueba: conceptos + impuestos asociados.
+
+    Cada instancia representa un caso de prueba independiente leído del Excel.
+    El Excel es la única fuente de verdad; Python solo lee y ejecuta.
+    """
+    id_escenario: int
+    nombre: str
+    conceptos: List[ConceptoRow]
+    impuestos: List[ImpuestoRow]
+
+    def __str__(self) -> str:
+        return f"Esc{self.id_escenario}_{self.nombre}"
+
+    def __repr__(self) -> str:
+        return (
+            f"EscenarioData(id={self.id_escenario}, nombre={self.nombre!r}, "
+            f"conceptos={len(self.conceptos)}, impuestos={len(self.impuestos)})"
+        )
+
+
 # ── Normalizers ───────────────────────────────────────────────────────────────
 
 def _clean_str(value, default: str = "") -> str:
@@ -253,7 +275,130 @@ def read_conceptos(path: str):
     return conceptos, impuestos
 
 
-def read_pagos(path: str) -> "PagoRow":
+def read_escenarios(path: str) -> "List[EscenarioData]":
+    """Lee todos los escenarios de prueba desde el Excel.
+
+    Estructura esperada en el Excel:
+    ─────────────────────────────────────────────────────────────────────────
+    Hoja  'escenarios'         (opcional, para nombres de escenario)
+        Id Escenario | Nombre Escenario
+
+    Hoja  'conceptos'          (misma de siempre + columna Id Escenario)
+        Id Escenario | Id Concepto | Cantidad | Clave Unidad | Descripción |
+        Clave Producto/Servicio | Valor Unitario | Objeto Impuesto
+
+    Hoja  'impuestos-conceptos' (misma de siempre + columna Id Escenario)
+        Id Escenario | Id Concepto | Tipo Impuesto | Local o Federal |
+        Retencion o Traslado | Tipo Factor | Tasa o Cuota | Nombre Impuesto
+    ─────────────────────────────────────────────────────────────────────────
+    Si una hoja NO tiene la columna 'Id Escenario', todas sus filas se tratan
+    como pertenecientes al Escenario 1 (retrocompatibilidad total).
+
+    Devuelve una lista de EscenarioData ordenada por Id Escenario.
+    """
+    wb = openpyxl.load_workbook(path, data_only=True)
+
+    # ── 1. Hoja 'escenarios' → mapa id → nombre ──────────────────────────────
+    escenario_nombres: dict = {}
+    if "escenarios" in wb.sheetnames:
+        ws_e = wb["escenarios"]
+        hdrs_e = [
+            str(c.value).strip() if c.value is not None else ""
+            for c in next(ws_e.iter_rows(min_row=1, max_row=1))
+        ]
+        for row in ws_e.iter_rows(min_row=2, values_only=True):
+            if not any(row):
+                continue
+            r = dict(zip(hdrs_e, row))
+            eid = int(r.get("Id Escenario") or 0)
+            nombre = _clean_str(r.get("Nombre Escenario") or r.get("Nombre") or "")
+            if eid:
+                escenario_nombres[eid] = nombre
+
+    # ── 2. Hoja 'conceptos' → agrupar por escenario ──────────────────────────
+    ws_c = wb["conceptos"]
+    hdrs_c = [
+        str(c.value).strip() if c.value is not None else ""
+        for c in next(ws_c.iter_rows(min_row=1, max_row=1))
+    ]
+    has_esc_c = "Id Escenario" in hdrs_c
+    conceptos_by_esc: dict = {}
+
+    for row in ws_c.iter_rows(min_row=2, values_only=True):
+        if not any(row):
+            continue
+        r = dict(zip(hdrs_c, row))
+        eid = int(r.get("Id Escenario") or 1) if has_esc_c else 1
+        desc = _clean_str(r.get("Descripción") or r.get("Descripcion") or "").strip()
+        conceptos_by_esc.setdefault(eid, []).append(ConceptoRow(
+            cantidad=float(r.get("Cantidad") or 1),
+            clave_unidad=_clean_str(r.get("Clave Unidad") or "").upper(),
+            descripcion=desc,
+            clave_producto=_clean_str(r.get("Clave Producto/Servicio") or "").strip(),
+            valor_unitario=float(r.get("Valor Unitario") or 0),
+            objeto_impuesto=_normalize_objeto_impuesto(r.get("Objeto Impuesto") or "02"),
+            id_concepto=int(r.get("Id Concepto") or 0),
+        ))
+
+    # ── 3. Hoja 'impuestos-conceptos' → agrupar por escenario ────────────────
+    ws_i = wb["impuestos-conceptos"]
+    hdrs_i = [
+        str(c.value).strip() if c.value is not None else ""
+        for c in next(ws_i.iter_rows(min_row=1, max_row=1))
+    ]
+    has_esc_i = "Id Escenario" in hdrs_i
+    impuestos_by_esc: dict = {}
+
+    for row in ws_i.iter_rows(min_row=2, values_only=True):
+        if not any(row):
+            continue
+        r = dict(zip(hdrs_i, row))
+        eid = int(r.get("Id Escenario") or 1) if has_esc_i else 1
+
+        raw_ret = _get_first_present(r, "Retencion o Traslado", "Retención o Traslado")
+        raw_imp = _get_first_present(r, "Tipo Impuesto")
+        raw_lf  = _get_first_present(r, "Local o Federal")
+        raw_tf  = _get_first_present(r, "Tipo Factor")
+        raw_tc  = _get_first_present(r, "Tasa o Cuota", default=0)
+
+        if not raw_ret or not raw_imp:
+            continue  # fila incompleta — saltar silenciosamente
+
+        try:
+            impuestos_by_esc.setdefault(eid, []).append(ImpuestoRow(
+                id_concepto=int(_get_first_present(r, "Id Concepto", default=0)),
+                retencion_traslado=_norm_retencion(raw_ret),
+                clave_impuesto=_clean(raw_imp).upper(),
+                nombre_impuesto=_clean(_get_first_present(r, "Nombre Impuesto")),
+                local_federal=_norm_local(raw_lf),
+                tipo_factor=_norm_factor(raw_tf),
+                tasa_cuota=float(raw_tc or 0),
+            ))
+        except ValueError as exc:
+            raise ValueError(
+                f"read_escenarios: escenario {eid}, fila {r}: {exc}"
+            ) from exc
+
+    wb.close()
+
+    # ── 4. Reunir todos los IDs y construir la lista ordenada ─────────────────
+    all_ids = sorted(
+        set(list(conceptos_by_esc.keys()) + list(impuestos_by_esc.keys()))
+    )
+    if not all_ids:
+        return []
+
+    result: List[EscenarioData] = []
+    for eid in all_ids:
+        nombre = escenario_nombres.get(eid, f"Escenario {eid}")
+        result.append(EscenarioData(
+            id_escenario=eid,
+            nombre=nombre,
+            conceptos=conceptos_by_esc.get(eid, []),
+            impuestos=impuestos_by_esc.get(eid, []),
+        ))
+
+    return result
     """Lee la primera fila de datos de la hoja 'pagos' del Excel.
 
     Columnas esperadas (row 1 = headers):

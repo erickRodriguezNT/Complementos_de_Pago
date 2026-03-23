@@ -23,8 +23,8 @@ def wait_for_ajax(driver, timeout: int = 30) -> None:
     except TimeoutException:
         # No blocker appeared — that's fine
         pass
-    # Extra micro-sleep for React-like DOM settle
-    time.sleep(0.3)
+    # Minimal settle for DOM paint after AJAX
+    time.sleep(0.05)
 
 
 def wait_for_element_visible(driver, by, locator, timeout: int = 20):
