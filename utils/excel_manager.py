@@ -80,6 +80,8 @@ class PagoRow:
     fecha_pago: str = ""       # "2026-03-20" / "20/03/2026" / "20-03-2026"
     forma_pago: str = "01"     # código SAT, ej. "01", "03", "04"
     moneda_pago: str = "MXN"   # clave de moneda SAT
+    tipo_cambio_pago: float = 0.0  # 0.0 = no aplica (MXN); e.g. 17.50 para USD
+    equivalencia_dr: float = 0.0   # 0.0 = no aplica (misma moneda); e.g. 0.0571 = 1/17.5
     cp1: float = 0.0           # importe del primer complemento de pago
     cp2: float = 0.0           # importe del segundo complemento de pago
 
@@ -101,6 +103,7 @@ class EscenarioData:
     rfc_emisor: str = ""   # vacío → usar config [emisor] rfc
     sucursal: str = ""     # vacío → usar config [emisor] sucursal
     cc: str = ""           # vacío → usar config [emisor] cc
+    moneda_ppd: str = ""   # vacío → usar config [comprobante] moneda; e.g. "USD"
 
     def __str__(self) -> str:
         return f"Esc{self.id_escenario}_{self.nombre}"
@@ -331,6 +334,7 @@ def read_escenarios(path: str) -> "List[EscenarioData]":
                     "rfc_emisor": _clean_str(r.get("RFC Emisor") or ""),
                     "sucursal":   _clean_str(r.get("Sucursal") or ""),
                     "cc":         _clean_str(r.get("CC") or ""),
+                    "moneda_ppd": _clean_str(r.get("Moneda PPD") or "").upper(),
                 }
 
     # ── 2. Hoja 'conceptos' → agrupar por escenario ──────────────────────────
@@ -414,10 +418,11 @@ def read_escenarios(path: str) -> "List[EscenarioData]":
             rfc_emisor = info.get("rfc_emisor", "")
             sucursal   = info.get("sucursal", "")
             cc         = info.get("cc", "")
+            moneda_ppd = info.get("moneda_ppd", "")
         else:
             # retrocompatibilidad: antes se almacenaba solo el nombre
             nombre     = info or f"Escenario {eid}"
-            rfc_emisor = sucursal = cc = ""
+            rfc_emisor = sucursal = cc = moneda_ppd = ""
         result.append(EscenarioData(
             id_escenario=eid,
             nombre=nombre,
@@ -426,6 +431,7 @@ def read_escenarios(path: str) -> "List[EscenarioData]":
             rfc_emisor=rfc_emisor,
             sucursal=sucursal,
             cc=cc,
+            moneda_ppd=moneda_ppd,
         ))
 
     return result
@@ -480,6 +486,8 @@ def read_pagos(path: str) -> "dict":
             moneda_pago=(_clean_str(
                 r.get("MONEDA DE PAGO") or r.get("MONEDA") or "MXN"
             ) or "MXN").upper(),
+            tipo_cambio_pago=float(r.get("TIPO DE CAMBIO PAGO") or 0),
+            equivalencia_dr=float(r.get("EQUIVALENCIA DR") or 0),
             cp1=float(r.get("CP1") or 0),
             cp2=float(r.get("CP2") or 0),
         )

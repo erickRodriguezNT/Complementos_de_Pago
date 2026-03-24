@@ -62,6 +62,13 @@ _BTN_AGREGAR_RESULT_0_CSS = (
 
 # ── "Agregar pago" button in main form ──────────────────────────────────────
 _BTN_AGREGAR_PAGO = "formNuevaFactura:accordionDatosComprobante:j_idt418"
+# ── Tipo de Cambio Pago / Equivalencia DR ─────────────────────────────────────
+_INPUT_TIPO_CAMBIO_PAGO = (
+    "formNuevaFactura:accordionDatosComprobante:inputTipoCambioP_input"
+)
+_INPUT_EQUIVALENCIA_DR = (
+    "formNuevaFactura:accordionDatosComprobante:tipoCambioRelacionadoComplemento_input"
+)
 # ── dialogDocRelacionado filter dropdowns ─────────────────────────────────────
 _EMISOR_DR_SEARCH  = "formNuevaFactura:selectOneEmisorDocRel"
 _SUCURS_DR_SEARCH  = "formNuevaFactura:selectOneSucursDocRel"
@@ -310,6 +317,64 @@ class ComplementoPagoPage(FacturaPage):
         self.autocomplete(_MONEDA_PAGO_P_AC, moneda, moneda)
         wait_for_ajax(self.driver)
 
+    def fill_tipo_cambio_pago(self, tipo_cambio: float):
+        """Fill 'Tipo de Cambio Pago *' field (enabled only when moneda ≠ MXN).
+
+        Call after fill_moneda_pago_complemento with a non-MXN moneda.
+        Uses a Selenium fallback to JS in case the field is still disabled.
+        """
+        if tipo_cambio <= 0:
+            return
+        import time as _time
+        log.info("fill_tipo_cambio_pago: %.4f", tipo_cambio)
+        wait_for_ajax(self.driver)
+        _time.sleep(0.3)
+        valor_str = str(tipo_cambio)
+        try:
+            el = wait_for_element_clickable(
+                self.driver, By.ID, _INPUT_TIPO_CAMBIO_PAGO, timeout=10
+            )
+            el.clear()
+            el.send_keys(valor_str)
+        except Exception:
+            log.warning("fill_tipo_cambio_pago: Selenium interaction failed — using JS fallback")
+            self.driver.execute_script(
+                "var inp = document.getElementById(arguments[0]);"
+                "var hid = document.getElementById("
+                "    arguments[0].replace('_input','_hinput'));"
+                "if (inp) {"
+                "    inp.removeAttribute('disabled');"
+                "    inp.value = arguments[1];"
+                "    window.jQuery(inp).trigger('change');"
+                "}"
+                "if (hid) {"
+                "    hid.removeAttribute('disabled');"
+                "    hid.value = arguments[1];"
+                "}",
+                _INPUT_TIPO_CAMBIO_PAGO, valor_str,
+            )
+        wait_for_ajax(self.driver)
+
+    def fill_equivalencia_dr(self, equivalencia: float):
+        """Fill 'Equivalencia DR' inside j_idt293 dialog.
+
+        Call after buscar_y_agregar_cfdi_en_dr and before fill_importe_pago.
+        Represents the ratio of document currency to payment currency
+        (e.g. 1/tipo_cambio_pago when document is MXN and payment is USD).
+        """
+        if equivalencia <= 0:
+            return
+        import time as _time
+        log.info("fill_equivalencia_dr: %.6f", equivalencia)
+        wait_for_ajax(self.driver)
+        _time.sleep(0.2)
+        el = wait_for_element_clickable(
+            self.driver, By.ID, _INPUT_EQUIVALENCIA_DR, timeout=15
+        )
+        el.clear()
+        el.send_keys(str(equivalencia))
+        wait_for_ajax(self.driver)
+
     # ── DR (Documento Relacionado) flow ─────────────────────────────────────
 
     def click_documento_relacionado_dr(self):
@@ -424,11 +489,13 @@ class ComplementoPagoPage(FacturaPage):
         emisor_rfc: str = "",
         sucursal: str = "",
         cc: str = "",
+        equivalencia_dr: float = 0.0,
     ):
         """Orchestrate the full DR sub-flow (steps 7-12):
 
           click_documento_relacionado_dr()
           buscar_y_agregar_cfdi_en_dr(uuid_factura, emisor_rfc, sucursal, cc)
+          fill_equivalencia_dr(equivalencia_dr)   # only if equivalencia_dr > 0
           fill_importe_pago(importe_pago)
           click_agregar_en_dialog_dr()
           close_dialog_dr()
@@ -441,6 +508,8 @@ class ComplementoPagoPage(FacturaPage):
             sucursal=sucursal,
             cc=cc,
         )
+        if equivalencia_dr > 0:
+            self.fill_equivalencia_dr(equivalencia_dr)
         self.fill_importe_pago(importe_pago)
         self.click_agregar_en_dialog_dr()
         self.close_dialog_dr()

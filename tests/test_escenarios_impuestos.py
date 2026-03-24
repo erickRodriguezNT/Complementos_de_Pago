@@ -66,6 +66,8 @@ def test_flujo_completo_escenario(
     log.info("+  Emisor: %s | Sucursal: %s | CC: %s", esc_rfc, esc_suc, esc_cc)
     log.info("+  Pago: fecha=%s | forma=%s | moneda=%s | CP1=%.2f | CP2=%.2f",
              pago.fecha_pago, pago.forma_pago, pago.moneda_pago, pago.cp1, pago.cp2)
+    if escenario.moneda_ppd:
+        log.info("+  PPD moneda override: %s", escenario.moneda_ppd)
     log.info(
         "  Conceptos: %d | Impuestos: %d",
         len(escenario.conceptos), len(escenario.impuestos),
@@ -112,7 +114,7 @@ def test_flujo_completo_escenario(
             serie=_resolve_serie(esc_rfc, config["comprobante"]["serie"]),
             forma_pago=config["comprobante"]["forma_pago"],
             metodo_pago=config["comprobante"]["metodo_pago"],
-            moneda=config["comprobante"]["moneda"],
+            moneda=escenario.moneda_ppd or config["comprobante"]["moneda"],
         )
         fac_page.add_all_conceptos(escenario.conceptos, escenario.impuestos)
         fac_page.take_screenshot(f"before_timbrar_esc{esc_id}_ppd", escenario_dir)
@@ -201,12 +203,15 @@ def test_flujo_completo_escenario(
         cp_page.fill_fecha_pago(pago.fecha_pago)
         cp_page.fill_forma_pago_complemento(pago.forma_pago)
         cp_page.fill_moneda_pago_complemento(pago.moneda_pago)
+        if pago.tipo_cambio_pago > 0:
+            cp_page.fill_tipo_cambio_pago(pago.tipo_cambio_pago)
         cp_page.flujo_dr_completo(
             uuid_factura=uuid_factura,
             importe_pago=f"{monto_cp1:.2f}",
             emisor_rfc=esc_rfc,
             sucursal=esc_suc,
             cc=esc_cc,
+            equivalencia_dr=pago.equivalencia_dr,
         )
         cp_page.take_screenshot(f"before_timbrar_esc{esc_id}_cp1", escenario_dir)
 
@@ -273,12 +278,15 @@ def test_flujo_completo_escenario(
         cp_page2.fill_fecha_pago(pago.fecha_pago)
         cp_page2.fill_forma_pago_complemento(pago.forma_pago)
         cp_page2.fill_moneda_pago_complemento(pago.moneda_pago)
+        if pago.tipo_cambio_pago > 0:
+            cp_page2.fill_tipo_cambio_pago(pago.tipo_cambio_pago)
         cp_page2.flujo_dr_completo(
             uuid_factura=uuid_factura,
             importe_pago=f"{monto_cp2:.2f}",
             emisor_rfc=esc_rfc,
             sucursal=esc_suc,
             cc=esc_cc,
+            equivalencia_dr=pago.equivalencia_dr,
         )
         cp_page2.take_screenshot(f"before_timbrar_esc{esc_id}_cp2", escenario_dir)
 

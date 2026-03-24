@@ -46,6 +46,10 @@ _ESC_FILL   = {
         # 11-18 (nuevos — Hyatt)
         "E8D9F7","D9F7E0","F7EFD9","D9EFF7",
         "F7D9D9","D9F7D9","F7F7D9","D9E8F7",
+        # 19-20 (NID — pago USD)
+        "F7D9F0","D9F7FA",
+        # 21-22 (NID — PPD USD, pago MXN)
+        "E8F7D0","FAE8D9",
     ], start=1)
 }
 _THIN = Border(
@@ -76,7 +80,7 @@ def _cell(ws, row, col, value, fill=None):
 # DATOS DE LOS EMISORES
 # ═══════════════════════════════════════════════════════════════════════════════
 
-# Emisor por defecto (escenarios 1-10): celdas vacías → el test usa config.ini
+# Emisor por defecto (escenarios 1-10 y 19-20): celdas vacías → el test usa config.ini
 _EMISOR_DEFAULT = {"rfc": "", "sucursal": "", "cc": ""}
 
 # Emisor Hyatt (escenarios 11-18)
@@ -112,6 +116,12 @@ _ESCENARIOS = [
     {"id": 16, "nombre": "IVA 16 IVA 8 IVA 0 IEPS 0.08 IEPS 0.53 IEPS 30", **_EMISOR_HYATT},
     {"id": 17, "nombre": "IVA 8 IVA 0 IEPS 0.08 IEPS 0.53 Ret IEPS ISH 0.08", **_EMISOR_HYATT},
     {"id": 18, "nombre": "IVA 16 IVA 8 IVA 0 IEPS 0.53 IEPS 0.265 Ret IEPS Ret ISR Ret ISH", **_EMISOR_HYATT},
+    # ─── Grupo 3: Emisor NID (pago en USD con Tipo de Cambio) ───
+    {"id": 19, "nombre": "IVA 16 USD Tipo de Cambio",               **_EMISOR_DEFAULT},
+    {"id": 20, "nombre": "IVA 16 USD Tipo de Cambio v2",            **_EMISOR_DEFAULT},
+    # ─── Grupo 4: Emisor NID (PPD USD, pago MXN) ───
+    {"id": 21, "nombre": "PPD USD CMP MXN IVA16 IVA0 IEPS8 IEPS9", **_EMISOR_DEFAULT, "moneda_ppd": "USD"},
+    {"id": 22, "nombre": "PPD USD CMP MXN IVA16",                   **_EMISOR_DEFAULT, "moneda_ppd": "USD"},
 ]
 
 # Concepto base: el mismo para todos los escenarios
@@ -247,7 +257,48 @@ _IMPUESTOS = [
     _I(18, 1, "IEPS", "FEDERAL", "RETENCION", "TASA", 0.080, "Ret IEPS 8%"),
     _I(18, 1, "ISR",  "FEDERAL", "RETENCION", "TASA", 0.015, "Ret ISR 1.5%"),
     _I(18, 1, "ISH",  "LOCAL",   "RETENCION", "TASA", 0.050, "Ret ISH 5%"),
+
+    # ─── Escenarios NID — pago en USD con Tipo de Cambio ───
+
+    # Esc 19: IVA 16 (pago en USD)
+    _I(19, 1, "IVA",  "FEDERAL", "TRASLADO",  "TASA", 0.160, "IVA 16%"),
+
+    # Esc 20: IVA 16 (pago en USD — variante)
+    _I(20, 1, "IVA",  "FEDERAL", "TRASLADO",  "TASA", 0.160, "IVA 16%"),
+
+    # ─── Escenarios NID — PPD en USD, pago en MXN ───
+
+    # Esc 21: PPD USD, CMP MXN — IVA 16 + IVA 0 + IEPS 0.08 + IEPS 0.09
+    _I(21, 1, "IVA",  "FEDERAL", "TRASLADO",  "TASA", 0.160, "IVA 16%"),
+    _I(21, 1, "IVA",  "FEDERAL", "TRASLADO",  "TASA", 0.000, "IVA 0%"),
+    _I(21, 1, "IEPS", "FEDERAL", "TRASLADO",  "TASA", 0.080, "IEPS 8%"),
+    _I(21, 1, "IEPS", "FEDERAL", "TRASLADO",  "TASA", 0.090, "IEPS 9%"),
+
+    # Esc 22: PPD USD, CMP MXN — IVA 16
+    _I(22, 1, "IVA",  "FEDERAL", "TRASLADO",  "TASA", 0.160, "IVA 16%"),
 ]
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# VALORES POR DEFECTO DE PAGOS POR ESCENARIO
+# ═══════════════════════════════════════════════════════════════════════════════
+
+# Escenarios que requieren valores de pago distintos al default (MXN, 0.0 ...)
+# Tupla: (fecha, forma, moneda, tipo_cambio_pago, equivalencia_dr, cp1, cp2)
+#
+# Reglas de negocio para equivalencia_dr:
+#   - PPD MXN / pago USD (esc 19-20): tipo_cambio_pago = TC; equiv_dr = TC  (e.g. 17.50)
+#   - PPD USD / pago MXN (esc 21-22): tipo_cambio_pago = TC; equiv_dr = 1 / TC (e.g. 1/17.50 ≈ 0.057143)
+_TIPO_CAMBIO_REF = 17.50   # 1 USD = 17.50 MXN — ajustar al tipo de cambio real
+_PAGOS_DEFAULT: dict = {
+    # PPD en MXN, pago en USD → equiv_dr = tipo_cambio
+    19: ("20/03/2026", "03", "USD", _TIPO_CAMBIO_REF, _TIPO_CAMBIO_REF, 6.00, 0.63),
+    20: ("20/03/2026", "03", "USD", _TIPO_CAMBIO_REF, _TIPO_CAMBIO_REF, 6.00, 0.63),
+    # PPD en USD, pago en MXN → tipo_cambio_pago = tipo_cambio; equiv_dr = 1 / tipo_cambio
+    21: ("20/03/2026", "03", "MXN", _TIPO_CAMBIO_REF, round(1 / _TIPO_CAMBIO_REF, 6), 1750.00, 263.00),
+    22: ("20/03/2026", "03", "MXN", _TIPO_CAMBIO_REF, round(1 / _TIPO_CAMBIO_REF, 6), 1750.00, 110.00),
+}
+_PAGOS_FALLBACK = ("20/03/2026", "01", "MXN", 0.0, 0.0, 0.0, 0.0)
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -284,19 +335,20 @@ def build_excel(path: str, preserve_pagos: bool = True):
     # ── Hoja 1: escenarios ────────────────────────────────────────────────────
     ws_e = wb.active
     ws_e.title = "escenarios"
-    esc_headers = ["Id Escenario", "Nombre Escenario", "RFC Emisor", "Sucursal", "CC"]
-    esc_widths   = [14, 52, 18, 26, 22]
+    esc_headers = ["Id Escenario", "Nombre Escenario", "RFC Emisor", "Sucursal", "CC", "Moneda PPD"]
+    esc_widths   = [14, 52, 18, 26, 22, 14]
     for col, (h, w) in enumerate(zip(esc_headers, esc_widths), start=1):
         _hdr(ws_e, 1, col, h)
         ws_e.column_dimensions[openpyxl.utils.get_column_letter(col)].width = w
     for esc in _ESCENARIOS:
         fill = _ESC_FILL.get(esc["id"])
         r = esc["id"] + 1
-        _cell(ws_e, r, 1, esc["id"],         fill)
-        _cell(ws_e, r, 2, esc["nombre"],      fill)
-        _cell(ws_e, r, 3, esc.get("rfc",  ""), fill)
-        _cell(ws_e, r, 4, esc.get("sucursal", ""), fill)
-        _cell(ws_e, r, 5, esc.get("cc",   ""), fill)
+        _cell(ws_e, r, 1, esc["id"],                    fill)
+        _cell(ws_e, r, 2, esc["nombre"],                fill)
+        _cell(ws_e, r, 3, esc.get("rfc",  ""),          fill)
+        _cell(ws_e, r, 4, esc.get("sucursal", ""),      fill)
+        _cell(ws_e, r, 5, esc.get("cc",   ""),          fill)
+        _cell(ws_e, r, 6, esc.get("moneda_ppd", ""),    fill)
 
     # ── Hoja 2: conceptos ─────────────────────────────────────────────────────
     ws_c = wb.create_sheet("conceptos")
@@ -358,8 +410,11 @@ def build_excel(path: str, preserve_pagos: bool = True):
     # Si el archivo ya existía, se preservan los valores reales de cada fila;
     # los escenarios nuevos reciben valores por defecto (0.0 para CP1/CP2).
     ws_p = wb.create_sheet("pagos")
-    pagos_new_headers = ["ESCENARIO", "FECHA DE PAGO", "FORMA DE PAGO", "MONEDA DE PAGO", "CP1", "CP2"]
-    pagos_new_widths  = [14, 18, 16, 18, 12, 12]
+    pagos_new_headers = [
+        "ESCENARIO", "FECHA DE PAGO", "FORMA DE PAGO", "MONEDA DE PAGO",
+        "TIPO DE CAMBIO PAGO", "EQUIVALENCIA DR", "CP1", "CP2",
+    ]
+    pagos_new_widths  = [14, 18, 16, 18, 22, 18, 12, 12]
     for col, (h, w) in enumerate(zip(pagos_new_headers, pagos_new_widths), start=1):
         _hdr(ws_p, 1, col, h)
         ws_p.column_dimensions[openpyxl.utils.get_column_letter(col)].width = w
@@ -391,12 +446,16 @@ def build_excel(path: str, preserve_pagos: bool = True):
             fecha   = old_map.get("FECHA DE PAGO") or old_map.get("FECHA") or "20/03/2026"
             forma   = old_map.get("FORMA DE PAGO") or old_map.get("FORMA") or "01"
             moneda  = old_map.get("MONEDA DE PAGO") or old_map.get("MONEDA") or "MXN"
+            tc_pago = old_map.get("TIPO DE CAMBIO PAGO") or 0.0
+            eq_dr   = old_map.get("EQUIVALENCIA DR") or 0.0
             cp1     = old_map.get("CP1") or 0.0
             cp2     = old_map.get("CP2") or 0.0
         else:
-            fecha, forma, moneda, cp1, cp2 = "20/03/2026", "01", "MXN", 0.0, 0.0
+            fecha, forma, moneda, tc_pago, eq_dr, cp1, cp2 = _PAGOS_DEFAULT.get(
+                eid, _PAGOS_FALLBACK
+            )
 
-        for col, v in enumerate([eid, fecha, forma, moneda, cp1, cp2], start=1):
+        for col, v in enumerate([eid, fecha, forma, moneda, tc_pago, eq_dr, cp1, cp2], start=1):
             _cell(ws_p, row_idx, col, v, fill)
 
     wb.save(path)
@@ -427,5 +486,6 @@ if __name__ == "__main__":
 
     out = build_excel(args.output, preserve_pagos=not args.no_preserve_pagos)
     print(f"✅ Excel generado exitosamente: {out}")
-    print(f"   Escenarios: {len(_ESCENARIOS)} (esc 1-10: NID200929V26 | esc 11-18: TPA110608SW9)")
+    print(f"   Escenarios: {len(_ESCENARIOS)} (esc 1-10: NID200929V26 | esc 11-18: TPA110608SW9 | esc 19-20: NID USD pago | esc 21-22: NID PPD USD pago MXN)")
+    print(f"   Filas de impuestos: {len(_IMPUESTOS)}")
     print(f"   Filas de impuestos: {len(_IMPUESTOS)}")
