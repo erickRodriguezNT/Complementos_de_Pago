@@ -20,7 +20,7 @@ html_report = os.path.join(
 
 cmd = [
     sys.executable, "-m", "pytest",
-    "tests/test_flujo_ppd_complementos.py",
+    "tests/test_escenarios_impuestos.py",
     "-v",
     "-s",
     f"--html={html_report}",
@@ -29,7 +29,7 @@ cmd = [
 ]
 
 print("=" * 60)
-print("  CFDI Automation — Factura PPD + Complementos de Pago")
+print("  CFDI Automation — Escenarios de Impuestos (PPD + CP1 + CP2)")
 print("=" * 60)
 print(f"Reporte HTML: {html_report}")
 print()

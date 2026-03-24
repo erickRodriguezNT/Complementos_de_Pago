@@ -76,6 +76,7 @@ class ImpuestoRow:
 @dataclass
 class PagoRow:
     """Datos del Complemento de Pago leídos desde la hoja 'pagos' del Excel."""
+    id_escenario: int = 0      # columna ESCENARIO — clave de búsqueda
     fecha_pago: str = ""       # "2026-03-20" / "20/03/2026" / "20-03-2026"
     forma_pago: str = "01"     # código SAT, ej. "01", "03", "04"
     moneda_pago: str = "MXN"   # clave de moneda SAT
@@ -89,11 +90,17 @@ class EscenarioData:
 
     Cada instancia representa un caso de prueba independiente leído del Excel.
     El Excel es la única fuente de verdad; Python solo lee y ejecuta.
+
+    Los campos rfc_emisor / sucursal / cc son opcionales: si están vacíos el
+    test usa los valores del [emisor] de config.ini (comportamiento anterior).
     """
     id_escenario: int
     nombre: str
     conceptos: List[ConceptoRow]
     impuestos: List[ImpuestoRow]
+    rfc_emisor: str = ""   # vacío → usar config [emisor] rfc
+    sucursal: str = ""     # vacío → usar config [emisor] sucursal
+    cc: str = ""           # vacío → usar config [emisor] cc
 
     def __str__(self) -> str:
         return f"Esc{self.id_escenario}_{self.nombre}"
@@ -235,14 +242,21 @@ def read_conceptos(path: str):
     headers_i = [str(c.value).strip() if c.value is not None else "" for c in next(ws_i.iter_rows(min_row=1, max_row=1))]
     impuestos: List[ImpuestoRow] = []
 
+    # When the sheet has 'Id Escenario' column (multi-scenario Excel),
+    # read_conceptos only returns impuestos for escenario 1 (backward compat).
+    _has_esc_col = "Id Escenario" in headers_i
+
     for row in ws_i.iter_rows(min_row=2, values_only=True):
         if not any(row):
             continue
 
         r = dict(zip(headers_i, row))
 
-        print("HEADERS IMPUESTOS:", headers_i)
-        print("ROW IMPUESTOS:", r)
+        # Skip rows that belong to other scenarios
+        if _has_esc_col:
+            esc_id = r.get("Id Escenario")
+            if esc_id is not None and int(esc_id) != 1:
+                continue
 
         raw_retencion = _get_first_present(
             r,
@@ -311,9 +325,13 @@ def read_escenarios(path: str) -> "List[EscenarioData]":
                 continue
             r = dict(zip(hdrs_e, row))
             eid = int(r.get("Id Escenario") or 0)
-            nombre = _clean_str(r.get("Nombre Escenario") or r.get("Nombre") or "")
             if eid:
-                escenario_nombres[eid] = nombre
+                escenario_nombres[eid] = {
+                    "nombre":     _clean_str(r.get("Nombre Escenario") or r.get("Nombre") or ""),
+                    "rfc_emisor": _clean_str(r.get("RFC Emisor") or ""),
+                    "sucursal":   _clean_str(r.get("Sucursal") or ""),
+                    "cc":         _clean_str(r.get("CC") or ""),
+                }
 
     # ── 2. Hoja 'conceptos' → agrupar por escenario ──────────────────────────
     ws_c = wb["conceptos"]
@@ -390,50 +408,98 @@ def read_escenarios(path: str) -> "List[EscenarioData]":
 
     result: List[EscenarioData] = []
     for eid in all_ids:
-        nombre = escenario_nombres.get(eid, f"Escenario {eid}")
+        info = escenario_nombres.get(eid)
+        if isinstance(info, dict):
+            nombre     = info.get("nombre") or f"Escenario {eid}"
+            rfc_emisor = info.get("rfc_emisor", "")
+            sucursal   = info.get("sucursal", "")
+            cc         = info.get("cc", "")
+        else:
+            # retrocompatibilidad: antes se almacenaba solo el nombre
+            nombre     = info or f"Escenario {eid}"
+            rfc_emisor = sucursal = cc = ""
         result.append(EscenarioData(
             id_escenario=eid,
             nombre=nombre,
             conceptos=conceptos_by_esc.get(eid, []),
             impuestos=impuestos_by_esc.get(eid, []),
+            rfc_emisor=rfc_emisor,
+            sucursal=sucursal,
+            cc=cc,
         ))
 
     return result
-    """Lee la primera fila de datos de la hoja 'pagos' del Excel.
 
-    Columnas esperadas (row 1 = headers):
-        FECHA DE PAGO | FORMA DE PAGO | MONEDA DE PAGO | CP1 | CP2
 
-    Si la hoja no existe o está vacía, devuelve un PagoRow con valores por defecto.
+def read_pagos(path: str) -> "dict":
+    """Lee la hoja 'pagos' del Excel y devuelve un diccionario {id_escenario: PagoRow}.
+
+    Columnas esperadas (fila 1 = encabezados):
+        ESCENARIO | FECHA DE PAGO | FORMA DE PAGO | MONEDA DE PAGO | CP1 | CP2
+
+    Si la hoja no existe o está vacía devuelve un diccionario vacío.
     """
     wb = openpyxl.load_workbook(path, data_only=True)
     if "pagos" not in wb.sheetnames:
         wb.close()
-        return PagoRow()
+        return {}
 
     ws_p = wb["pagos"]
     header_row = next(ws_p.iter_rows(min_row=1, max_row=1), None)
     if header_row is None:
         wb.close()
-        return PagoRow()
+        return {}
 
-    headers_p = [str(c.value).strip() if c.value is not None else "" for c in header_row]
+    headers_p = [
+        str(c.value).strip().upper() if c.value is not None else ""
+        for c in header_row
+    ]
 
+    result: dict = {}
     for row in ws_p.iter_rows(min_row=2, values_only=True):
         if not any(row):
             continue
         r = dict(zip(headers_p, row))
-        wb.close()
-        return PagoRow(
-            fecha_pago=_clean_str(r.get("FECHA DE PAGO", "") or r.get("Fecha de Pago", "")),
-            forma_pago=_clean_str(r.get("FORMA DE PAGO", "01") or r.get("Forma de Pago", "01")),
-            moneda_pago=_clean_str(r.get("MONEDA DE PAGO", "MXN") or r.get("Moneda de Pago", "MXN")),
-            cp1=float(r.get("CP1", 0) or 0),
-            cp2=float(r.get("CP2", 0) or 0),
+
+        raw_esc = r.get("ESCENARIO") or r.get("ID ESCENARIO") or r.get("ESC")
+        if raw_esc is None:
+            continue  # fila sin escenario asignado — saltar
+        try:
+            eid = int(raw_esc)
+        except (TypeError, ValueError):
+            continue
+
+        result[eid] = PagoRow(
+            id_escenario=eid,
+            fecha_pago=_clean_str(
+                r.get("FECHA DE PAGO") or r.get("FECHA") or ""
+            ),
+            forma_pago=_clean_str(
+                r.get("FORMA DE PAGO") or r.get("FORMA") or "01"
+            ) or "01",
+            moneda_pago=(_clean_str(
+                r.get("MONEDA DE PAGO") or r.get("MONEDA") or "MXN"
+            ) or "MXN").upper(),
+            cp1=float(r.get("CP1") or 0),
+            cp2=float(r.get("CP2") or 0),
         )
 
     wb.close()
-    return PagoRow()
+    return result
+
+
+def get_pago_by_escenario(pagos: dict, id_escenario: int) -> "PagoRow":
+    """Devuelve el PagoRow del escenario solicitado.
+
+    Lanza KeyError con mensaje claro si no existe entrada para ese escenario,
+    para que el test falle con un mensaje descriptivo.
+    """
+    if id_escenario not in pagos:
+        raise KeyError(
+            f"No hay datos de pagos para el escenario {id_escenario}. "
+            f"Escenarios disponibles en la hoja 'pagos': {sorted(pagos.keys())}"
+        )
+    return pagos[id_escenario]
 
 
 # ── Writer ────────────────────────────────────────────────────────────────────

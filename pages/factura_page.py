@@ -281,42 +281,85 @@ class FacturaPage(BasePage):
         self.fill_moneda(moneda)
 
     def fill_moneda(self, moneda: str):
-        """Fill Moneda autocomplete in a more tolerant way.
+        """Fill Moneda PrimeFaces autocomplete.
 
-        This field appears to accept keyboard confirmation better than waiting
-        for the generic autocomplete panel.
+        Strategy:
+          1. Type the moneda code to trigger the suggestion panel.
+          2. Wait for at least one suggestion item to appear.
+          3. Click the first item whose text contains the moneda code
+             (or just click the first item if none matches exactly).
+          4. Verify success by reading the visible input value.
+          5. Fallback: ARROW_DOWN + ENTER if panel did not appear.
         """
         log.info("Filling Moneda: %s", moneda)
+
+        _PANEL_ITEM_CSS = "ul.ui-autocomplete-items li.ui-autocomplete-item"
 
         campo = wait_for_element_clickable(self.driver, By.ID, _MONEDA_AC, timeout=10)
         self.scroll_to(campo)
 
-        try:
-            campo.clear()
-        except Exception:
-            pass
-
-        # Limpieza extra por si PrimeFaces conserva valor parcial
+        # Clear current value
+        self.driver.execute_script("arguments[0].value = '';", campo)
         campo.send_keys(Keys.CONTROL, "a")
         campo.send_keys(Keys.BACKSPACE)
+        time.sleep(0.1)
 
         campo.send_keys(moneda)
-        time.sleep(0.2)  # esperar sugerencias del autocomplete
+        time.sleep(0.3)  # esperar que PrimeFaces lance la petición AJAX
 
-        # Confirmar por teclado en vez de depender siempre del panel visual
-        campo.send_keys(Keys.ARROW_DOWN)
-        time.sleep(0.1)
-        campo.send_keys(Keys.ENTER)
-        time.sleep(0.1)
-        campo.send_keys(Keys.TAB)
+        # Try to click a matching suggestion from the dropdown panel
+        try:
+            items = WebDriverWait(self.driver, 5).until(
+                EC.presence_of_all_elements_located(
+                    (By.CSS_SELECTOR, _PANEL_ITEM_CSS)
+                )
+            )
+            # Prefer item whose text starts with / contains the moneda code
+            target = None
+            for item in items:
+                txt = (item.text or "").upper()
+                if moneda.upper() in txt:
+                    target = item
+                    break
+            if target is None:
+                target = items[0]
 
-        wait_for_ajax(self.driver)
+            self.driver.execute_script("arguments[0].scrollIntoView({block:'nearest'});", target)
+            target.click()
+            wait_for_ajax(self.driver)
 
-        valor_final = (campo.get_attribute("value") or "").strip()
+        except Exception:
+            # Panel not found — fallback to keyboard confirmation
+            campo.send_keys(Keys.ARROW_DOWN)
+            time.sleep(0.15)
+            campo.send_keys(Keys.ENTER)
+            time.sleep(0.2)
+            wait_for_ajax(self.driver)
+
+        # Verify: re-fetch the element to avoid stale reference
+        try:
+            campo = self.driver.find_element(By.ID, _MONEDA_AC)
+            valor_final = (campo.get_attribute("value") or "").strip()
+        except Exception:
+            valor_final = ""
+
         log.info("Moneda final capturada en input: '%s'", valor_final)
 
         if moneda.upper() not in valor_final.upper():
-            log.warning("Moneda '%s' no quedó confirmada exactamente, valor actual: '%s'", moneda, valor_final)
+            log.warning(
+                "Moneda '%s' no confirmada, valor actual: '%s' — reintentando con TAB",
+                moneda, valor_final,
+            )
+            # Last resort: send TAB to trigger PrimeFaces itemSelect via blur
+            try:
+                campo = self.driver.find_element(By.ID, _MONEDA_AC)
+                campo.send_keys(Keys.TAB)
+                wait_for_ajax(self.driver)
+                campo = self.driver.find_element(By.ID, _MONEDA_AC)
+                valor_final = (campo.get_attribute("value") or "").strip()
+                log.info("Moneda tras TAB: '%s'", valor_final)
+            except Exception:
+                pass
 
 
     def expandir_impuestos(self):

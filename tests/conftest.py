@@ -4,7 +4,8 @@ import os
 import pytest
 
 from utils.driver_manager import create_driver
-from utils.excel_manager import ResultsWriter, read_conceptos, read_pagos, read_escenarios
+from utils.excel_manager import ResultsWriter, read_conceptos, read_pagos, read_escenarios, get_pago_by_escenario
+from utils.output_manager import make_run_dir, make_escenario_dir
 from utils.logger import get_logger
 
 log = get_logger("conftest")
@@ -89,6 +90,11 @@ def shared_state():
 
 @pytest.fixture(scope="session")
 def pagos_data(config):
+    """Diccionario {id_escenario: PagoRow} leído de la hoja 'pagos' del Excel.
+
+    Usar get_pago_by_escenario(pagos_data, esc_id) en los tests para obtener
+    los datos de pago del escenario actual.
+    """
     excel_path = config["data"]["conceptos_excel"]
     if not os.path.isabs(excel_path):
         excel_path = os.path.join(_BASE, excel_path)
@@ -99,15 +105,41 @@ def pagos_data(config):
 # ── Utility paths ─────────────────────────────────────────────────────────────
 
 @pytest.fixture(scope="session")
-def screenshots_dir():
-    os.makedirs(_SCREENSHOTS_DIR, exist_ok=True)
-    return _SCREENSHOTS_DIR
+def run_output_dir():
+    """Crea outputs/ejecucion_YYYYMMDD_HHMMSS/ una sola vez por ejecución."""
+    base = os.path.join(_BASE, "outputs")
+    path = make_run_dir(base)
+    log.info("Run output dir: %s", path)
+    return path
+
+
+@pytest.fixture
+def escenario_dir(escenario, run_output_dir):
+    """Carpeta de salida exclusiva para el escenario actual.
+
+    Crea outputs/ejecucion_<ts>/escenario_NN_<nombre>/ y la devuelve.
+    Screenshots, ZIPs y XMLs del escenario se guardan aquí.
+    """
+    if escenario is None:
+        path = os.path.join(run_output_dir, "sin_escenario")
+    else:
+        path = make_escenario_dir(
+            run_output_dir, escenario.id_escenario, escenario.nombre
+        )
+    os.makedirs(path, exist_ok=True)
+    return path
 
 
 @pytest.fixture(scope="session")
-def downloads_dir():
-    os.makedirs(_DOWNLOADS_DIR, exist_ok=True)
-    return _DOWNLOADS_DIR
+def screenshots_dir(run_output_dir):
+    """Alias de sesión que apunta al directorio raíz de la ejecución."""
+    return run_output_dir
+
+
+@pytest.fixture(scope="session")
+def downloads_dir(run_output_dir):
+    """Alias de sesión que apunta al directorio raíz de la ejecución."""
+    return run_output_dir
 
 # ── UUID RELACIONADO  ───────────────────────────────────────────────────
 
