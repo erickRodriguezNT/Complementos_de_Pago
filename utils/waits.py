@@ -1,30 +1,25 @@
-"""PrimeFaces-specific Selenium wait helpers."""
+"""Selenium wait helpers."""
 import time
+import logging
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 
-# XPath for the PrimeFaces AJAX status indicator
-_AJAX_SPINNER_XPATH = "//*[contains(@id,'ajaxStatus') and contains(@style,'display: block')]"
-_AJAX_INDICATOR_CSS = "div.ui-blockui-document"
+_log = logging.getLogger("waits")
 
 
-def wait_for_ajax(driver, timeout: int = 30) -> None:
-    """Block until the PrimeFaces AJAX spinner/blockers disappear."""
+def wait_for_ajax(driver, timeout: int = 2) -> None:
+    """Espera a que desaparezca el overlay de bloqueo AJAX (div.ui-blockui-document)."""
     try:
-        # If a blocker appeared, wait for it to vanish
-        WebDriverWait(driver, 2).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, _AJAX_INDICATOR_CSS))
-        )
         WebDriverWait(driver, timeout).until(
-            EC.invisibility_of_element_located((By.CSS_SELECTOR, _AJAX_INDICATOR_CSS))
+            EC.presence_of_element_located((By.CSS_SELECTOR, "div.ui-blockui-document"))
+        )
+        WebDriverWait(driver, 30).until(
+            EC.invisibility_of_element_located((By.CSS_SELECTOR, "div.ui-blockui-document"))
         )
     except TimeoutException:
-        # No blocker appeared — that's fine
         pass
-    # Minimal settle for DOM paint after AJAX
-    time.sleep(0.05)
 
 
 def wait_for_element_visible(driver, by, locator, timeout: int = 20):

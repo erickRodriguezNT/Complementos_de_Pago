@@ -7,14 +7,19 @@ from utils.driver_manager import create_driver
 from utils.excel_manager import ResultsWriter, read_conceptos, read_pagos, read_escenarios, get_pago_by_escenario
 from utils.output_manager import make_run_dir, make_escenario_dir
 from utils.logger import get_logger
+from utils.paths import (
+    BASE_DIR as _BASE,
+    CONFIG_INI_PATH,
+    REPORTS_DIR    as _REPORTS_DIR,
+    OUTPUTS_DIR,
+    LOGS_DIR,
+)
 
 log = get_logger("conftest")
 
-_BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-_CONFIG_PATH = os.path.join(_BASE, "config", "config.ini")
-_REPORTS_DIR = os.path.join(_BASE, "reports")
+_CONFIG_PATH    = CONFIG_INI_PATH
 _SCREENSHOTS_DIR = os.path.join(_BASE, "screenshots")
-_DOWNLOADS_DIR = os.path.join(_BASE, "downloads")
+_DOWNLOADS_DIR   = os.path.join(_BASE, "downloads")
 
 
 # ── Config ───────────────────────────────────────────────────────────────────
@@ -107,9 +112,12 @@ def pagos_data(config):
 @pytest.fixture(scope="session")
 def run_output_dir():
     """Crea outputs/ejecucion_YYYYMMDD_HHMMSS/ una sola vez por ejecución."""
-    base = os.path.join(_BASE, "outputs")
-    path = make_run_dir(base)
+    path = make_run_dir(OUTPUTS_DIR)
     log.info("Run output dir: %s", path)
+    # Añade un FileHandler legible al logger para que todos los mensajes de la
+    # ejecución queden también en outputs/ejecucion_<ts>/ejecucion_<ts>.log
+    from utils.logger import init_run_logger
+    init_run_logger(path)
     return path
 
 

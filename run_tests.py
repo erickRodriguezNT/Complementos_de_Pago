@@ -7,20 +7,23 @@ import sys
 import subprocess
 from datetime import datetime
 
-BASE = os.path.dirname(os.path.abspath(__file__))
-REPORTS_DIR = os.path.join(BASE, "reports")
-SCREENSHOTS_DIR = os.path.join(BASE, "screenshots")
+from utils.paths import BASE_DIR, REPORTS_DIR, ensure_dirs
 
-os.makedirs(REPORTS_DIR, exist_ok=True)
-os.makedirs(SCREENSHOTS_DIR, exist_ok=True)
+ensure_dirs()
 
 html_report = os.path.join(
     REPORTS_DIR, f"reporte_{datetime.now().strftime('%Y%m%d_%H%M%S')}.html"
 )
 
+# When running from inside a PyInstaller bundle the test files are extracted
+# to a subfolder in the temp dir. We pass the absolute path explicitly so
+# pytest can find them regardless of cwd.
+TESTS_DIR = os.path.join(BASE_DIR, "tests") if not getattr(sys, "frozen", False) \
+    else os.path.join(sys._MEIPASS, "tests")  # type: ignore[attr-defined]
+
 cmd = [
     sys.executable, "-m", "pytest",
-    "tests/test_escenarios_impuestos.py",
+    os.path.join(TESTS_DIR, "test_escenarios_impuestos.py"),
     "-v",
     "-s",
     f"--html={html_report}",
@@ -34,5 +37,5 @@ print("=" * 60)
 print(f"Reporte HTML: {html_report}")
 print()
 
-result = subprocess.run(cmd, cwd=BASE)
+result = subprocess.run(cmd, cwd=BASE_DIR)
 sys.exit(result.returncode)

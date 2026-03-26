@@ -337,3 +337,63 @@ class BasePage:
         self.driver.save_screenshot(path)
         log.info("Screenshot saved: %s", path)
         return path
+
+    # ── Force helpers (retry + DOM validation) ───────────────────────────────
+    # Delegan en utils.force_helpers para mantener la lógica de reintento
+    # fuera de las páginas, pero permiten llamarlos como self.force_X(...)
+
+    def force_input(self, element_id: str, value: str, max_attempts: int = 3) -> str:
+        """Llena un <input> y confirma el valor vía DOM. Ver utils.force_helpers."""
+        from utils.force_helpers import force_input_value
+        return force_input_value(self.driver, element_id, value, max_attempts)
+
+    def force_select_contains(self, widget_id: str, label: str, max_attempts: int = 3) -> str:
+        """Selecciona opción que CONTIENE *label* en un SelectOneMenu PrimeFaces."""
+        from utils.force_helpers import force_select_menu_contains
+        return force_select_menu_contains(self.driver, widget_id, label, max_attempts)
+
+    def force_select_exact(self, widget_id: str, label: str, max_attempts: int = 3) -> str:
+        """Selecciona opción con coincidencia EXACTA de *label* en un SelectOneMenu."""
+        from utils.force_helpers import force_select_menu_exact
+        return force_select_menu_exact(self.driver, widget_id, label, max_attempts)
+
+    def force_jquery(self, input_id: str, label: str, max_attempts: int = 3) -> str:
+        """Asigna valor a un <select> oculto via jQuery y confirma el label visible."""
+        from utils.force_helpers import force_jquery_select
+        return force_jquery_select(self.driver, input_id, label, max_attempts)
+
+    def force_ac(
+        self, input_id: str, text: str, target: str = None, max_attempts: int = 3
+    ) -> str:
+        """Escribe en un AutoComplete y confirma que el valor quedó registrado."""
+        from utils.force_helpers import force_autocomplete
+        return force_autocomplete(self.driver, input_id, text, target, max_attempts)
+
+    def wait_and_fail_if_growl_error(self, context: str = "") -> None:
+        """Verifica si hay un growl/toast de error activo y lanza RuntimeError.
+
+        Llamar antes de operaciones críticas (cerrar modal, agregar concepto, etc.).
+        Si hay un error funcional activo, el flujo NO debe continuar.
+        """
+        time.sleep(0.4)
+        msg = self.driver.execute_script(
+            "var sels = ["
+            "  '.ui-growl-message-error .ui-growl-message-summary',"
+            "  '.ui-growl-message-error .ui-growl-message-detail',"
+            "  '.ui-growl-item-container.ui-state-error .ui-growl-message-summary',"
+            "  '.ui-messages-error-summary',"
+            "  '.ui-message-error-summary'"
+            "];"
+            "for (var s = 0; s < sels.length; s++) {"
+            "  var els = document.querySelectorAll(sels[s]);"
+            "  for (var e = 0; e < els.length; e++) {"
+            "    var t = (els[e].textContent || '').trim();"
+            "    if (t) return t;"
+            "  }"
+            "}"
+            "return null;"
+        )
+        if msg:
+            ctx = f" [{context}]" if context else ""
+            log.error("Growl de error detectado%s: %s", ctx, msg)
+            raise RuntimeError(f"ERROR_FUNCIONAL{ctx}: {msg}")

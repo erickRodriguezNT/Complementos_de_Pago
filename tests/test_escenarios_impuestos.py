@@ -25,7 +25,7 @@ import pytest
 from pages.factura_page import FacturaPage
 from pages.complemento_pago_page import ComplementoPagoPage
 from utils.excel_manager import EscenarioData, ResultRow, get_pago_by_escenario
-from utils.logger import get_logger
+from utils.logger import get_logger, log_section, log_step
 
 log = get_logger("test_escenarios_impuestos")
 
@@ -62,12 +62,12 @@ def test_flujo_completo_escenario(
     esc_rfc, esc_suc, esc_cc = _get_emisor(escenario, config)
     pago = get_pago_by_escenario(pagos_data, esc_id)
 
-    log.info("╬╬╬╬╬╬ Iniciando ciclo completo Escenario %d: '%s' ╬╬╬╬╬╬", esc_id, esc_name)
-    log.info("+  Emisor: %s | Sucursal: %s | CC: %s", esc_rfc, esc_suc, esc_cc)
-    log.info("+  Pago: fecha=%s | forma=%s | moneda=%s | CP1=%.2f | CP2=%.2f",
+    log_section(log, f"ESCENARIO {esc_id:02d} — {esc_name}")
+    log.info("  Emisor: %s | Sucursal: %s | CC: %s", esc_rfc, esc_suc, esc_cc)
+    log.info("  Pago: fecha=%s | forma=%s | moneda=%s | CP1=%.2f | CP2=%.2f",
              pago.fecha_pago, pago.forma_pago, pago.moneda_pago, pago.cp1, pago.cp2)
     if escenario.moneda_ppd:
-        log.info("+  PPD moneda override: %s", escenario.moneda_ppd)
+        log.info("  PPD moneda override: %s", escenario.moneda_ppd)
     log.info(
         "  Conceptos: %d | Impuestos: %d",
         len(escenario.conceptos), len(escenario.impuestos),
@@ -76,6 +76,7 @@ def test_flujo_completo_escenario(
     # ─────────────────────────────────────────────────────────────────────────
     # PASO 1 — Factura PPD
     # ─────────────────────────────────────────────────────────────────────────
+    log_step(log, 1, "Factura PPD")
     res_ppd = ResultRow(
         caso_prueba=f"ESC{esc_id}_PPD — {esc_name}",
         resultado_esperado="Timbrado exitoso - UUID generado",
@@ -115,6 +116,7 @@ def test_flujo_completo_escenario(
             forma_pago=config["comprobante"]["forma_pago"],
             metodo_pago=config["comprobante"]["metodo_pago"],
             moneda=escenario.moneda_ppd or config["comprobante"]["moneda"],
+            tipo_cambio=pago.tipo_cambio_pago if escenario.moneda_ppd else 0.0,
         )
         fac_page.add_all_conceptos(escenario.conceptos, escenario.impuestos)
         fac_page.take_screenshot(f"before_timbrar_esc{esc_id}_ppd", escenario_dir)
@@ -147,7 +149,7 @@ def test_flujo_completo_escenario(
             f"Subtotal: ${subtotal:.2f} | Total: ${total_factura:.2f} | "
             f"Archivo: {zip_filename}"
         )
-        log.info("PASO 1 PASS — ESC%d UUID=%s Total=$%.2f", esc_id, uuid_factura, total_factura)
+        log_step(log, 1, f"Factura PPD — ESC{esc_id} UUID={uuid_factura} Total=${total_factura:.2f}", status="PASS")
 
     except Exception as exc:
         fac_page.take_screenshot(f"error_esc{esc_id}_ppd", escenario_dir)
@@ -164,6 +166,7 @@ def test_flujo_completo_escenario(
     # ─────────────────────────────────────────────────────────────────────────
     # PASO 2 — Complemento de Pago 1
     # ─────────────────────────────────────────────────────────────────────────
+    log_step(log, 2, "Complemento de Pago 1")
     monto_cp1 = pago.cp1
     saldo_insoluto_cp1 = max(0.0, round(total_factura - monto_cp1, 2))
 
@@ -226,7 +229,7 @@ def test_flujo_completo_escenario(
             f"PASS | UUID Comp.1: {uuid_comp1} | "
             f"Factura Relacionada: {uuid_factura} | Archivo: {zip_filename}"
         )
-        log.info("PASO 2 PASS — ESC%d UUID_CP1=%s", esc_id, uuid_comp1)
+        log_step(log, 2, f"Complemento de Pago 1 — ESC{esc_id} UUID={uuid_comp1}", status="PASS")
 
     except Exception as exc:
         cp_page.take_screenshot(f"error_esc{esc_id}_cp1", escenario_dir)
@@ -240,6 +243,7 @@ def test_flujo_completo_escenario(
     # ─────────────────────────────────────────────────────────────────────────
     # PASO 3 — Complemento de Pago 2
     # ─────────────────────────────────────────────────────────────────────────
+    log_step(log, 3, "Complemento de Pago 2")
     monto_cp2 = pago.cp2
     saldo_insoluto_cp2 = max(0.0, round(saldo_insoluto_cp1 - monto_cp2, 2))
 
@@ -301,10 +305,7 @@ def test_flujo_completo_escenario(
             f"PASS | UUID Comp.2: {uuid_comp2} | "
             f"Factura Relacionada: {uuid_factura} | Archivo: {zip_filename}"
         )
-        log.info(
-            "PASO 3 PASS — ESC%d UUID_CP2=%s  Saldo Insoluto=$%.2f",
-            esc_id, uuid_comp2, saldo_insoluto_cp2,
-        )
+        log_step(log, 3, f"Complemento de Pago 2 — ESC{esc_id} UUID={uuid_comp2} Saldo=${saldo_insoluto_cp2:.2f}", status="PASS")
 
     except Exception as exc:
         cp_page2.take_screenshot(f"error_esc{esc_id}_cp2", escenario_dir)
@@ -315,10 +316,7 @@ def test_flujo_completo_escenario(
 
     results_writer.add_row(res_cp2)
 
-    log.info(
-        "══════ CICLO COMPLETO PASS — ESC%d '%s' ══════",
-        esc_id, esc_name,
-    )
+    log_section(log, f"ESCENARIO {esc_id:02d} — {esc_name}", status="PASS")
 
 
 # ── Helpers ──────────────────────────────────────────────────────────────────
