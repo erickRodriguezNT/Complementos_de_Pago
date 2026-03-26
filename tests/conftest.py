@@ -114,10 +114,6 @@ def run_output_dir():
     """Crea outputs/ejecucion_YYYYMMDD_HHMMSS/ una sola vez por ejecución."""
     path = make_run_dir(OUTPUTS_DIR)
     log.info("Run output dir: %s", path)
-    # Añade un FileHandler legible al logger para que todos los mensajes de la
-    # ejecución queden también en outputs/ejecucion_<ts>/ejecucion_<ts>.log
-    from utils.logger import init_run_logger
-    init_run_logger(path)
     return path
 
 

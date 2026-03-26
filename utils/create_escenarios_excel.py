@@ -128,9 +128,9 @@ _ESCENARIOS = [
 # (Id Concepto siempre = 1 dentro de cada escenario)
 _CONCEPTO_BASE = {
     "Cantidad":                 1,
-    "Clave Unidad":             "H87",
+    "Clave Unidad":             "E48",
     "Descripción":              "Servicio de prueba",
-    "Clave Producto/Servicio":  "84111506",
+    "Clave Producto/Servicio":  "01010101",
     "Valor Unitario":           100.00,
     "Objeto Impuesto":          "02",
     "Id Concepto":              1,
