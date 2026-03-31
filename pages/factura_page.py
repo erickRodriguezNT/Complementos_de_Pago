@@ -903,16 +903,44 @@ class FacturaPage(BasePage):
 
  
     def _count_impuesto_rows(self) -> int:
-        """Cuenta filas reales en la tabla de impuestos del concepto actual."""
+        """Cuenta el total de impuestos registrados (traslados + retenciones).
+
+        Usa el API del widget PrimeFaces para obtener el rowCount real del servidor
+        (cubre paginación y posibles tablas separadas por tipo de impuesto).
+        Como fallback cuenta las filas visibles en cualquier tabla dentro del fieldset.
+        """
         try:
-            rows = self.driver.find_elements(
-                By.CSS_SELECTOR,
-                r"#formNuevaFactura\:accordionConceptos\:dataTableImpuestosConcepto_data tr",
+            count = self.driver.execute_script(
+                """
+                // Intento 1: rowCount del widget PrimeFaces (total verdadero,
+                // incluve filas en páginas no visibles del paginador)
+                for (var k in PrimeFaces.widgets) {
+                    var w = PrimeFaces.widgets[k];
+                    if (w && w.id &&
+                        w.id.indexOf('dataTableImpuestosConcepto') >= 0 &&
+                        w.paginator &&
+                        typeof w.paginator.cfg === 'object' &&
+                        typeof w.paginator.cfg.rowCount === 'number') {
+                        return w.paginator.cfg.rowCount;
+                    }
+                }
+                // Intento 2: contar filas visibles en TODAS las tablas del fieldset
+                // (cubre el caso de tablas separadas por Traslado/Retención)
+                var fs = document.getElementById(
+                    'formNuevaFactura:accordionConceptos:filedSetImpuestos'
+                );
+                if (!fs) return 0;
+                var rows = fs.querySelectorAll('[id$="_data"] tr');
+                var n = 0;
+                for (var i = 0; i < rows.length; i++) {
+                    if (rows[i].className.indexOf('ui-datatable-empty-message') < 0) {
+                        n++;
+                    }
+                }
+                return n;
+                """
             )
-            return sum(
-                1 for r in rows
-                if "ui-datatable-empty-message" not in (r.get_attribute("class") or "")
-            )
+            return int(count) if count is not None else 0
         except Exception:
             return 0
 

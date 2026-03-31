@@ -247,11 +247,10 @@ _IMPUESTOS = [
     _I(17, 1, "IEPS", "FEDERAL", "RETENCION", "TASA", 0.080, "Ret IEPS 8%"),
     _I(17, 1, "ISH",  "LOCAL",   "TRASLADO",  "TASA", 0.080, "ISH 8%"),
 
-    # Esc 18: IVA 16 + IVA 8 + IVA 0 + IEPS 0.08 + IEPS 0.53 + IEPS 0.265 + Ret IEPS 0.08 + Ret ISR 0.015 + Ret ISH 0.05
+    # Esc 18: IVA 16 + IVA 8 + IVA 0 + IEPS 0.53 + IEPS 0.265 + Ret IEPS 0.08 + Ret ISR 0.015 + Ret ISH 0.05
     _I(18, 1, "IVA",  "FEDERAL", "TRASLADO",  "TASA", 0.160, "IVA 16%"),
     _I(18, 1, "IVA",  "FEDERAL", "TRASLADO",  "TASA", 0.080, "IVA 8%"),
     _I(18, 1, "IVA",  "FEDERAL", "TRASLADO",  "TASA", 0.000, "IVA 0%"),
-    _I(18, 1, "IEPS", "FEDERAL", "TRASLADO",  "TASA", 0.080, "IEPS 8%"),
     _I(18, 1, "IEPS", "FEDERAL", "TRASLADO",  "TASA", 0.530, "IEPS 53%"),
     _I(18, 1, "IEPS", "FEDERAL", "TRASLADO",  "TASA", 0.265, "IEPS 26.5%"),
     _I(18, 1, "IEPS", "FEDERAL", "RETENCION", "TASA", 0.080, "Ret IEPS 8%"),

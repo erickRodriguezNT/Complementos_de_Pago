@@ -24,15 +24,16 @@ import pytest
 
 from pages.factura_page import FacturaPage
 from pages.complemento_pago_page import ComplementoPagoPage
-from utils.excel_manager import EscenarioData, ResultRow, get_pago_by_escenario
+from utils.excel_manager import EscenarioData, ResultRow, get_pago_by_escenario, get_active_cp_values
 from utils.logger import get_logger, log_section, log_step
 
 log = get_logger("test_escenarios_impuestos")
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# ÚNICO TEST — parametrizado automáticamente desde el Excel
-# Cada instancia ejecuta el ciclo completo: PPD → CP1 → CP2
+# ═══════════════════════════════════════════════════════════════════════════════
+# Único TEST — parametrizado automáticamente desde el Excel
+# Cada instancia ejecuta el ciclo completo: PPD → CP1 → CP2 → ... → CPn
 # ═══════════════════════════════════════════════════════════════════════════════
 
 def test_flujo_completo_escenario(
@@ -43,11 +44,12 @@ def test_flujo_completo_escenario(
     results_writer,
     escenario_dir,
 ):
-    """Ciclo completo PPD + CP1 + CP2 para el escenario de impuestos del Excel.
+    """Ciclo completo PPD + CPs dinámicos para el escenario de impuestos del Excel.
 
-    Los 3 pasos son independientes por escenario — no comparten estado con
+    Todos los pasos son independientes por escenario — no comparten estado con
     otros escenarios.  Si el PASO 1 falla el test se detiene para ese
     escenario; los demás escenarios siguen ejecutándose normalmente.
+    Los complementos de pago se ejecutan solo si hay columnas CP con valor > 0.
     """
     if escenario is None:
         pytest.skip("No se encontraron escenarios en el Excel")
@@ -64,8 +66,11 @@ def test_flujo_completo_escenario(
 
     log_section(log, f"ESCENARIO {esc_id:02d} — {esc_name}")
     log.info("  Emisor: %s | Sucursal: %s | CC: %s", esc_rfc, esc_suc, esc_cc)
-    log.info("  Pago: fecha=%s | forma=%s | moneda=%s | CP1=%.2f | CP2=%.2f",
-             pago.fecha_pago, pago.forma_pago, pago.moneda_pago, pago.cp1, pago.cp2)
+    _cp_summary = " | ".join(
+        f"CP{i + 1}={v:.2f}" for i, v in enumerate(pago.cp_values)
+    ) or "sin CP"
+    log.info("  Pago: fecha=%s | forma=%s | moneda=%s | %s",
+             pago.fecha_pago, pago.forma_pago, pago.moneda_pago, _cp_summary)
     if escenario.moneda_ppd:
         log.info("  PPD moneda override: %s", escenario.moneda_ppd)
     log.info(
@@ -164,157 +169,121 @@ def test_flujo_completo_escenario(
         pytest.fail(f"ESC{esc_id}: No se obtuvo UUID de la factura PPD")
 
     # ─────────────────────────────────────────────────────────────────────────
-    # PASO 2 — Complemento de Pago 1
+    # PASOS 2..N — Complementos de Pago (dinámico: CP1, CP2, ..., CPn)
+    # Se ejecuta un paso por cada columna CPn que tenga valor > 0 en el Excel.
+    # Si ninguna columna CP tiene valor, se omite el flujo de Complemento.
     # ─────────────────────────────────────────────────────────────────────────
-    log_step(log, 2, "Complemento de Pago 1")
-    monto_cp1 = pago.cp1
-    saldo_insoluto_cp1 = max(0.0, round(total_factura - monto_cp1, 2))
+    active_cps = get_active_cp_values(pago)
 
-    res_cp1 = ResultRow(
-        caso_prueba=f"ESC{esc_id}_CP1 — {esc_name}",
-        resultado_esperado="Timbrado exitoso - UUID generado",
-        rfc_emisor=esc_rfc,
-        rfc_receptor=config["receptor"]["rfc"],
-        sucursal=esc_suc,
-        centro_consumo=esc_cc,
-        uuid_relacionado=uuid_factura,
-        datos_generales=(
-            f"Parcialidad: 1 | Monto: ${monto_cp1:.2f} | "
-            f"Saldo Anterior: ${total_factura:.2f} | Saldo Insoluto: ${saldo_insoluto_cp1:.2f}"
-        ),
-    )
+    if not active_cps:
+        log.info("ESC%d: Sin complementos de pago configurados — solo se ejecuta PPD", esc_id)
+    else:
+        saldo = total_factura
+        for cp_idx, monto_cp in enumerate(active_cps, start=1):
+            log_step(log, cp_idx + 1, f"Complemento de Pago {cp_idx}")
+            saldo_anterior = saldo
+            saldo = max(0.0, round(saldo - monto_cp, 2))
 
-    uuid_comp1 = None
-    cp_page = ComplementoPagoPage(driver)
-    try:
-        cp_page.navigate(config["app"]["factura_url"])
+            res_cp = ResultRow(
+                caso_prueba=f"ESC{esc_id}_CP{cp_idx} — {esc_name}",
+                resultado_esperado="Timbrado exitoso - UUID generado",
+                rfc_emisor=esc_rfc,
+                rfc_receptor=config["receptor"]["rfc"],
+                sucursal=esc_suc,
+                centro_consumo=esc_cc,
+                uuid_relacionado=uuid_factura,
+                datos_generales=(
+                    f"Parcialidad: {cp_idx} | Monto: ${monto_cp:.2f} | "
+                    f"Saldo Anterior: ${saldo_anterior:.2f} | Saldo Insoluto: ${saldo:.2f}"
+                ),
+            )
 
-        cp_page.fill_emisor(
-            rfc=esc_rfc,
-            sucursal=esc_suc,
-            cc=esc_cc,
-        )
-        cp_page.fill_receptor(
-            rfc=config["receptor"]["rfc"],
-            nombre="PUBLICO EN GENERAL",
-            uso_cfdi=config["receptor"]["uso_cfdi"],
-            regimen=config["receptor"]["regimen"],
-            domicilio_cp=config["receptor"]["domicilio_cp"],
-            email=config["receptor"]["email"],
-        )
-        cp_page.fill_comprobante_cp_basico(tipo="PAGO", serie="CP")
-        cp_page.fill_fecha_pago(pago.fecha_pago)
-        cp_page.fill_forma_pago_complemento(pago.forma_pago)
-        cp_page.fill_moneda_pago_complemento(pago.moneda_pago)
-        if pago.tipo_cambio_pago > 0:
-            cp_page.fill_tipo_cambio_pago(pago.tipo_cambio_pago)
-        cp_page.flujo_dr_completo(
-            uuid_factura=uuid_factura,
-            importe_pago=f"{monto_cp1:.2f}",
-            emisor_rfc=esc_rfc,
-            sucursal=esc_suc,
-            cc=esc_cc,
-            equivalencia_dr=pago.equivalencia_dr,
-        )
-        cp_page.take_screenshot(f"before_timbrar_esc{esc_id}_cp1", escenario_dir)
+            cp_page = ComplementoPagoPage(driver)
+            try:
+                cp_page.navigate(config["app"]["factura_url"])
 
-        uuid_comp1 = cp_page.timbrar_complemento(timeout=timbrado_timeout)
-        _set_download_dir(driver, escenario_dir)
-        zip_path, uuid_zip = cp_page.click_descarga(escenario_dir)
-        zip_filename = os.path.basename(zip_path)
+                cp_page.fill_emisor(
+                    rfc=esc_rfc,
+                    sucursal=esc_suc,
+                    cc=esc_cc,
+                )
+                cp_page.fill_receptor(
+                    rfc=config["receptor"]["rfc"],
+                    nombre="PUBLICO EN GENERAL",
+                    uso_cfdi=config["receptor"]["uso_cfdi"],
+                    regimen=config["receptor"]["regimen"],
+                    domicilio_cp=config["receptor"]["domicilio_cp"],
+                    email=config["receptor"]["email"],
+                )
+                cp_page.fill_comprobante_cp_basico(tipo="PAGO", serie="CP")
+                cp_page.fill_fecha_pago(pago.fecha_pago)
+                cp_page.fill_forma_pago_complemento(pago.forma_pago)
+                cp_page.fill_moneda_pago_complemento(pago.moneda_pago)
+                if pago.tipo_cambio_pago > 0:
+                    cp_page.fill_tipo_cambio_pago(pago.tipo_cambio_pago)
+                cp_page.flujo_dr_completo(
+                    uuid_factura=uuid_factura,
+                    importe_pago=f"{monto_cp:.2f}",
+                    emisor_rfc=esc_rfc,
+                    sucursal=esc_suc,
+                    cc=esc_cc,
+                    equivalencia_dr=pago.equivalencia_dr,
+                )
 
-        res_cp1.uuid_timbrado = uuid_comp1 or ""
-        res_cp1.url_descarga_pdf = zip_filename
-        res_cp1.resultado_obtenido = (
-            f"PASS | UUID Comp.1: {uuid_comp1} | "
-            f"Factura Relacionada: {uuid_factura} | Archivo: {zip_filename}"
-        )
-        log_step(log, 2, f"Complemento de Pago 1 — ESC{esc_id} UUID={uuid_comp1}", status="PASS")
+                # Leer valores reales calculados por el sistema desde la UI
+                datos_dr = cp_page.read_datos_dr_row()
+                if datos_dr["saldo_anterior"] > 0 or datos_dr["saldo_insoluto"] > 0:
+                    saldo = datos_dr["saldo_insoluto"]
+                    res_cp.datos_generales = (
+                        f"Parcialidad: {cp_idx} | "
+                        f"Monto {pago.moneda_pago}: {monto_cp:.2f} | "
+                        f"Pago (moneda factura): ${datos_dr['pago']:.2f} | "
+                        f"Saldo Anterior: ${datos_dr['saldo_anterior']:.2f} | "
+                        f"Saldo Insoluto: ${datos_dr['saldo_insoluto']:.2f}"
+                    )
+                    log.info(
+                        "ESC%d CP%d: UI → Saldo Anterior=%.2f | Pago=%.2f | Saldo Insoluto=%.2f",
+                        esc_id, cp_idx,
+                        datos_dr["saldo_anterior"], datos_dr["pago"], datos_dr["saldo_insoluto"],
+                    )
+                else:
+                    log.warning(
+                        "ESC%d CP%d: tableDocRelacionado vacío — usando cálculo local "
+                        "(moneda pago=%s, monto=%.2f)",
+                        esc_id, cp_idx, pago.moneda_pago, monto_cp,
+                    )
 
-    except Exception as exc:
-        cp_page.take_screenshot(f"error_esc{esc_id}_cp1", escenario_dir)
-        res_cp1.resultado_obtenido = f"FAIL: {exc}"
-        log.error("PASO 2 FAIL ESC%d: %s", esc_id, exc)
-        results_writer.add_row(res_cp1)
-        pytest.fail(str(exc))
+                cp_page.take_screenshot(
+                    f"before_timbrar_esc{esc_id}_cp{cp_idx}", escenario_dir
+                )
 
-    results_writer.add_row(res_cp1)
+                uuid_cp = cp_page.timbrar_complemento(timeout=timbrado_timeout)
+                _set_download_dir(driver, escenario_dir)
+                zip_path, uuid_zip = cp_page.click_descarga(escenario_dir)
+                zip_filename = os.path.basename(zip_path)
 
-    # ─────────────────────────────────────────────────────────────────────────
-    # PASO 3 — Complemento de Pago 2
-    # ─────────────────────────────────────────────────────────────────────────
-    log_step(log, 3, "Complemento de Pago 2")
-    monto_cp2 = pago.cp2
-    saldo_insoluto_cp2 = max(0.0, round(saldo_insoluto_cp1 - monto_cp2, 2))
+                res_cp.uuid_timbrado = uuid_cp or ""
+                res_cp.url_descarga_pdf = zip_filename
+                res_cp.resultado_obtenido = (
+                    f"PASS | UUID CP{cp_idx}: {uuid_cp} | "
+                    f"Factura Relacionada: {uuid_factura} | Archivo: {zip_filename}"
+                )
+                log_step(
+                    log, cp_idx + 1,
+                    f"CP{cp_idx} — ESC{esc_id} UUID={uuid_cp} Saldo=${saldo:.2f}",
+                    status="PASS",
+                )
 
-    res_cp2 = ResultRow(
-        caso_prueba=f"ESC{esc_id}_CP2 — {esc_name}",
-        resultado_esperado="Timbrado exitoso - UUID generado",
-        rfc_emisor=esc_rfc,
-        rfc_receptor=config["receptor"]["rfc"],
-        sucursal=esc_suc,
-        centro_consumo=esc_cc,
-        uuid_relacionado=uuid_factura,
-        datos_generales=(
-            f"Parcialidad: 2 | Monto: ${monto_cp2:.2f} | "
-            f"Saldo Anterior: ${saldo_insoluto_cp1:.2f} | Saldo Insoluto: ${saldo_insoluto_cp2:.2f}"
-        ),
-    )
+            except Exception as exc:
+                cp_page.take_screenshot(
+                    f"error_esc{esc_id}_cp{cp_idx}", escenario_dir
+                )
+                res_cp.resultado_obtenido = f"FAIL: {exc}"
+                log.error("PASO %d FAIL ESC%d (CP%d): %s", cp_idx + 1, esc_id, cp_idx, exc)
+                results_writer.add_row(res_cp)
+                pytest.fail(str(exc))
 
-    cp_page2 = ComplementoPagoPage(driver)
-    try:
-        cp_page2.navigate(config["app"]["factura_url"])
-
-        cp_page2.fill_emisor(
-            rfc=esc_rfc,
-            sucursal=esc_suc,
-            cc=esc_cc,
-        )
-        cp_page2.fill_receptor(
-            rfc=config["receptor"]["rfc"],
-            nombre="PUBLICO EN GENERAL",
-            uso_cfdi=config["receptor"]["uso_cfdi"],
-            regimen=config["receptor"]["regimen"],
-            domicilio_cp=config["receptor"]["domicilio_cp"],
-            email=config["receptor"]["email"],
-        )
-        cp_page2.fill_comprobante_cp_basico(tipo="PAGO", serie="CP")
-        cp_page2.fill_fecha_pago(pago.fecha_pago)
-        cp_page2.fill_forma_pago_complemento(pago.forma_pago)
-        cp_page2.fill_moneda_pago_complemento(pago.moneda_pago)
-        if pago.tipo_cambio_pago > 0:
-            cp_page2.fill_tipo_cambio_pago(pago.tipo_cambio_pago)
-        cp_page2.flujo_dr_completo(
-            uuid_factura=uuid_factura,
-            importe_pago=f"{monto_cp2:.2f}",
-            emisor_rfc=esc_rfc,
-            sucursal=esc_suc,
-            cc=esc_cc,
-            equivalencia_dr=pago.equivalencia_dr,
-        )
-        cp_page2.take_screenshot(f"before_timbrar_esc{esc_id}_cp2", escenario_dir)
-
-        uuid_comp2 = cp_page2.timbrar_complemento(timeout=timbrado_timeout)
-        _set_download_dir(driver, escenario_dir)
-        zip_path, uuid_zip = cp_page2.click_descarga(escenario_dir)
-        zip_filename = os.path.basename(zip_path)
-
-        res_cp2.uuid_timbrado = uuid_comp2 or ""
-        res_cp2.url_descarga_pdf = zip_filename
-        res_cp2.resultado_obtenido = (
-            f"PASS | UUID Comp.2: {uuid_comp2} | "
-            f"Factura Relacionada: {uuid_factura} | Archivo: {zip_filename}"
-        )
-        log_step(log, 3, f"Complemento de Pago 2 — ESC{esc_id} UUID={uuid_comp2} Saldo=${saldo_insoluto_cp2:.2f}", status="PASS")
-
-    except Exception as exc:
-        cp_page2.take_screenshot(f"error_esc{esc_id}_cp2", escenario_dir)
-        res_cp2.resultado_obtenido = f"FAIL: {exc}"
-        log.error("PASO 3 FAIL ESC%d: %s", esc_id, exc)
-        results_writer.add_row(res_cp2)
-        pytest.fail(str(exc))
-
-    results_writer.add_row(res_cp2)
+            results_writer.add_row(res_cp)
 
     log_section(log, f"ESCENARIO {esc_id:02d} — {esc_name}", status="PASS")
 

@@ -1,7 +1,8 @@
 """Excel I/O for test data and results."""
 import os
+import re
 from datetime import datetime
-from dataclasses import dataclass, fields
+from dataclasses import dataclass, field, fields
 from typing import List
 
 import openpyxl
@@ -75,15 +76,29 @@ class ImpuestoRow:
 
 @dataclass
 class PagoRow:
-    """Datos del Complemento de Pago leídos desde la hoja 'pagos' del Excel."""
-    id_escenario: int = 0      # columna ESCENARIO — clave de búsqueda
-    fecha_pago: str = ""       # "2026-03-20" / "20/03/2026" / "20-03-2026"
-    forma_pago: str = "01"     # código SAT, ej. "01", "03", "04"
-    moneda_pago: str = "MXN"   # clave de moneda SAT
+    """Datos del Complemento de Pago leídos desde la hoja 'pagos' del Excel.
+
+    cp_values almacena dinámicamente todos los importes CP detectados en el Excel
+    (CP1, CP2, ..., CPn).  Los accesores cp1 / cp2 se mantienen por compatibilidad.
+    """
+    id_escenario: int = 0          # columna ESCENARIO — clave de búsqueda
+    fecha_pago: str = ""           # "2026-03-20" / "20/03/2026" / "20-03-2026"
+    forma_pago: str = "01"         # código SAT, ej. "01", "03", "04"
+    moneda_pago: str = "MXN"       # clave de moneda SAT
     tipo_cambio_pago: float = 0.0  # 0.0 = no aplica (MXN); e.g. 17.50 para USD
-    equivalencia_dr: float = 0.0   # 0.0 = no aplica (misma moneda); e.g. 0.0571 = 1/17.5
-    cp1: float = 0.0           # importe del primer complemento de pago
-    cp2: float = 0.0           # importe del segundo complemento de pago
+    equivalencia_dr: float = 0.0   # 0.0 = no aplica; e.g. 0.0571 = 1/17.5
+    cp_values: list = field(default_factory=list)  # [CP1, CP2, ..., CPn] detectados dinámicamente
+
+    # ── Accesores de compatibilidad hacia atrás ────────────────────────────
+    @property
+    def cp1(self) -> float:
+        """Importe del primer complemento de pago (CP1)."""
+        return self.cp_values[0] if len(self.cp_values) > 0 else 0.0
+
+    @property
+    def cp2(self) -> float:
+        """Importe del segundo complemento de pago (CP2)."""
+        return self.cp_values[1] if len(self.cp_values) > 1 else 0.0
 
 
 @dataclass
@@ -437,12 +452,29 @@ def read_escenarios(path: str) -> "List[EscenarioData]":
     return result
 
 
+def _safe_float_cp(value) -> float:
+    """Convierte un valor de celda CP a float.
+
+    Devuelve 0.0 para None, cadena vacía, espacios en blanco o texto 'nan'/'none'.
+    """
+    if value is None:
+        return 0.0
+    s = str(value).strip()
+    if not s or s.lower() in ("nan", "none"):
+        return 0.0
+    try:
+        return float(s)
+    except (TypeError, ValueError):
+        return 0.0
+
+
 def read_pagos(path: str) -> "dict":
     """Lee la hoja 'pagos' del Excel y devuelve un diccionario {id_escenario: PagoRow}.
 
-    Columnas esperadas (fila 1 = encabezados):
-        ESCENARIO | FECHA DE PAGO | FORMA DE PAGO | MONEDA DE PAGO | CP1 | CP2
+    Columnas mínimas esperadas (fila 1 = encabezados):
+        ESCENARIO | FECHA DE PAGO | FORMA DE PAGO | MONEDA DE PAGO
 
+    Columnas CP detectadas dinámicamente (CP1, CP2, ..., CPn).
     Si la hoja no existe o está vacía devuelve un diccionario vacío.
     """
     wb = openpyxl.load_workbook(path, data_only=True)
@@ -460,6 +492,12 @@ def read_pagos(path: str) -> "dict":
         str(c.value).strip().upper() if c.value is not None else ""
         for c in header_row
     ]
+
+    # Detectar dinámicamente todas las columnas CP* (CP1, CP2, ..., CPn)
+    cp_cols = sorted(
+        [h for h in headers_p if re.match(r'^CP\d+$', h)],
+        key=lambda c: int(c[2:]),
+    )
 
     result: dict = {}
     for row in ws_p.iter_rows(min_row=2, values_only=True):
@@ -488,8 +526,7 @@ def read_pagos(path: str) -> "dict":
             ) or "MXN").upper(),
             tipo_cambio_pago=float(r.get("TIPO DE CAMBIO PAGO") or 0),
             equivalencia_dr=float(r.get("EQUIVALENCIA DR") or 0),
-            cp1=float(r.get("CP1") or 0),
-            cp2=float(r.get("CP2") or 0),
+            cp_values=[_safe_float_cp(r.get(col)) for col in cp_cols],
         )
 
     wb.close()
@@ -508,6 +545,19 @@ def get_pago_by_escenario(pagos: dict, id_escenario: int) -> "PagoRow":
             f"Escenarios disponibles en la hoja 'pagos': {sorted(pagos.keys())}"
         )
     return pagos[id_escenario]
+
+
+def get_active_cp_values(pago: "PagoRow") -> "List[float]":
+    """Devuelve la lista ordenada de importes CP con valor real (> 0.0).
+
+    Excluye automáticamente celdas vacías, None, NaN o cero.
+    Si ningún CP tiene valor, devuelve lista vacía → no se ejecuta flujo CP.
+
+    Ejemplos:
+        cp_values=[1000.0, 0.0, 500.0]  →  [1000.0, 500.0]
+        cp_values=[0.0, 0.0]            →  []
+    """
+    return [v for v in pago.cp_values if v > 0.0]
 
 
 # ── Writer ────────────────────────────────────────────────────────────────────

@@ -837,6 +837,67 @@ class ComplementoPagoPage(FacturaPage):
         self.close_dialog_dr()
         self.click_agregar_pago()
 
+    def read_datos_dr_row(self) -> dict:
+        """Lee Saldo Anterior, Pago y Saldo Insoluto de la última fila de tableDocRelacionado.
+
+        Debe llamarse después de flujo_dr_completo() (que ya ejecutó click_agregar_pago).
+        Los valores están en la moneda de la factura relacionada (MXN si la factura es MXN).
+
+        Returns:
+            dict con claves 'saldo_anterior', 'pago', 'saldo_insoluto' (float).
+            Si la tabla está vacía o no se puede leer, retorna ceros.
+        """
+        wait_for_ajax(self.driver)
+        _time.sleep(0.3)
+        raw = self.driver.execute_script(
+            """
+            var tbody = document.getElementById(
+                'formNuevaFactura:accordionDatosComprobante:tableDocRelacionado_data'
+            );
+            if (!tbody) return null;
+            var rows = tbody.querySelectorAll('tr');
+            var result = {saldo_anterior: '', pago: '', saldo_insoluto: ''};
+            for (var i = rows.length - 1; i >= 0; i--) {
+                var tds = rows[i].querySelectorAll('td');
+                if (tds.length < 4) continue;
+                for (var j = 0; j < tds.length; j++) {
+                    var span = tds[j].querySelector('.ui-column-title');
+                    if (!span) continue;
+                    var key = span.textContent.trim();
+                    var val = tds[j].textContent.replace(span.textContent, '').trim();
+                    if (key === 'Saldo Anterior') result.saldo_anterior = val;
+                    if (key === 'Pago') result.pago = val;
+                    if (key === 'Saldo Insoluto') result.saldo_insoluto = val;
+                }
+                if (result.saldo_insoluto) break;
+            }
+            return result;
+            """
+        )
+        if not raw:
+            log.warning("read_datos_dr_row: tableDocRelacionado_data no encontrada o vacía")
+            return {"saldo_anterior": 0.0, "pago": 0.0, "saldo_insoluto": 0.0}
+
+        def _parse(val: str) -> float:
+            if not val:
+                return 0.0
+            cleaned = str(val).replace("$", "").replace(",", "").strip()
+            try:
+                return float(cleaned)
+            except (ValueError, TypeError):
+                return 0.0
+
+        result = {
+            "saldo_anterior": _parse(raw.get("saldo_anterior", "")),
+            "pago": _parse(raw.get("pago", "")),
+            "saldo_insoluto": _parse(raw.get("saldo_insoluto", "")),
+        }
+        log.info(
+            "read_datos_dr_row: saldo_anterior=%.2f | pago=%.2f | saldo_insoluto=%.2f",
+            result["saldo_anterior"], result["pago"], result["saldo_insoluto"],
+        )
+        return result
+
     def timbrar_complemento(self, timeout: int = 60) -> str:
         """Click Facturar and return UUID."""
         return self.click_facturar(timeout=timeout)
